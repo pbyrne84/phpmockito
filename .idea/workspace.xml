@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f040a15-de77-4dfd-afe5-b9919f9fd050" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Program Files\eclipse\local_copy\phpmockito\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
     </list>
     <ignored path="phpmockito.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/.name" />
-    <file path="/Dummy.txt" changelist="8f040a15-de77-4dfd-afe5-b9919f9fd050" time="1376401046673" ignored="false" />
-    <file path="$PROJECT_DIR$/../../local_workspace/workspace10/merging/branch/kryten_merge_branch/.idea/workspace.xml" changelist="8f040a15-de77-4dfd-afe5-b9919f9fd050" time="1376401113542" ignored="false" />
+    <file path="/Dummy.txt" changelist="8f040a15-de77-4dfd-afe5-b9919f9fd050" time="1376401160456" ignored="false" />
+    <file path="$PROJECT_DIR$/../../local_workspace/workspace10/merging/branch/kryten_merge_branch/.idea/workspace.xml" changelist="8f040a15-de77-4dfd-afe5-b9919f9fd050" time="1376401159845" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,7 +212,11 @@
       <created>1376401047964</created>
       <updated>1376401047964</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="remove workspace">
+      <created>1376401162227</created>
+      <updated>1376401162227</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
