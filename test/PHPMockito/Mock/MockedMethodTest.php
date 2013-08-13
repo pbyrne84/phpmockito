@@ -1,17 +1,67 @@
 <?php
 namespace PHPMockito\Mock;
 
-class MockedMethodTest extends  \PHPUnit_Framework_TestCase{
+use PHPMockito\TestClass\SignatureTestClass;
+
+class MockedMethodTest extends \PHPUnit_Framework_TestCase {
 
     const CLASS_NAME = __CLASS__;
+
 
     protected function setUp() {
 
     }
 
-    public function test_fail(){
 
+    public function test_getName_singleTypeHintedVariable() {
+        $reflectionMethod = new \ReflectionMethod( '\DomDocument', 'appendChild' );
+        $mockedMethod     = new MockedMethod( $reflectionMethod );
+
+        $this->assertEquals( 'appendChild', $mockedMethod->getName() );
     }
 
+
+    public function test_getSignature_singleTypeHinted() {
+        $reflectionMethod = new \ReflectionMethod( '\DomDocument', 'appendChild' );
+        $mockedMethod     = new MockedMethod( $reflectionMethod );
+
+        $this->assertEquals( '\DOMNode $newChild = NULL', $mockedMethod->getSignature() );
+    }
+
+
+    public function test_getSignature_internalMethodsDeferToDefaultIsNull_multipleVariations() {
+        $reflectionMethod = new \ReflectionMethod( '\DOMImplementation', 'createDocument' );
+        $mockedMethod     = new MockedMethod( $reflectionMethod );
+
+        $this->assertEquals(
+            '$namespaceURI = NULL,  $qualifiedName = NULL, \DOMDocumentType $docType = NULL',
+            $mockedMethod->getSignature(),
+            'signature matches'
+        );
+    }
+
+
+    public function test_getSignature_customMethods_multipleVariations_allRequired() {
+        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::CLASS_NAME, 'testMethodAllRequired' );
+        $mockedMethod     = new MockedMethod( $reflectionMethod );
+
+        $this->assertEquals(
+            '\DOMDocument $domDocument1, array $requiredArray,  $nonTypeHint, \Closure $closure1',
+            $mockedMethod->getSignature(),
+            'signature matches'
+        );
+    }
+
+
+    public function test_getSignature_customMethods_multipleVariations_allOptional() {
+        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::CLASS_NAME, 'testMethodAllOptional' );
+        $mockedMethod     = new MockedMethod( $reflectionMethod );
+
+        $this->assertEquals(
+            '\DOMDocument $domDocument1 = NULL, array $requiredArray = array(),  $nonTypeHint = \'\', \Closure $closure1 = NULL',
+            $mockedMethod->getSignature(),
+            'signature matches'
+        );
+    }
 }
-  
+

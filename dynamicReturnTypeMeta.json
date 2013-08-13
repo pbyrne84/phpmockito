@@ -1,23 +1,8 @@
 {
     "methodCalls": [
         {
-            "class": "\\TaskData",
-            "method": "getObject",
-            "position": 1
-        },
-        {
-            "class": "\\JE\\Test\\Phpunit\\PhockitoTestCase",
-            "method": "getFullMock",
-            "position": 0
-        },
-        {
-            "class": "\\JE\\Test\\Phpunit\\PhockitoTestCase",
-            "method": "verify",
-            "position": 0
-        },
-        {
-            "class": "\\Phockito",
-            "method": "mock",
+            "class": "\\PHPMockito\\Mock\\MockFactory",
+            "method": "newFullMock",
             "position": 0
         }
     ],
