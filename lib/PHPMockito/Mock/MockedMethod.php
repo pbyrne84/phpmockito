@@ -5,10 +5,10 @@ namespace PHPMockito\Mock;
 class MockedMethod {
     const CLASS_NAME = __CLASS__;
 
-    /** @var \ReflectionMethod*/
+    /** @var \ReflectionMethod */
     private $reflectionMethod;
 
-    /** @var array|MockedParameter[]  */
+    /** @var array|MockedParameter[] */
     private $mockedParameters = array();
 
 
@@ -17,8 +17,8 @@ class MockedMethod {
      */
     function __construct( \ReflectionMethod $reflectionMethod ) {
         $this->reflectionMethod = $reflectionMethod;
-        foreach (  $this->reflectionMethod->getParameters() as $parameter ) {
-            $this->mockedParameters[] = new MockedParameter( $parameter );
+        foreach ( $this->reflectionMethod->getParameters() as $parameter ) {
+            $this->mockedParameters[ ] = new MockedParameter( $parameter );
         }
     }
 
@@ -44,6 +44,21 @@ class MockedMethod {
     }
 
 
+    /**
+     * @return string
+     * @throws \UnexpectedValueException
+     */
+    public function getVisibilityAsString() {
+        if ( $this->reflectionMethod->isPublic() ) {
+            return 'public';
+        } elseif ( $this->reflectionMethod->isProtected() ) {
+            return 'protected';
+        } elseif ( $this->reflectionMethod->isPrivate() ) {
+            throw new \UnexpectedValueException( 'private methods cannot be mocked' );
+        }
+
+        return '';
+    }
 
 
     /**

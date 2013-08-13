@@ -6,13 +6,21 @@ class MockFactory {
 
     private $mockCounter = 0;
 
+    /** @var MockClassCodeGenerator */
+    private $mockClassCodeGenerator;
 
-    function __construct() {
+
+    /**
+     * @param MockClassCodeGenerator $mockClassCodeGenerator
+     */
+    function __construct( MockClassCodeGenerator $mockClassCodeGenerator ) {
+        $this->mockClassCodeGenerator = $mockClassCodeGenerator;
     }
 
 
     /**
      * @param string $className
+     *
      * @return object
      */
     public function newFullMock( $className ) {
@@ -21,8 +29,8 @@ class MockFactory {
 
 
     /**
-     * @param \ReflectionClass $reflectionClass
-     * @param array            $mockedMethodList
+     * @param \ReflectionClass        $reflectionClass
+     * @param array|MockedParameter[] $mockedMethodList
      *
      * @return object
      */
@@ -31,16 +39,14 @@ class MockFactory {
         $namespace              = $reflectionClass->getNamespaceName();
         $mockFullyQualifiedName = $namespace . '\\' . $mockShortClassName;
 
-        $mockCode = <<<TEXT
-namespace {$namespace}{
-
-    class $mockShortClassName extends {$reflectionClass->getShortName()}{
-
-    }
-}
-TEXT;
+        $mockCode = $this->mockClassCodeGenerator->createMockCode(
+            $mockShortClassName,
+            $reflectionClass,
+            $mockedMethodList
+        );
 
         eval( $mockCode );
+
         return new $mockFullyQualifiedName;
 
     }

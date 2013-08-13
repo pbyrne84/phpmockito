@@ -20,9 +20,9 @@ class MockedParameter {
     /**
      * @return string
      */
-    public function renderSignature(){
+    public function renderSignature() {
         $parameterText = $this->getTypeHint( $this->reflectionParameter ) . ' $' . $this->reflectionParameter->getName();
-        $defaultValue = $this->calculateDefaultValue( $this->reflectionParameter );
+        $defaultValue  = $this->calculateDefaultValue( $this->reflectionParameter );
 
         $parameterText .= $defaultValue;
 

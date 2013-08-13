@@ -1,8 +1,8 @@
 {
-    "methodCalls": [
+    "methodCalls"  : [
         {
-            "class": "\\PHPMockito\\Mock\\MockFactory",
-            "method": "newFullMock",
+            "class"   : "\\PHPMockito\\Mock\\MockFactory",
+            "method"  : "newFullMock",
             "position": 0
         }
     ],
