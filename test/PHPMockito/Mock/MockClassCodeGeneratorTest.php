@@ -26,21 +26,23 @@ class MockClassCodeGeneratorTest extends \PHPUnit_Framework_TestCase {
         $expectedMockCode = <<<'PHP'
 namespace {
     use \PHPMockito\Mock\MockedClass;
+    use \PHPMockito\Mock\MockedClassConstructorParams;
     use \PHPMockito\Action\MethodCall;
-    use \PHPMockito\Action\MethodCallListener;
 
     class TestMock extends DOMDocument implements MockedClass {
-        private $methodCallListener;
+        private $mockedClassConstructorParams;
 
-        function __construct( MethodCallListener $methodCallListener ){
-            $this->methodCallListener = $methodCallListener;
+        function __construct( MockedClassConstructorParams $mockedClassConstructorParams ){
+            $this->mockedClassConstructorParams = $mockedClassConstructorParams;
         }
 
+        public function getInstanceReference(){
+            return $this->mockedClassConstructorParams->getInstanceReference();
+        }
 
     }
 }
 PHP;
-
 
         $this->assertEquals( $expectedMockCode, $actualMockCode );
     }
@@ -62,29 +64,32 @@ PHP;
         $expectedMockCode = <<<'PHP'
 namespace {
     use \PHPMockito\Mock\MockedClass;
+    use \PHPMockito\Mock\MockedClassConstructorParams;
     use \PHPMockito\Action\MethodCall;
-    use \PHPMockito\Action\MethodCallListener;
 
     class TestMock extends DOMDocument implements MockedClass {
-        private $methodCallListener;
+        private $mockedClassConstructorParams;
 
-        function __construct( MethodCallListener $methodCallListener ){
-            $this->methodCallListener = $methodCallListener;
+        function __construct( MockedClassConstructorParams $mockedClassConstructorParams ){
+            $this->mockedClassConstructorParams = $mockedClassConstructorParams;
+        }
+
+        public function getInstanceReference(){
+            return $this->mockedClassConstructorParams->getInstanceReference();
         }
 
         public function appendChild( \DOMNode $newChild = NULL ) {
             $methodCall = new MethodCall( $this, 'appendChild', func_get_args() );
-            return $this->methodCallListener->actionCall( $methodCall );
+            return $this->mockedClassConstructorParams->actionCall( $methodCall );
         }
 
         public function importNode( \DOMNode $importedNode = NULL,  $deep = NULL ) {
             $methodCall = new MethodCall( $this, 'importNode', func_get_args() );
-            return $this->methodCallListener->actionCall( $methodCall );
+            return $this->mockedClassConstructorParams->actionCall( $methodCall );
         }
     }
 }
 PHP;
-
 
         $this->assertEquals( $expectedMockCode, $actualMockCode );
     }

@@ -22,16 +22,19 @@ class MockClassCodeGenerator {
         $mockCode = <<<TEXT
 namespace {$namespace}{
     use \PHPMockito\Mock\MockedClass;
+    use \PHPMockito\Mock\MockedClassConstructorParams;
     use \PHPMockito\Action\MethodCall;
-    use \PHPMockito\Action\MethodCallListener;
 
     class $mockShortClassName extends {$reflectionClass->getShortName()} implements MockedClass {
-        private \$methodCallListener;
+        private \$mockedClassConstructorParams;
 
-        function __construct( MethodCallListener \$methodCallListener ){
-            \$this->methodCallListener = \$methodCallListener;
+        function __construct( MockedClassConstructorParams \$mockedClassConstructorParams ){
+            \$this->mockedClassConstructorParams = \$mockedClassConstructorParams;
         }
 
+        public function getInstanceReference(){
+            return \$this->mockedClassConstructorParams->getInstanceReference();
+        }
 {$methodCode}
     }
 }
@@ -50,16 +53,16 @@ TEXT;
         $code = '';
         foreach ( $mockedMethodList as $mockedMethod ) {
             $code .= <<<TXT
+
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
             \$methodCall = new MethodCall( \$this, '{$mockedMethod->getName()}', func_get_args() );
-            return \$this->methodCallListener->actionCall( \$methodCall );
+            return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
         }
-
 
 TXT;
         }
 
-        return rtrim( $code );
+        return rtrim( trim( $code, ' ' ) );
     }
 
 
