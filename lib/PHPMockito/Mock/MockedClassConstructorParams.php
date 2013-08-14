@@ -34,6 +34,7 @@ class MockedClassConstructorParams {
 
     /**
      * @param MethodCall $methodCall
+     * @return mixed
      */
     public function actionCall( MethodCall $methodCall ){
         return $this->methodCallListener->actionCall( $methodCall );

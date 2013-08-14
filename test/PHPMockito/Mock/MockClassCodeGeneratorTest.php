@@ -79,12 +79,12 @@ namespace {
         }
 
         public function appendChild( \DOMNode $newChild = NULL ) {
-            $methodCall = new MethodCall( $this, 'appendChild', func_get_args() );
+            $methodCall = new MethodCall( $this, 'appendChild', func_get_args(), debug_backtrace() );
             return $this->mockedClassConstructorParams->actionCall( $methodCall );
         }
 
         public function importNode( \DOMNode $importedNode = NULL,  $deep = NULL ) {
-            $methodCall = new MethodCall( $this, 'importNode', func_get_args() );
+            $methodCall = new MethodCall( $this, 'importNode', func_get_args(), debug_backtrace() );
             return $this->mockedClassConstructorParams->actionCall( $methodCall );
         }
     }

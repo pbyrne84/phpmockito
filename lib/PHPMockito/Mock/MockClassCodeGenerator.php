@@ -55,7 +55,7 @@ TEXT;
             $code .= <<<TXT
 
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
-            \$methodCall = new MethodCall( \$this, '{$mockedMethod->getName()}', func_get_args() );
+            \$methodCall = new MethodCall( \$this, '{$mockedMethod->getName()}', func_get_args(), debug_backtrace() );
             return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
         }
 
