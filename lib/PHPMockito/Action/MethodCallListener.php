@@ -22,7 +22,11 @@ class MethodCallListener {
      */
     public function actionCall( MethodCall $methodCall ){
         $initialisationCallListener = $this->initialisationCallListenerFactory->createInitialisationCallListener();
-        if ( $initialisationCallListener->tryInitialisationRegistration()) {
+        if ( $initialisationCallListener->tryInitialisationRegistration( $methodCall ) ) {
+            throw new \Exception( "implement method call response " );
+            return;
         }
+
+
     }
 }

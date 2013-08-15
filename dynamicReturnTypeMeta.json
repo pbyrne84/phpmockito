@@ -4,7 +4,13 @@
             "class"   : "\\PHPMockito\\Mock\\MockFactory",
             "method"  : "newFullMock",
             "position": 0
+        },
+        {
+            "class"   : "\\PHPMockito\\Run\\Mockito",
+            "method"  : "mock",
+            "position": 0
         }
+
     ],
     "functionCalls": [
         {

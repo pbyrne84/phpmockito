@@ -1,6 +1,10 @@
 <?php
 namespace PHPMockito\Mock;
 
+
+use PHPMockito\Action\MethodCallListenerFactory;
+use PHPMockito\Mock\Logger\MockedClassCodeLogger;
+
 class MockFactory {
     const CLASS_NAME = __CLASS__;
 
@@ -9,12 +13,30 @@ class MockFactory {
     /** @var MockClassCodeGenerator */
     private $mockClassCodeGenerator;
 
+    /** @var MethodCallListenerFactory */
+    private $methodCallListenerFactory;
+
+    /** @var MockedMethodListFactory */
+    private $mockedMethodListFactory;
+
+    /** @var Logger\MockedClassCodeLogger */
+    private $mockedClassCodeLogger;
+
 
     /**
-     * @param MockClassCodeGenerator $mockClassCodeGenerator
+     * @param MockClassCodeGenerator       $mockClassCodeGenerator
+     * @param MethodCallListenerFactory    $methodCallListenerFactory
+     * @param MockedMethodListFactory      $mockedMethodListFactory
+     * @param Logger\MockedClassCodeLogger $mockedClassCodeLogger
      */
-    function __construct( MockClassCodeGenerator $mockClassCodeGenerator ) {
-        $this->mockClassCodeGenerator = $mockClassCodeGenerator;
+    function __construct( MockClassCodeGenerator $mockClassCodeGenerator,
+                          MethodCallListenerFactory $methodCallListenerFactory,
+                          MockedMethodListFactory $mockedMethodListFactory,
+                          MockedClassCodeLogger $mockedClassCodeLogger ) {
+        $this->mockClassCodeGenerator    = $mockClassCodeGenerator;
+        $this->methodCallListenerFactory = $methodCallListenerFactory;
+        $this->mockedMethodListFactory   = $mockedMethodListFactory;
+        $this->mockedClassCodeLogger     = $mockedClassCodeLogger;
     }
 
 
@@ -23,14 +45,19 @@ class MockFactory {
      *
      * @return object
      */
-    public function newFullMock( $className ) {
-        return $this->createMock( new \ReflectionClass( $className ), array() );
+    public function mock( $className ) {
+        $reflectionClass = new \ReflectionClass( $className );
+
+        return $this->createMock(
+            $reflectionClass,
+            $this->mockedMethodListFactory->createPublicListFromReflectionClass( $reflectionClass )
+        );
     }
 
 
     /**
-     * @param \ReflectionClass        $reflectionClass
-     * @param array|MockedParameter[] $mockedMethodList
+     * @param \ReflectionClass     $reflectionClass
+     * @param array|MockedMethod[] $mockedMethodList
      *
      * @return object
      */
@@ -45,9 +72,23 @@ class MockFactory {
             $mockedMethodList
         );
 
+        $this->mockedClassCodeLogger->logMockCode( $mockCode );
         eval( $mockCode );
 
-        return new $mockFullyQualifiedName;
+        return new $mockFullyQualifiedName( $this->createMockedClassConstructorParams() );
 
     }
+
+
+    /**
+     * @return MockedClassConstructorParams
+     */
+    private function createMockedClassConstructorParams() {
+        return new MockedClassConstructorParams(
+            'mock_instance_' . $this->mockCounter,
+            $this->methodCallListenerFactory->createMethodCallListener()
+        );
+    }
+
+
 }
