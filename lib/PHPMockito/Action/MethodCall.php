@@ -24,9 +24,9 @@ class MethodCall {
      * @param array       $arguments
      */
     function __construct( MockedClass $class, $method, array $arguments ) {
-        $this->class          = $class;
-        $this->method         = $method;
-        $this->arguments      = $arguments;
+        $this->class     = $class;
+        $this->method    = $method;
+        $this->arguments = $arguments;
     }
 
 

@@ -34,13 +34,13 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
 
             if ( $isCorrectClass && $isCorrectMethod && $isCorrectArguments ) {
                 $methodCallAction = $expectancy->getMethodCallAction();
-                if( $methodCallAction instanceof ExceptionMethodCallAction ){
+                if ( $methodCallAction instanceof ExceptionMethodCallAction ) {
                     throw $methodCallAction->getExceptionToBeThrown();
-                }elseif ( $methodCallAction instanceof ReturningMethodCallAction ){
+                } elseif ( $methodCallAction instanceof ReturningMethodCallAction ) {
                     return $methodCallAction->getReturnValue();
                 }
 
-                throw new \UnexpectedValueException("Que???");
+                throw new \UnexpectedValueException( "Que???" );
             }
         }
 

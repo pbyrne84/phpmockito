@@ -8,7 +8,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
     const CLASS_NAME = __CLASS__;
 
 
-    public function test_mock_returnValue(){
+    public function test_mock_returnValue() {
         $DOMDocument = Mockito::mock( '\DomDocument' );
         Mockito::when( $DOMDocument->cloneNode( true ) )
                 ->thenReturn( 'MOO' );
@@ -25,13 +25,13 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function test_mock_exception(){
+    public function test_mock_exception() {
         $DOMDocument = Mockito::mock( '\DomDocument' );
         Mockito::when( $DOMDocument->cloneNode( true ) )
                 ->thenThrow( new \InvalidArgumentException() );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
-        $DOMNode = $usageTestClass->testTrue();
+        $DOMNode        = $usageTestClass->testTrue();
     }
 
 

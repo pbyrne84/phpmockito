@@ -39,7 +39,7 @@ class DebugBackTraceMethodCall extends MethodCall {
      * Creates an in instance of the parent type discarding the debug backtrace
      * @return MethodCall
      */
-    public function castToMethodCall(){
+    public function castToMethodCall() {
         return new MethodCall( $this->getClass(), $this->getMethod(), $this->getArguments() );
     }
 

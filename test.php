@@ -1,6 +1,6 @@
 <?php
-class Db{
-    function getUsers(){
+class Db {
+    function getUsers() {
 
 
     }
@@ -8,14 +8,14 @@ class Db{
 
 
 $db = new Db();
-function a(){
+function a() {
     global $db;
     $db->getUsers();
     $db = null;
 }
 
 
-function b(){
+function b() {
     global $db;
     $db->getUsers(); //fatal where has the db gone in the call chain?
 }

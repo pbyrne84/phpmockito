@@ -3,7 +3,6 @@
 namespace PHPMockito\Run;
 
 
-use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Action\MethodCallActionInitialiser;
 

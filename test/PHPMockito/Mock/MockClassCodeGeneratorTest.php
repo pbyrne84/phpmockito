@@ -48,11 +48,10 @@ PHP;
     }
 
 
-
-    public function test_createMockCode_multipleMethods(){
+    public function test_createMockCode_multipleMethods() {
         $mockedMethodList = array(
-            new MockedMethod( new \ReflectionMethod( '\DomDocument', 'appendChild') ),
-            new MockedMethod( new \ReflectionMethod( '\DomDocument', 'importNode') )
+            new MockedMethod( new \ReflectionMethod( '\DomDocument', 'appendChild' ) ),
+            new MockedMethod( new \ReflectionMethod( '\DomDocument', 'importNode' ) )
         );
 
         $actualMockCode = $this->mockClassCodeGenerator->createMockCode(
@@ -93,8 +92,6 @@ PHP;
 
         $this->assertEquals( $expectedMockCode, $actualMockCode );
     }
-
-
 
 
 }

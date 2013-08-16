@@ -13,20 +13,19 @@ class UsageTestClass {
     /**
      * @param \DOMDocument $domDocument
      */
-    function __construct( \DOMDocument $domDocument) {
+    function __construct( \DOMDocument $domDocument ) {
         $this->domDocument = $domDocument;
     }
 
 
-
-    public function testTrue(){
+    public function testTrue() {
         return $this->domDocument->cloneNode( true );
     }
 
-    public function testFalse(){
-        return $this->domDocument->cloneNode( );
-    }
 
+    public function testFalse() {
+        return $this->domDocument->cloneNode();
+    }
 
 
 }

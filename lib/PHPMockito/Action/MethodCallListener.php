@@ -18,7 +18,7 @@ class MethodCallListener {
     function __construct( InitialisationCallListenerFactory $initialisationCallListenerFactory,
                           InitialisationCallRegistrar $initialisationCallRegistrar ) {
         $this->initialisationCallListenerFactory = $initialisationCallListenerFactory;
-        $this->initialisationCallRegistrar = $initialisationCallRegistrar;
+        $this->initialisationCallRegistrar       = $initialisationCallRegistrar;
     }
 
 

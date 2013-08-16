@@ -18,8 +18,8 @@ class FullyActionedMethodCall {
      * @param MethodCallAction $methodCallAction
      */
     function __construct( MethodCall $methodCall, MethodCallAction $methodCallAction ) {
-        $this->mockedMethod = $methodCall;
-        $this->methodCallAction   = $methodCallAction;
+        $this->mockedMethod     = $methodCall;
+        $this->methodCallAction = $methodCallAction;
     }
 
 

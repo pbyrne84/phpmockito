@@ -3,12 +3,12 @@ namespace PHPMockito\Action;
 
 use PHPMockito\Expectancy\InitialisationCallListener;
 
-function when( $backTrace ){
+function when( $backTrace ) {
     var_dump( $backTrace );
 
 }
 
-class InitialisationCallListenerTest extends  \PHPUnit_Framework_TestCase{
+class InitialisationCallListenerTest extends \PHPUnit_Framework_TestCase {
 
     const CLASS_NAME = __CLASS__;
 
@@ -22,7 +22,8 @@ class InitialisationCallListenerTest extends  \PHPUnit_Framework_TestCase{
         $this->initialisationCallListener = new InitialisationCallListener( array() );
     }
 
-    public function test_fail(){
+
+    public function test_fail() {
         when( debug_backtrace() );
     }
 
