@@ -16,7 +16,7 @@ class MockedMethodListFactory {
     public function createPublicListFromReflectionClass( \ReflectionClass $reflectionClass ) {
         $mockedMethodList = array();
         foreach ( $reflectionClass->getMethods( ReflectionMethod::IS_PUBLIC ) as $reflectionMethod ) {
-            if (!$reflectionMethod->isConstructor() ) {
+            if ( !$reflectionMethod->isConstructor() ) {
                 $mockedMethodList[ ] = new MockedMethod( $reflectionMethod );
             }
         }

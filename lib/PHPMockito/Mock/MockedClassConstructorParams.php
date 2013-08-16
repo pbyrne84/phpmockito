@@ -1,7 +1,7 @@
 <?php
 namespace PHPMockito\Mock;
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\MethodCallListener;
 
 class MockedClassConstructorParams {
@@ -33,10 +33,11 @@ class MockedClassConstructorParams {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param DebugBackTraceMethodCall $methodCall
+     *
      * @return mixed
      */
-    public function actionCall( MethodCall $methodCall ){
+    public function actionCall( DebugBackTraceMethodCall $methodCall ) {
         return $this->methodCallListener->actionCall( $methodCall );
     }
 

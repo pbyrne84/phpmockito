@@ -3,7 +3,7 @@
 namespace PHPMockito\Action;
 
 
-class ReturningMethodCallAction implements MethodCallAction{
+class ReturningMethodCallAction implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
 
     /** @var mixed */
@@ -23,5 +23,17 @@ class ReturningMethodCallAction implements MethodCallAction{
      */
     public function getReturnValue() {
         return $this->returnValue;
+    }
+
+
+    public function thenThrow( $exception ) {
+        // TODO: Implement thenThrow() method.
+        throw new \BadMethodCallException( "Method not implemented" );
+    }
+
+
+    public function thenReturn( $value ) {
+        // TODO: Implement thenReturn() method.
+        throw new \BadMethodCallException( "Method not implemented" );
     }
 }

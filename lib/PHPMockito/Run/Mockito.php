@@ -3,6 +3,7 @@
 namespace PHPMockito\Run;
 
 
+use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Action\MethodCallActionInitialiser;
 
@@ -11,7 +12,7 @@ class Mockito {
 
 
     /**
-     * @param $className
+     * @param string $className
      *
      * @return mixed
      */
@@ -26,11 +27,11 @@ class Mockito {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param MethodCall|mixed $methodCall
      *
-     * @return MethodCallActionInitialiser|null
+     * @return \PHPMockito\Action\MethodCallActionInitialiser
      */
-    static public function when( $methodCall ) {
-        // return new MethodCallActionInitialiser( );
+    static public function when( MethodCall $methodCall ) {
+        return new MethodCallActionInitialiser( RuntimeState::getInstance(), $methodCall );
     }
 }

@@ -7,26 +7,32 @@ use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\Expectancy\InitialisationCallListener;
 use PHPMockito\Expectancy\InitialisationCallListenerFactory;
+use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\Expectancy\PhpUnitTestCaseInitialisationMatcher;
 use PHPMockito\Mock\Logger\FileBasedMockedClassCodeLogger;
 use PHPMockito\Mock\MockClassCodeGenerator;
 use PHPMockito\Mock\MockedMethodListFactory;
 use PHPMockito\Mock\MockFactory;
 
-class DependencyFactory implements InitialisationCallListenerFactory,MethodCallListenerFactory {
+class DependencyFactory implements InitialisationCallListenerFactory, MethodCallListenerFactory {
     const CLASS_NAME = __CLASS__;
 
     /** @var \PHPMockito\Mock\MockFactory */
     private $mockFactory;
 
+    /** @var \PHPMockito\Expectancy\InitialisationCallRegistrar */
+    private $initialisationCallRegistrar;
 
-    function __construct() {
+
+    function __construct( InitialisationCallRegistrar $initialisationCallRegistrar ) {
         $this->mockFactory = new MockFactory(
             new MockClassCodeGenerator(),
             $this,
             new MockedMethodListFactory(),
             new FileBasedMockedClassCodeLogger()
         );
+
+        $this->initialisationCallRegistrar = $initialisationCallRegistrar;
     }
 
 
@@ -52,7 +58,9 @@ class DependencyFactory implements InitialisationCallListenerFactory,MethodCallL
      * @return MethodCallListener
      */
     public function createMethodCallListener() {
-        return new MethodCallListener( $this );
+        return new MethodCallListener( $this, $this->initialisationCallRegistrar );
     }
+
+
 }
  

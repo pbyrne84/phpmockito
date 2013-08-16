@@ -3,26 +3,26 @@
 namespace PHPMockito\Action;
 
 
-use PHPMockito\Expectancy\InitalisationCallRegistrar;
+use PHPMockito\Expectancy\InitialisationCallRegistrar;
 
-class MethodCallActionInitialiser {
+class MethodCallActionInitialiser implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
 
     /** @var MethodCall */
     private $methodCall;
 
-    /** @var InitalisationCallRegistrar */
-    private $initalisationCallRegistrar;
+    /** @var InitialisationCallRegistrar */
+    private $initialisationCallRegistrar;
 
 
     /**
-     * @param InitalisationCallRegistrar $initalisationCallRegistrar
-     * @param MethodCall                 $methodCall
+     * @param InitialisationCallRegistrar $initialisationCallRegistrar
+     * @param MethodCall                  $methodCall
      */
-    function __construct( InitalisationCallRegistrar $initalisationCallRegistrar,
+    function __construct( InitialisationCallRegistrar $initialisationCallRegistrar,
                           MethodCall $methodCall ) {
-        $this->initalisationCallRegistrar = $initalisationCallRegistrar;
-        $this->methodCall                 = $methodCall;
+        $this->initialisationCallRegistrar = $initialisationCallRegistrar;
+        $this->methodCall                  = $methodCall;
     }
 
 
@@ -44,7 +44,7 @@ class MethodCallActionInitialiser {
             $this->convertExceptionToMethodCallAction( $exception )
         );
 
-        $this->initalisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
+        $this->initialisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
 
         return $fullyActionedMethodCall;
     }
@@ -58,14 +58,14 @@ class MethodCallActionInitialiser {
      */
     private function convertExceptionToMethodCallAction( $exception ) {
         if ( $exception instanceof \Exception ) {
-            return new ExceptionMethodCallAction( $exception );
+            return new exceptionmethodcallaction( $exception );
         }
 
         if ( !class_exists( $exception ) ) {
-            throw new \InvalidArgumentException( 'exception class "' . $exception . '" not found.' );
+            throw new \Invalidargumentexception( 'exception class "' . $exception . '" not found.' );
         }
 
-        return new ExceptionMethodCallAction( new $exception );
+        return new exceptionmethodcallaction( new $exception );
     }
 
 
@@ -80,7 +80,7 @@ class MethodCallActionInitialiser {
             new ReturningMethodCallAction( $value )
         );
 
-        $this->initalisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
+        $this->initialisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
 
         return $fullyActionedMethodCall;
     }

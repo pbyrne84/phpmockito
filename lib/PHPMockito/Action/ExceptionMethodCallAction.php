@@ -3,7 +3,7 @@
 namespace PHPMockito\Action;
 
 
-class ExceptionMethodCallAction implements MethodCallAction{
+class ExceptionMethodCallAction implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
 
     /** @var \Exception */
@@ -20,6 +20,18 @@ class ExceptionMethodCallAction implements MethodCallAction{
      */
     public function getExceptionToBeThrown() {
         return $this->exceptionToBeThrown;
+    }
+
+
+    public function thenThrow( $exception ) {
+        // TODO: Implement thenThrow() method.
+        throw new \BadMethodCallException( "Method not implemented" );
+    }
+
+
+    public function thenReturn( $value ) {
+        // TODO: Implement thenReturn() method.
+        throw new \BadMethodCallException( "Method not implemented" );
     }
 
 

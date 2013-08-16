@@ -3,7 +3,7 @@
 namespace PHPMockito\Mock\Logger;
 
 
-class FileBasedMockedClassCodeLogger implements MockedClassCodeLogger{
+class FileBasedMockedClassCodeLogger implements MockedClassCodeLogger {
     const CLASS_NAME = __CLASS__;
 
 

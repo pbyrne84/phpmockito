@@ -3,7 +3,7 @@
 namespace PHPMockito\Expectancy;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\DebugBackTraceMethodCall;
 
 class InitialisationCallListener {
     const CLASS_NAME = __CLASS__;
@@ -21,11 +21,11 @@ class InitialisationCallListener {
 
 
     /**
-     * @param \PHPMockito\Action\MethodCall $methodCall
+     * @param \PHPMockito\Action\DebugBackTraceMethodCall $methodCall
      *
      * @return bool
      */
-    public function tryInitialisationRegistration( MethodCall $methodCall ) {
+    public function tryInitialisationRegistration( DebugBackTraceMethodCall $methodCall ) {
         foreach ( $this->initialisationCallMatcherList as $initialisationCallMatcher ) {
             if ( $initialisationCallMatcher->checkIsInitialisationCall( $methodCall->getDebugBacktrace() ) ) {
 

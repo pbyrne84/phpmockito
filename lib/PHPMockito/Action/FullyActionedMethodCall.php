@@ -6,11 +6,11 @@ namespace PHPMockito\Action;
 class FullyActionedMethodCall {
     const CLASS_NAME = __CLASS__;
 
-    /** @var MethodCall */
+    /** @var DebugBackTraceMethodCall */
     private $mockedMethod;
 
     /** @var MethodCallAction */
-    private $methodCall;
+    private $methodCallAction;
 
 
     /**
@@ -18,13 +18,13 @@ class FullyActionedMethodCall {
      * @param MethodCallAction $methodCallAction
      */
     function __construct( MethodCall $methodCall, MethodCallAction $methodCallAction ) {
-        $this->mockedMethod       = $methodCall;
-        $this->methodCall = $methodCallAction;
+        $this->mockedMethod = $methodCall;
+        $this->methodCallAction   = $methodCallAction;
     }
 
 
     /**
-     * @return \PHPMockito\Action\MethodCall
+     * @return \PHPMockito\Action\DebugBackTraceMethodCall
      */
     public function getMockedMethod() {
         return $this->mockedMethod;
@@ -34,7 +34,7 @@ class FullyActionedMethodCall {
     /**
      * @return MethodCallAction
      */
-    public function getMethodCall() {
-        return $this->methodCall;
+    public function getMethodCallAction() {
+        return $this->methodCallAction;
     }
 }

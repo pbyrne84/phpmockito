@@ -11,7 +11,7 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
 
 
     public function test_thenThrow_passedExceptionInstanceIsSet() {
-        $returnValueInitialiser = new MethodCallActionInitialiser( new MethodCall() );
+        $returnValueInitialiser = new MethodCallActionInitialiser( new DebugBackTraceMethodCall() );
         $this->assertTrue( false, 'Add tests' );
     }
 

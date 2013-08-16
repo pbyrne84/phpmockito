@@ -23,7 +23,7 @@ class MockClassCodeGenerator {
 namespace {$namespace}{
     use \PHPMockito\Mock\MockedClass;
     use \PHPMockito\Mock\MockedClassConstructorParams;
-    use \PHPMockito\Action\MethodCall;
+    use \PHPMockito\Action\DebugBackTraceMethodCall;
 
     class $mockShortClassName extends {$reflectionClass->getShortName()} implements MockedClass {
         private \$mockedClassConstructorParams;
@@ -55,7 +55,7 @@ TEXT;
             $code .= <<<TXT
 
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
-            \$methodCall = new MethodCall( \$this, '{$mockedMethod->getName()}', func_get_args(), debug_backtrace() );
+            \$methodCall = new DebugBackTraceMethodCall( \$this, '{$mockedMethod->getName()}', func_get_args(), debug_backtrace() );
             return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
         }
 
