@@ -41,7 +41,7 @@ class ValueCasterFactory {
      */
     public function castValueToComparableType( $value ) {
         if ( !is_object( $value ) ) {
-            return new SerializingValueCaster( $value );
+            return new VarExportingValueCaster( $value );
         }
 
         if( $value instanceof MockedClass ){
@@ -54,7 +54,7 @@ class ValueCasterFactory {
             }
         }
 
-        return new SerializingValueCaster( $value );
+        return new VarExportingValueCaster( $value );
     }
 }
  

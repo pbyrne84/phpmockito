@@ -3,7 +3,7 @@
 namespace PHPMockito\Caster;
 
 
-class SerializingValueCaster implements ValueCaster {
+class VarExportingValueCaster implements ValueCaster {
     const CLASS_NAME = __CLASS__;
 
     private $originalType;
@@ -16,13 +16,18 @@ class SerializingValueCaster implements ValueCaster {
      * @param mixed $originalValue
      */
     function __construct( $originalValue ) {
-        $this->originalType  = gettype( $originalValue );
+        if ( !is_object( $originalValue ) ) {
+            $this->originalType = gettype( $originalValue );
+        } else {
+            $this->originalType = get_class( $originalValue );
+        }
+
         $this->originalValue = $originalValue;
     }
 
 
     public function toPrimitive() {
-        return serialize( $this->originalValue );
+        return var_export( $this->originalValue, true );
     }
 
 

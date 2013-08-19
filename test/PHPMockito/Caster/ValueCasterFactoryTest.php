@@ -47,7 +47,7 @@ class ValueCasterFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function test_castValueToComparableType_nonObject() {
         $this->assertEquals(
-            SerializingValueCaster::CLASS_NAME,
+            VarExportingValueCaster::CLASS_NAME,
             get_class( $this->valueCasterFactory->castValueToComparableType( 'string' ) )
         );
     }
@@ -55,7 +55,7 @@ class ValueCasterFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function test_castValueToComparableType_nonCustomClass() {
         $this->assertEquals(
-            SerializingValueCaster::CLASS_NAME,
+            VarExportingValueCaster::CLASS_NAME,
             get_class( $this->valueCasterFactory->castValueToComparableType(  new \stdClass() )  )
         );
     }
