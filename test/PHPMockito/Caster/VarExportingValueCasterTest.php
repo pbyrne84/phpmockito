@@ -1,7 +1,7 @@
 <?php
 namespace PHPMockito\Caster;
 
-class SerializingValueCasterTest extends \PHPUnit_Framework_TestCase {
+class VarExportingValueCasterTest extends ValueCasterTest {
 
     const CLASS_NAME = __CLASS__;
 
@@ -21,20 +21,6 @@ class SerializingValueCasterTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(
             $this->createComparableMap( 'string', "'test string'" ),
             $actualMap
-        );
-    }
-
-
-    /**
-     * @param string $type
-     * @param string $value
-     *
-     * @return array
-     */
-    private function createComparableMap( $type, $value ) {
-        return array(
-            'type'  => $type,
-            'value' => $value,
         );
     }
 
