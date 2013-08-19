@@ -30,7 +30,7 @@ class DomDocumentValueCaster implements ValueCaster {
     /**
      * @return string
      */
-    public function toPrimitive() {
+    public function toComparableString() {
         $xml                              = $this->domDocument->saveXML();
         $oDomDocument                     = new \DOMDocument( '1.0' );
         $oDomDocument->preserveWhiteSpace = false;

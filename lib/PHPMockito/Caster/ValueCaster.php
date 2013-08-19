@@ -16,6 +16,6 @@ interface ValueCaster {
     /**
      * @return string
      */
-    public function toPrimitive();
+    public function toComparableString();
 }
  

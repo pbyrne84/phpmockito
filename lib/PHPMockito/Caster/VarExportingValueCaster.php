@@ -26,7 +26,7 @@ class VarExportingValueCaster implements ValueCaster {
     }
 
 
-    public function toPrimitive() {
+    public function toComparableString() {
         return var_export( $this->originalValue, true );
     }
 

@@ -31,7 +31,7 @@ class MockValueCaster implements ValueCaster{
     /**
      * @return string
      */
-    public function toPrimitive() {
+    public function toComparableString() {
         return $this->mockedClass->getInstanceReference();
     }
 }

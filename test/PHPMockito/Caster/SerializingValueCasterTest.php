@@ -15,7 +15,7 @@ class SerializingValueCasterTest extends \PHPUnit_Framework_TestCase {
         $serializingValueCaster = new VarExportingValueCaster( 'test string' );
         $actualMap              = $this->createComparableMap(
             $serializingValueCaster->getOriginalType(),
-            $serializingValueCaster->toPrimitive()
+            $serializingValueCaster->toComparableString()
         );
 
         $this->assertEquals(
@@ -47,7 +47,7 @@ class SerializingValueCasterTest extends \PHPUnit_Framework_TestCase {
         $serializingValueCaster = new VarExportingValueCaster( $stdClass );
         $actualMap              = $this->createComparableMap(
             $serializingValueCaster->getOriginalType(),
-            $serializingValueCaster->toPrimitive()
+            $serializingValueCaster->toComparableString()
         );
 
         $expectedExport = <<<PHP
