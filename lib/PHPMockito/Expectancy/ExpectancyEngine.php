@@ -28,8 +28,8 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         foreach ( $this->expectancyList as $expectancy ) {
             $expectedMethodCall = $expectancy->getMockedMethod();
             $expectedMethodCall->getClass();
-            $isCorrectClass     = $methodCall->getClass() == $expectedMethodCall->getClass();
-            $isCorrectMethod    = $methodCall->getMethod() == $expectedMethodCall->getMethod();
+            $isCorrectClass     = $methodCall->getClass()     == $expectedMethodCall->getClass();
+            $isCorrectMethod    = $methodCall->getMethod()    == $expectedMethodCall->getMethod();
             $isCorrectArguments = $methodCall->getArguments() == $expectedMethodCall->getArguments();
 
             if ( $isCorrectClass && $isCorrectMethod && $isCorrectArguments ) {
