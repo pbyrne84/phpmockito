@@ -23,7 +23,7 @@ class RuntimeState implements InitialisationCallRegistrar {
 
     function __construct() {
         $this->dependencyFactory = new DependencyFactory( $this );
-        $this->expectancyEngine  = new ExpectancyEngine( new ValueCasterFactory() );
+        $this->expectancyEngine = $this->dependencyFactory->createExpectancyEngine();
     }
 
 

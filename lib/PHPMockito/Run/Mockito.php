@@ -5,6 +5,7 @@ namespace PHPMockito\Run;
 
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Action\MethodCallActionInitialiser;
+use PHPMockito\Mock\MockedClass;
 
 class Mockito {
     const CLASS_NAME = __CLASS__;
@@ -32,5 +33,14 @@ class Mockito {
      */
     static public function when( MethodCall $methodCall ) {
         return new MethodCallActionInitialiser( RuntimeState::getInstance(), $methodCall );
+    }
+
+
+    /**
+     * @param MockedClass $mockedClass
+     * @param int         $expectedCallCount
+     */
+    static public function verify( MockedClass $mockedClass, $expectedCallCount = 0 ) {
+
     }
 }

@@ -5,6 +5,9 @@ namespace PHPMockito\Run;
 
 use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
+use PHPMockito\CallMatching\CallMatcher;
+use PHPMockito\Caster\ValueCasterFactory;
+use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallListener;
 use PHPMockito\Expectancy\InitialisationCallListenerFactory;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
@@ -61,6 +64,15 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
         return new MethodCallListener( $this, $this->initialisationCallRegistrar );
     }
 
+
+    /**
+     * @return ExpectancyEngine
+     */
+    public function createExpectancyEngine() {
+        return new ExpectancyEngine(
+            new CallMatcher( new ValueCasterFactory() )
+        );
+    }
 
 }
  
