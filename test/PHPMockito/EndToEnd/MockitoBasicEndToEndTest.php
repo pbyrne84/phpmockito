@@ -1,8 +1,6 @@
 <?php
 namespace PHPMockito\EndToEnd;
 
-use PHPMockito\Action\ExpectedMethodCall;
-use PHPMockito\Run\Mockito;
 use PHPMockito\TestClass\UsageTestClass;
 
 class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
