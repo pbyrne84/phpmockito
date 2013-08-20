@@ -14,14 +14,14 @@ class CallMatcher {
     /**
      * @param ValueCasterFactory $valueCasterFactory
      */
-    function __construct( ValueCasterFactory $valueCasterFactory) {
+    function __construct( ValueCasterFactory $valueCasterFactory ) {
         $this->valueCasterFactory = $valueCasterFactory;
     }
 
 
     /**
      * @param MethodCall $expectedMethodCall
-     * @param MethodCall  $actualProductionMethodCall
+     * @param MethodCall $actualProductionMethodCall
      *
      * @return bool
      */

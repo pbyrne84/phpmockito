@@ -14,8 +14,11 @@ use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\Expectancy\PhpUnitTestCaseInitialisationMatcher;
 use PHPMockito\Mock\Logger\FileBasedMockedClassCodeLogger;
 use PHPMockito\Mock\MockClassCodeGenerator;
+use PHPMockito\Mock\MockedClass;
 use PHPMockito\Mock\MockedMethodListFactory;
 use PHPMockito\Mock\MockFactory;
+use PHPMockito\Verify\MockedMethodCallVerifier;
+use PHPMockito\Verify\Verify;
 
 class DependencyFactory implements InitialisationCallListenerFactory, MethodCallListenerFactory {
     const CLASS_NAME = __CLASS__;
@@ -25,6 +28,9 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
 
     /** @var \PHPMockito\Expectancy\InitialisationCallRegistrar */
     private $initialisationCallRegistrar;
+
+    /** @var MockedMethodCallVerifier */
+    private $mockedMethodCallVerifier;
 
 
     function __construct( InitialisationCallRegistrar $initialisationCallRegistrar ) {
@@ -36,6 +42,25 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
         );
 
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
+
+        $this->mockedMethodCallVerifier = $this->newMockedMethodCallVerifier();
+    }
+
+
+    /**
+     * @return MockedMethodCallVerifier
+     */
+    private function newMockedMethodCallVerifier() {
+        return new MockedMethodCallVerifier( $this->createCallMatcher() );
+
+    }
+
+
+    /**
+     * @return CallMatcher
+     */
+    private function createCallMatcher() {
+        return new CallMatcher( new ValueCasterFactory() );
     }
 
 
@@ -69,10 +94,20 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return ExpectancyEngine
      */
     public function createExpectancyEngine() {
-        return new ExpectancyEngine(
-            new CallMatcher( new ValueCasterFactory() )
-        );
+        return new ExpectancyEngine( $this->mockedMethodCallVerifier, $this->createCallMatcher() );
     }
+
+
+    /**
+     * @param MockedClass $mockedClass
+     * @param             $expectedCallCount
+     *
+     * @return Verify
+     */
+    public function newVerify( MockedClass $mockedClass, $expectedCallCount ) {
+        return new Verify( $this->mockedMethodCallVerifier, $mockedClass, $expectedCallCount );
+    }
+
 
 }
  

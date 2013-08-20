@@ -19,6 +19,9 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $usageTestClass = new UsageTestClass( $DOMDocument );
         $this->assertEquals( 'MOO', $usageTestClass->testTrue() );
         $this->assertEquals( 'Baaa', $usageTestClass->testFalse() );
+
+        verify( $DOMDocument, 1 )->cloneNode( true );
+        verify( $DOMDocument, 1 )->cloneNode( );
     }
 
 

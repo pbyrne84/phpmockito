@@ -39,8 +39,13 @@ class Mockito {
     /**
      * @param MockedClass $mockedClass
      * @param int         $expectedCallCount
+     *
+     * @return \PHPMockito\Verify\Verify
      */
     static public function verify( MockedClass $mockedClass, $expectedCallCount = 0 ) {
+        $dependencyFactory = RuntimeState::getInstance()
+                ->getDependencyFactory();
 
+        return $dependencyFactory->newVerify( $mockedClass, $expectedCallCount );
     }
 }

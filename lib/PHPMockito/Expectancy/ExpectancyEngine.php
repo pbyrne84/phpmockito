@@ -11,6 +11,7 @@ use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Caster\ValueCaster;
 use PHPMockito\Caster\ValueCasterFactory;
+use PHPMockito\Verify\MockedMethodCallLogger;
 
 class ExpectancyEngine implements InitialisationCallRegistrar {
     const CLASS_NAME = __CLASS__;
@@ -24,12 +25,17 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var CallMatcher */
     private $callMatcher;
 
+    /** @var \PHPMockito\Verify\MockedMethodCallLogger */
+    private $mockedMethodCallLogger;
+
 
     /**
-     * @param \PHPMockito\CallMatching\CallMatcher $callMatcher
+     * @param \PHPMockito\Verify\MockedMethodCallLogger $mockedMethodCallLogger
+     * @param \PHPMockito\CallMatching\CallMatcher      $callMatcher
      */
-    function __construct( CallMatcher $callMatcher ) {
+    function __construct( MockedMethodCallLogger $mockedMethodCallLogger, CallMatcher $callMatcher ) {
         $this->callMatcher = $callMatcher;
+        $this->mockedMethodCallLogger = $mockedMethodCallLogger;
     }
 
 
@@ -49,7 +55,7 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      * @return mixed|null - if has been set as response
      */
     public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
-        $this->logCall( $actualProductionMethodCall );
+        $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
 
         foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
             if ( $this->callMatcher->matchCall( $expectedMethodCall, $actualProductionMethodCall ) ) {
