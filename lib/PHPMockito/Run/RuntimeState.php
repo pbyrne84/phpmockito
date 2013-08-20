@@ -5,6 +5,8 @@ namespace PHPMockito\Run;
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
+use PHPMockito\Action\ExpectedMethodCall;
+use PHPMockito\Action\MethodCall;
 use PHPMockito\Caster\ValueCasterFactory;
 use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
@@ -52,8 +54,13 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
-    public function retrieveMockMethodAction( DebugBackTraceMethodCall $methodCall ) {
-        return $this->expectancyEngine->retrieveMockMethodAction( $methodCall );
+    public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
+        return $this->expectancyEngine->retrieveMockMethodAction( $actualProductionMethodCall );
+    }
+
+
+    public function logProductionMethodCall( ExpectedMethodCall $methodCall  ) {
+
     }
 }
  

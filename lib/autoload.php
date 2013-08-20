@@ -2,5 +2,8 @@
 require_once 'PHPMockito/phpmockwrapperfunctions.php';
 
 spl_autoload_register( function ( $className ) {
-    require_once __DIR__ . '/' . $className . '.php';
+    $classPath = __DIR__ . '/' . $className . '.php';
+    if( !include_once $classPath ){
+        throw new RuntimeException("Could not include " . $classPath );
+    }
 } );

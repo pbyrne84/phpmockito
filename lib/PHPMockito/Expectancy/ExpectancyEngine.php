@@ -6,6 +6,7 @@ namespace PHPMockito\Expectancy;
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\FullyActionedMethodCall;
+use PHPMockito\Action\MethodCall;
 use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Caster\ValueCaster;
@@ -15,7 +16,7 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     const CLASS_NAME = __CLASS__;
 
     /** @var array|FullyActionedMethodCall[] */
-    private $expectancyList = array();
+    private $expectedMethodCallList = array();
 
 
     private $callList = array();
@@ -36,23 +37,23 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      * @param FullyActionedMethodCall $fullyActionedMethodCall
      */
     public function registerMockMethodExpectancy( FullyActionedMethodCall $fullyActionedMethodCall ) {
-        $this->expectancyList[ ] = $fullyActionedMethodCall;
+        $this->expectedMethodCallList[ ] = $fullyActionedMethodCall;
     }
 
 
     /**
-     * @param DebugBackTraceMethodCall $methodCall
+     * @param \PHPMockito\Action\MethodCall $actualProductionMethodCall
      *
-     * @return mixed|null - if has been set as response
      * @throws \Exception - if exception has been set as response
      * @throws \UnexpectedValueException
+     * @return mixed|null - if has been set as response
      */
-    public function retrieveMockMethodAction( DebugBackTraceMethodCall $methodCall ) {
-        $this->logCall( $methodCall );
+    public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
+        $this->logCall( $actualProductionMethodCall );
 
-        foreach ( $this->expectancyList as $expectancy ) {
-            if ( $this->callMatcher->matchCall( $methodCall, $expectancy ) ) {
-                $methodCallAction = $expectancy->getMethodCallAction();
+        foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
+            if ( $this->callMatcher->matchCall( $expectedMethodCall, $actualProductionMethodCall ) ) {
+                $methodCallAction = $expectedMethodCall->getMethodCallAction();
                 if ( $methodCallAction instanceof ExceptionMethodCallAction ) {
                     throw $methodCallAction->getExceptionToBeThrown();
                 } elseif ( $methodCallAction instanceof ReturningMethodCallAction ) {
@@ -67,58 +68,8 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     }
 
 
-    private function logCall( DebugBackTraceMethodCall $methodCall ) {
+    private function logCall( MethodCall $methodCall ) {
         $this->callList[ ] = $methodCall;
     }
-
-
-    /**
-     * @param DebugBackTraceMethodCall $currentCall
-     * @param FullyActionedMethodCall  $mockedCall
-     *
-     * @return bool
-     */
-    /*    private function matchCall( DebugBackTraceMethodCall $currentCall, FullyActionedMethodCall $mockedCall ) {
-            $mockedMethodCall = $mockedCall->getMockedMethod();
-            if ( !$this->runMatch( $currentCall->getClass(), $mockedMethodCall->getClass() ) ) {
-                return false;
-            }
-
-            if ( $currentCall->getMethod() != $mockedMethodCall->getMethod() ) {
-                return false;
-            }
-
-            if ( $currentCall->getArgumentCount() != $mockedMethodCall->getArgumentCount() ) {
-                return false;
-            }
-
-            foreach ( $currentCall->getArguments() as $argumentIndex => $currentArgument ) {
-                $currentExpectedArgument = $mockedMethodCall->getArgument( $argumentIndex );
-                if ( !$this->runMatch( $currentArgument, $currentExpectedArgument ) ) {
-                    return false;
-
-                }
-            }
-
-            return true;
-        }
-
-
-        /**
-         * @param mixed $current
-         * @param mixed $mocked
-         *
-         * @return bool
-         */
-
-/*
-    private function runMatch( $current, $mocked ) {
-        $comparableCurrent = $this->valueCasterFactory->castValueToComparableType( $current );
-        $comparableMocked  = $this->valueCasterFactory->castValueToComparableType( $mocked );
-
-        return
-                $comparableCurrent->getOriginalType() == $comparableMocked->getOriginalType() &&
-                $comparableCurrent->toComparableString() == $comparableMocked->toComparableString();
-    }*/
 }
  

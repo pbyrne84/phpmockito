@@ -5,7 +5,7 @@ namespace PHPMockito\Action;
 
 use PHPMockito\Mock\MockedClass;
 
-class DebugBackTraceMethodCall extends MethodCall {
+class DebugBackTraceMethodCall extends ExpectedMethodCall {
     const CLASS_NAME = __CLASS__;
 
     /** @var array */
@@ -37,10 +37,10 @@ class DebugBackTraceMethodCall extends MethodCall {
 
     /**
      * Creates an in instance of the parent type discarding the debug backtrace
-     * @return MethodCall
+     * @return ExpectedMethodCall
      */
     public function castToMethodCall() {
-        return new MethodCall( $this->getClass(), $this->getMethod(), $this->getArguments() );
+        return new ExpectedMethodCall( $this->getClass(), $this->getMethod(), $this->getArguments() );
     }
 
 

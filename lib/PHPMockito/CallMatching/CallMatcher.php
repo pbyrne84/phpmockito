@@ -1,8 +1,7 @@
 <?php
 
 namespace PHPMockito\CallMatching;
-use PHPMockito\Action\DebugBackTraceMethodCall;
-use PHPMockito\Action\FullyActionedMethodCall;
+use PHPMockito\Action\MethodCall;
 use PHPMockito\Caster\ValueCasterFactory;
 
 class CallMatcher {
@@ -21,27 +20,26 @@ class CallMatcher {
 
 
     /**
-     * @param DebugBackTraceMethodCall $currentCall
-     * @param FullyActionedMethodCall  $mockedCall
+     * @param MethodCall $expectedMethodCall
+     * @param MethodCall  $actualProductionMethodCall
      *
      * @return bool
      */
-    public function matchCall( DebugBackTraceMethodCall $currentCall, FullyActionedMethodCall $mockedCall ) {
-        $mockedMethodCall = $mockedCall->getMockedMethod();
-        if ( !$this->runMatch( $currentCall->getClass(), $mockedMethodCall->getClass() ) ) {
+    public function matchCall( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
+        if ( !$this->runMatch( $expectedMethodCall->getClass(), $actualProductionMethodCall->getClass() ) ) {
             return false;
         }
 
-        if ( $currentCall->getMethod() != $mockedMethodCall->getMethod() ) {
+        if ( $expectedMethodCall->getMethod() != $actualProductionMethodCall->getMethod() ) {
             return false;
         }
 
-        if ( $currentCall->getArgumentCount() != $mockedMethodCall->getArgumentCount() ) {
+        if ( $expectedMethodCall->getArgumentCount() != $actualProductionMethodCall->getArgumentCount() ) {
             return false;
         }
 
-        foreach ( $currentCall->getArguments() as $argumentIndex => $currentArgument ) {
-            $currentExpectedArgument = $mockedMethodCall->getArgument( $argumentIndex );
+        foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $currentArgument ) {
+            $currentExpectedArgument = $actualProductionMethodCall->getArgument( $argumentIndex );
             if ( !$this->runMatch( $currentArgument, $currentExpectedArgument ) ) {
                 return false;
 

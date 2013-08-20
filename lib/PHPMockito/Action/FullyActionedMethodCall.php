@@ -3,31 +3,31 @@
 namespace PHPMockito\Action;
 
 
-class FullyActionedMethodCall {
+class FullyActionedMethodCall implements MethodCall {
     const CLASS_NAME = __CLASS__;
 
-    /** @var DebugBackTraceMethodCall */
-    private $mockedMethod;
+    /** @var ExpectedMethodCall */
+    private $methodCall;
 
     /** @var MethodCallAction */
     private $methodCallAction;
 
 
     /**
-     * @param MethodCall       $methodCall
-     * @param MethodCallAction $methodCallAction
+     * @param ExpectedMethodCall $methodCall
+     * @param MethodCallAction   $methodCallAction
      */
-    function __construct( MethodCall $methodCall, MethodCallAction $methodCallAction ) {
-        $this->mockedMethod     = $methodCall;
+    function __construct( ExpectedMethodCall $methodCall, MethodCallAction $methodCallAction ) {
+        $this->methodCall       = $methodCall;
         $this->methodCallAction = $methodCallAction;
     }
 
 
     /**
-     * @return \PHPMockito\Action\DebugBackTraceMethodCall
+     * @return ExpectedMethodCall
      */
-    public function getMockedMethod() {
-        return $this->mockedMethod;
+    public function getMethodCall() {
+        return $this->methodCall;
     }
 
 
@@ -36,5 +36,48 @@ class FullyActionedMethodCall {
      */
     public function getMethodCallAction() {
         return $this->methodCallAction;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getArgumentCount() {
+        return $this->methodCall->getArgumentCount();
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getArguments() {
+        return $this->methodCall->getArguments();
+    }
+
+
+    /**
+     * @param $index
+     *
+     * @return mixed
+     * @throws \OutOfRangeException
+     */
+    public function getArgument( $index ) {
+        return $this->methodCall->getArgument( $index );
+    }
+
+
+    /**
+     * @return \PHPMockito\Mock\MockedClass
+     */
+    public function getClass() {
+       return $this->methodCall->getClass();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getMethod() {
+        return $this->methodCall->getMethod();
     }
 }

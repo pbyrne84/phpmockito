@@ -8,7 +8,7 @@ use PHPMockito\Expectancy\InitialisationCallRegistrar;
 class MethodCallActionInitialiser implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
 
-    /** @var MethodCall */
+    /** @var ExpectedMethodCall */
     private $methodCall;
 
     /** @var InitialisationCallRegistrar */
@@ -17,10 +17,10 @@ class MethodCallActionInitialiser implements MethodCallAction {
 
     /**
      * @param InitialisationCallRegistrar $initialisationCallRegistrar
-     * @param MethodCall                  $methodCall
+     * @param ExpectedMethodCall                  $methodCall
      */
     function __construct( InitialisationCallRegistrar $initialisationCallRegistrar,
-                          MethodCall $methodCall ) {
+                          ExpectedMethodCall $methodCall ) {
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
         $this->methodCall                  = $methodCall;
     }

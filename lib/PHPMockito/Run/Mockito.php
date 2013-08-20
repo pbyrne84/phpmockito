@@ -3,7 +3,7 @@
 namespace PHPMockito\Run;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Mock\MockedClass;
 
@@ -27,11 +27,11 @@ class Mockito {
 
 
     /**
-     * @param MethodCall|mixed $methodCall
+     * @param ExpectedMethodCall|mixed $methodCall
      *
      * @return \PHPMockito\Action\MethodCallActionInitialiser
      */
-    static public function when( MethodCall $methodCall ) {
+    static public function when( ExpectedMethodCall $methodCall ) {
         return new MethodCallActionInitialiser( RuntimeState::getInstance(), $methodCall );
     }
 

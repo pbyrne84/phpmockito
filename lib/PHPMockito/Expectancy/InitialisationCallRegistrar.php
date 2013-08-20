@@ -2,9 +2,8 @@
 
 namespace PHPMockito\Expectancy;
 
-
-use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
+use PHPMockito\Action\MethodCall;
 
 interface InitialisationCallRegistrar {
     const INTERFACE_InitalisationCallRegistrar = __CLASS__;
@@ -13,5 +12,5 @@ interface InitialisationCallRegistrar {
     public function registerMockMethodExpectancy( FullyActionedMethodCall $fullyActionedMethodCall );
 
 
-    public function retrieveMockMethodAction( DebugBackTraceMethodCall $methodCall );
+    public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall );
 }

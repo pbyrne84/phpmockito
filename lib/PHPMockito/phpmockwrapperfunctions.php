@@ -1,12 +1,12 @@
 <?php
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\ExpectedMethodCall;
 
 /**
- * @param MethodCall|mixed $methodCall
+ * @param ExpectedMethodCall|mixed $methodCall
  *
  * @return \PHPMockito\Action\MethodCallActionInitialiser
  */
-function when( MethodCall $methodCall ) {
+function when( ExpectedMethodCall $methodCall ) {
     return \PHPMockito\Run\Mockito::when( $methodCall );
 }
 
