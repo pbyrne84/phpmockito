@@ -5,6 +5,7 @@ namespace PHPMockito\Run;
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
+use PHPMockito\Caster\ValueCasterFactory;
 use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 
@@ -22,7 +23,7 @@ class RuntimeState implements InitialisationCallRegistrar {
 
     function __construct() {
         $this->dependencyFactory = new DependencyFactory( $this );
-        $this->expectancyEngine  = new ExpectancyEngine();
+        $this->expectancyEngine  = new ExpectancyEngine( new ValueCasterFactory() );
     }
 
 
