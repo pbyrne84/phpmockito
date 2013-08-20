@@ -43,14 +43,14 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
 
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
 
-        $this->mockedMethodCallVerifier = $this->newMockedMethodCallVerifier();
+        $this->mockedMethodCallVerifier = $this->createMockedMethodCallVerifier();
     }
 
 
     /**
      * @return MockedMethodCallVerifier
      */
-    private function newMockedMethodCallVerifier() {
+    private function createMockedMethodCallVerifier() {
         return new MockedMethodCallVerifier( $this->createCallMatcher() );
 
     }
@@ -61,6 +61,14 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     private function createCallMatcher() {
         return new CallMatcher( new ValueCasterFactory() );
+    }
+
+
+    /**
+     * @return \PHPMockito\Verify\MockedMethodCallVerifier
+     */
+    public function getMockedMethodCallVerifier() {
+        return $this->mockedMethodCallVerifier;
     }
 
 

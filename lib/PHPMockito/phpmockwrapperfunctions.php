@@ -1,5 +1,6 @@
 <?php
 use PHPMockito\Action\ExpectedMethodCall;
+use PHPMockito\Action\MethodCall;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Run\Mockito;
 
@@ -29,6 +30,11 @@ function mock( $className ) {
  *
  * @return \PHPMockito\Verify\Verify
  */
-function verify( MockedClass $mockedClass, $expectedCallCount = 0) {
+function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
     return Mockito::verify( $mockedClass, $expectedCallCount );
+}
+
+
+function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
+    Mockito::verifyCall( $methodCall, $expectedCallCount );
 }

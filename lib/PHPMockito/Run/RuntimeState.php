@@ -59,8 +59,5 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
-    public function logProductionMethodCall( ExpectedMethodCall $methodCall  ) {
-
-    }
 }
  

@@ -1,6 +1,7 @@
 <?php
 namespace PHPMockito\EndToEnd;
 
+use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Run\Mockito;
 use PHPMockito\TestClass\UsageTestClass;
 
@@ -10,10 +11,10 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
     public function test_mock_returnValue() {
         $DOMDocument = mock( '\DomDocument' );
-        when( $DOMDocument->cloneNode( true ) )
+        $methodCall1 = when( $DOMDocument->cloneNode( true ) )
                 ->thenReturn( 'MOO' );
 
-        when( $DOMDocument->cloneNode() )
+        $methodCall2 = when( $DOMDocument->cloneNode() )
                 ->thenReturn( 'Baaa' );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
@@ -22,6 +23,9 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
         verify( $DOMDocument, 1 )->cloneNode( true );
         verify( $DOMDocument, 1 )->cloneNode( );
+
+        verifyMethodCall( $methodCall1 );
+        verifyMethodCall( $methodCall2 );
     }
 
 
