@@ -23,10 +23,13 @@ class UsageTestClass {
     }
 
 
-    public function testFalse() {
+    public function testDefault() {
         return $this->domDocument->cloneNode();
     }
 
+    public function testManualDefault() {
+        return $this->domDocument->cloneNode( null);
+    }
 
 }
  

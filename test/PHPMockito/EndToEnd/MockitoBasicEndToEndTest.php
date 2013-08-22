@@ -17,13 +17,15 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
         $this->assertEquals( 'MOO', $usageTestClass->testTrue() );
-        $this->assertEquals( 'Baaa', $usageTestClass->testFalse() );
+        $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
+        $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
         verify( $DOMDocument, 1 )->cloneNode( true );
-        verify( $DOMDocument, 1 )->cloneNode();
+        verify( $DOMDocument, 2 )->cloneNode();
+        verify( $DOMDocument, 2 )->cloneNode( null );
 
         verifyMethodCall( $methodCall1 );
-        verifyMethodCall( $methodCall2 );
+        verifyMethodCall( $methodCall2, 2  );
     }
 
 
