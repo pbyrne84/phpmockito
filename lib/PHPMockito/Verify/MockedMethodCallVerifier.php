@@ -44,7 +44,6 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      */
     public function assertCallCount( MethodCall $expectedMethodCall, $expectedCallCount ) {
         $actualCallCount = 0;
-
         foreach ( $this->actualMethodCallList as $actualMethodCall ) {
             if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall )) {
                 $actualCallCount++;

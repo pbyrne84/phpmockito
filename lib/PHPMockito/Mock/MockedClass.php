@@ -11,4 +11,12 @@ interface MockedClass {
      * @return string
      */
     public function getInstanceReference();
+
+
+    /**
+     * @param $methodName
+     *
+     * @return array
+     */
+    public function getMethodsDefaultParameterMap( $methodName );
 }

@@ -44,6 +44,29 @@ class MockedMethod {
     }
 
 
+    public function getParameterArrayEntrapment() {
+        $parameterTextList = array();
+        foreach ( $this->mockedParameters as $parameter ) {
+            $parameterTextList[ ] = '$' . $parameter->getName();
+        }
+
+        return 'array(' . trim( implode( ', ', $parameterTextList ) ) . ')';
+    }
+
+
+    public function getOptionalArgumentMap() {
+        $optionArgumentMap = array();
+        foreach( $this->mockedParameters as $parameterIndex => $mockedParameter ){
+            if ( $mockedParameter->isOptionalValue() ) {
+                $optionArgumentMap[ $parameterIndex ] = $mockedParameter->getDefaultValue();
+            }
+        }
+
+        return $optionArgumentMap;
+    }
+
+
+
     /**
      * @return string
      * @throws \UnexpectedValueException

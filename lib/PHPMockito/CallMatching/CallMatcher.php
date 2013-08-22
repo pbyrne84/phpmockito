@@ -38,9 +38,9 @@ class CallMatcher {
             return false;
         }
 
-        foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $currentArgument ) {
+        foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $exoectedArgument ) {
             $currentExpectedArgument = $actualProductionMethodCall->getArgument( $argumentIndex );
-            if ( !$this->runMatch( $currentArgument, $currentExpectedArgument ) ) {
+            if ( !$this->runMatch( $exoectedArgument, $currentExpectedArgument ) ) {
                 return false;
 
             }

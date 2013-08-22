@@ -14,19 +14,13 @@ class MockedParameter {
      */
     function __construct( \ReflectionParameter $reflectionParameter ) {
         $this->reflectionParameter = $reflectionParameter;
-    }
 
-
-    /**
-     * @return string
-     */
-    public function renderSignature() {
         $parameterText = $this->getTypeHint( $this->reflectionParameter ) . ' $' . $this->reflectionParameter->getName();
-        $defaultValue  = $this->calculateDefaultValue( $this->reflectionParameter );
+        $defaultValue  = $this->calculateDefaultValue();
 
         $parameterText .= $defaultValue;
 
-        return $parameterText;
+        $this->parameterText = $parameterText;
     }
 
 
@@ -51,6 +45,30 @@ class MockedParameter {
 
 
     /**
+     * @return string
+     */
+    private function calculateDefaultValue() {
+        if ( !$this->isOptionalValue() ) {
+            return '';
+        }
+
+        return ' = ' . $this->getDefaultValue();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOptionalValue() {
+        if ( $this->isInternal() ) {
+            return true;
+        }
+
+        return $this->reflectionParameter->isOptional();
+    }
+
+
+    /**
      * @return bool
      */
     public function isInternal() {
@@ -61,27 +79,35 @@ class MockedParameter {
 
 
     /**
-     * @param \ReflectionParameter $parameter
-     *
+     * @return string
+     * @throws \BadMethodCallException
+     */
+    public function getDefaultValue() {
+        if ( !$this->isOptionalValue() ) {
+            throw new \BadMethodCallException( "Parameter is not optional" );
+        }
+
+        if ( $this->isInternal() ) {
+            return 'null';
+        }
+
+        return preg_replace( '~\s~m', '', var_export( $this->reflectionParameter->getDefaultValue(), true ) );
+    }
+
+
+    /**
      * @return string
      */
-    private function calculateDefaultValue( \ReflectionParameter $parameter ) {
-        $defaultValue = '';
-        // Internal methods default values are not available so deferring to null
-        if ( $this->isInternal() ) {
-            $defaultValue = ' = NULL';
+    public function renderSignature() {
+        return $this->parameterText;
+    }
 
-            return $defaultValue;
-        } else {
-            if ( $parameter->isOptional() ) {
-                var_dump( $parameter->getDefaultValue() );
-                $defaultValue = ' = ' . preg_replace( '~\s~m', '', var_export( $parameter->getDefaultValue(), true ) );
 
-                return $defaultValue;
-            }
-
-            return $defaultValue;
-        }
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->reflectionParameter->getName();
     }
 
 }

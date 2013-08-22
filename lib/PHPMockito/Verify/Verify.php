@@ -29,8 +29,12 @@ class Verify {
     }
 
 
-    function __call( $name, $arguments ) {
-        $methodCall = new ExpectedMethodCall( $this->mockedClass, $name, $arguments );
+    function __call( $methodName, $arguments ) {
+        $defaultValues = $this->mockedClass->getMethodsDefaultParameterMap( $methodName );
+        $arguments = $arguments + $defaultValues;
+        ksort( $arguments );
+
+        $methodCall = new ExpectedMethodCall( $this->mockedClass, $methodName, $arguments );
         $this->verificationTester->assertCallCount(  $methodCall, $this->expectedCallCount );
 
     }

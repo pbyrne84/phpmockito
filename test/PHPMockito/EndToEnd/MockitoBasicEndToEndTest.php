@@ -20,7 +20,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'Baaa', $usageTestClass->testFalse() );
 
         verify( $DOMDocument, 1 )->cloneNode( true );
-        verify( $DOMDocument, 1 )->cloneNode( );
+        verify( $DOMDocument, 1 )->cloneNode();
 
         verifyMethodCall( $methodCall1 );
         verifyMethodCall( $methodCall2 );
