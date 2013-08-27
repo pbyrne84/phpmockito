@@ -20,13 +20,21 @@ class MockClassCodeGenerator {
         $defaultValueMap = $this->convertMethodListToClassMethodsDefaultParameterMap( $mockedMethodList );
         $methodCode = $this->convertMethodListToMethodCode( $mockedMethodList );
 
+        if ( $reflectionClass->isInterface() ) {
+            $substitutionKeyword = 'implements';
+            $mockInterfaceSeparator = ', ';
+        }else{
+            $substitutionKeyword = 'extends';
+            $mockInterfaceSeparator = ' implements ';
+        }
+
         $mockCode = <<<TEXT
 namespace {$namespace}{
     use \PHPMockito\Mock\MockedClass;
     use \PHPMockito\Mock\MockedClassConstructorParams;
     use \PHPMockito\Action\DebugBackTraceMethodCall;
 
-    class $mockShortClassName extends {$reflectionClass->getShortName()} implements MockedClass {
+    class $mockShortClassName {$substitutionKeyword} {$reflectionClass->getShortName()} {$mockInterfaceSeparator} MockedClass {
         private \$mockedClassConstructorParams;
         private \$defaultValueMap = array(
 $defaultValueMap

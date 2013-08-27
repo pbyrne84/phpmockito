@@ -1,6 +1,8 @@
 <?php
 namespace PHPMockito\Action;
 
+use PHPMockito\Expectancy\InitialisationCallRegistrar;
+
 class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
 
     const CLASS_NAME = __CLASS__;
@@ -11,7 +13,14 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
 
 
     public function test_thenThrow_passedExceptionInstanceIsSet() {
-        $returnValueInitialiser = new MethodCallActionInitialiser( new DebugBackTraceMethodCall() );
+        /** @var $initialisationCallRegistrar InitialisationCallRegistrar */
+        $initialisationCallRegistrar = mock( InitialisationCallRegistrar::INTERFACE_InitalisationCallRegistrar );
+        $returnValueInitialiser = new MethodCallActionInitialiser(
+            $initialisationCallRegistrar,
+            mock( ExpectedMethodCall::CLASS_NAME)
+        );
+
+
         $this->assertTrue( false, 'Add tests' );
     }
 

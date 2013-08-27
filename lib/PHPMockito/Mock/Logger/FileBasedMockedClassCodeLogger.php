@@ -8,7 +8,7 @@ class FileBasedMockedClassCodeLogger implements MockedClassCodeLogger {
 
 
     public function logMockCode( $code ) {
-        file_put_contents( __DIR__ . '/output/mockCode.php', "<?php\n" . $code );
+        file_put_contents( __DIR__ . '/output/mockCode.php', "<?php\n" . $code);
     }
 }
  
