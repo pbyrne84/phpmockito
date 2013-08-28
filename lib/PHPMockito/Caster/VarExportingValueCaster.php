@@ -3,6 +3,8 @@
 namespace PHPMockito\Caster;
 
 
+use PHPMockito\Output\ValueOutputExporter;
+
 class VarExportingValueCaster implements ValueCaster {
     const CLASS_NAME = __CLASS__;
 
@@ -27,12 +29,21 @@ class VarExportingValueCaster implements ValueCaster {
 
 
     public function toComparableString() {
-        return var_export( $this->originalValue, true );
+        $valueOutputExporter = new ValueOutputExporter();
+        return $valueOutputExporter->convertToString( $this->originalValue );
     }
 
 
     public function getOriginalType() {
         return $this->originalType;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue() {
+       return $this->originalValue;
     }
 }
  

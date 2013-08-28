@@ -58,7 +58,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
      */
     private function convertExceptionToMethodCallAction( $exception ) {
         if ( $exception instanceof \Exception ) {
-            return new exceptionmethodcallaction( $exception );
+            return new ExceptionMethodCallAction( $exception );
         }
 
         if ( !class_exists( $exception ) ) {

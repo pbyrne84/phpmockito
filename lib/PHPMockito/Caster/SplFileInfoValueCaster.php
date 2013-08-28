@@ -32,5 +32,13 @@ class SplFileInfoValueCaster implements ValueCaster{
     public function toComparableString() {
         return $this->splFileInfo->getPathname();
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue() {
+       return $this->getOriginalValue();
+    }
 }
  

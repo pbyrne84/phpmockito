@@ -38,9 +38,9 @@ class CallMatcher {
             return false;
         }
 
-        foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $exoectedArgument ) {
+        foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $expectedArgument ) {
             $currentExpectedArgument = $actualProductionMethodCall->getArgument( $argumentIndex );
-            if ( !$this->runMatch( $exoectedArgument, $currentExpectedArgument ) ) {
+            if ( !$this->runMatch( $expectedArgument, $currentExpectedArgument ) ) {
                 return false;
 
             }
@@ -60,9 +60,17 @@ class CallMatcher {
         $comparableCurrent = $this->valueCasterFactory->castValueToComparableType( $current );
         $comparableMocked  = $this->valueCasterFactory->castValueToComparableType( $mocked );
 
-        return
-                $comparableCurrent->getOriginalType() == $comparableMocked->getOriginalType() &&
-                $comparableCurrent->toComparableString() == $comparableMocked->toComparableString();
+        if ( $comparableCurrent->getOriginalType() != $comparableMocked->getOriginalType() ) {
+            return false;
+        }
+
+        if ( $comparableCurrent->getOriginalValue() !== $comparableMocked->getOriginalValue()
+            &&   $comparableCurrent->toComparableString() != $comparableMocked->toComparableString() ) {
+            echo "MOO";
+            return false;
+        }
+
+        return true;
     }
 }
  

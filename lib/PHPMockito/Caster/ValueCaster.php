@@ -17,5 +17,11 @@ interface ValueCaster {
      * @return string
      */
     public function toComparableString();
+
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue();
 }
  

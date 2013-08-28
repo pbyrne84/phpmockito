@@ -80,4 +80,11 @@ class FullyActionedMethodCall implements MethodCall {
     public function getMethod() {
         return $this->methodCall->getMethod();
     }
+
+
+    function __toString() {
+        return print_r(\PHPUnit_Util_Type::toArray( $this ), true );
+    }
+
+
 }

@@ -34,5 +34,13 @@ class MockValueCaster implements ValueCaster{
     public function toComparableString() {
         return $this->mockedClass->getInstanceReference();
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue() {
+        return $this->mockedClass;
+    }
 }
  

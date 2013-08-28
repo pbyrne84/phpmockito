@@ -1,25 +1,25 @@
 <?php
-class Db {
-    function getUsers() {
+
+$a = new Exception( "MOO" );
+$b = new Exception( "MOO" );
 
 
+var_dump( $a == $b );
+
+
+class Moo{
+    private    $a;
+    private    $b;
+    private    $c = 'banana';
+
+
+    function __construct(  ) {
+        $this->a = new DOMDocument();
+        $this->b = new DOMDocument();
     }
+
+
 }
 
-
-$db = new Db();
-function a() {
-    global $db;
-    $db->getUsers();
-    $db = null;
-}
-
-
-function b() {
-    global $db;
-    $db->getUsers(); //fatal where has the db gone in the call chain?
-}
-
-
-a();
-b();
+$moo = new Moo();
+var_dump( (array)$moo );
