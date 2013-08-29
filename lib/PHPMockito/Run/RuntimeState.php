@@ -3,12 +3,8 @@
 namespace PHPMockito\Run;
 
 
-use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
-use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
-use PHPMockito\Caster\ValueCasterFactory;
-use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 
 class RuntimeState implements InitialisationCallRegistrar {

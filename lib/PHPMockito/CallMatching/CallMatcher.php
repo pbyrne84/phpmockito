@@ -3,19 +3,20 @@
 namespace PHPMockito\CallMatching;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Caster\ValueCasterFactory;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class CallMatcher {
     const CLASS_NAME = __CLASS__;
 
-    /** @var ValueCasterFactory */
-    private $valueCasterFactory;
+    /** @var ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
 
 
     /**
-     * @param ValueCasterFactory $valueCasterFactory
+     * @param ToStringAdaptorFactory $toStringAdaptorFactory
      */
-    function __construct( ValueCasterFactory $valueCasterFactory ) {
-        $this->valueCasterFactory = $valueCasterFactory;
+    function __construct( ToStringAdaptorFactory $toStringAdaptorFactory ) {
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -34,9 +35,15 @@ class CallMatcher {
             return false;
         }
 
+        return true;
+    }
+
+
+    public function matchSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ){
         if ( $expectedMethodCall->getArgumentCount() != $actualProductionMethodCall->getArgumentCount() ) {
             return false;
         }
+
 
         foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $expectedArgument ) {
             $currentExpectedArgument = $actualProductionMethodCall->getArgument( $argumentIndex );
@@ -50,6 +57,13 @@ class CallMatcher {
     }
 
 
+    public function convertValueToString( $value ) {
+        return $this->toStringAdaptorFactory
+                ->createToStringAdaptor( $value )
+                ->toString();
+    }
+
+
     /**
      * @param mixed $current
      * @param mixed $mocked
@@ -57,20 +71,10 @@ class CallMatcher {
      * @return bool
      */
     private function runMatch( $current, $mocked ) {
-        $comparableCurrent = $this->valueCasterFactory->castValueToComparableType( $current );
-        $comparableMocked  = $this->valueCasterFactory->castValueToComparableType( $mocked );
+        $currentToStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $current );
+        $mockedToStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $mocked );
 
-        if ( $comparableCurrent->getOriginalType() != $comparableMocked->getOriginalType() ) {
-            return false;
-        }
-
-        if ( $comparableCurrent->getOriginalValue() !== $comparableMocked->getOriginalValue()
-            &&   $comparableCurrent->toComparableString() != $comparableMocked->toComparableString() ) {
-            echo "MOO";
-            return false;
-        }
-
-        return true;
+        return $currentToStringAdaptor->toString() == $mockedToStringAdaptor->toString();
     }
 }
  

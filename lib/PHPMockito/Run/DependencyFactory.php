@@ -17,6 +17,7 @@ use PHPMockito\Mock\MockClassCodeGenerator;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Mock\MockedMethodListFactory;
 use PHPMockito\Mock\MockFactory;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 use PHPMockito\Verify\MockedMethodCallVerifier;
 use PHPMockito\Verify\Verify;
 
@@ -60,7 +61,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return CallMatcher
      */
     private function createCallMatcher() {
-        return new CallMatcher( new ValueCasterFactory() );
+        return new CallMatcher( new ToStringAdaptorFactory() );
     }
 
 

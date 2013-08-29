@@ -1,25 +1,49 @@
 <?php
 
-$a = new Exception( "MOO" );
-$b = new Exception( "MOO" );
+/**
+ * Class UserController
+ * @method search
+ * @property \UserSearchPlugin search
+ */
+class UserController{
+    private $magicStuff;
 
-
-var_dump( $a == $b );
-
-
-class Moo{
-    private    $a;
-    private    $b;
-    private    $c = 'banana';
-
-
-    function __construct(  ) {
-        $this->a = new DOMDocument();
-        $this->b = new DOMDocument();
+    function __set( $name, $value ) {
+        $this->magicStuff[ $name ] = $value;;
     }
 
 
+    function __call( $name, $arguments ) {
+        return call_user_func_array( $this->magicStuff[$name], $arguments );
+    }
+
+
+    public function add(){
+        echo "Creating User...<br>";
+    }
+
+    public function edit(){
+        echo "Updating User...<br>";
+    }
+
+    public function delete(){
+        echo "Removing User...<br>";
+    }
+
 }
 
-$moo = new Moo();
-var_dump( (array)$moo );
+
+class UserSearchPlugin{
+
+    public function __invoke(){
+        echo "Searching User....<br>";
+        var_dump( func_get_args() );
+    }
+}
+
+
+
+
+$controller = new UserController;
+$controller->search = new UserSearchPlugin();
+$controller->search("MOO");

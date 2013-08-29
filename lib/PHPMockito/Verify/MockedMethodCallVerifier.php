@@ -48,9 +48,11 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
         $actualCallMessage = '';
         foreach ( $this->actualMethodCallList as $actualMethodCall ) {
             if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall ) ) {
-                $actualCallCount++;
+                if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall )) {
+                    $actualCallCount++;
+                }
+                $actualCallMessage .= $this->generateMessage( $actualMethodCall ) . PHP_EOL;
             }
-            $actualCallMessage .= $this->generateMessage( $actualMethodCall ) . PHP_EOL;
         }
 
         if ( $actualCallCount == $expectedCallCount ) {
@@ -75,11 +77,10 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     private function generateMessage( MethodCall $methodCall ) {
-        $valueOutputExporter = new ValueOutputExporter();
 
         $methodSignature = get_class( $methodCall->getClass() ) . '->' . $methodCall->getMethod() . "()" . PHP_EOL;
         foreach ( $methodCall->getArguments() as $index => $argument ) {
-            $methodSignature .= '   arg[' . $index . '] = ' .  $valueOutputExporter->convertToString( $argument ). PHP_EOL;
+            $methodSignature .= '   arg[' . $index . '] = ' .  $this->callMatcher->convertValueToString( $argument ). PHP_EOL;
         }
 
         return $methodSignature;
@@ -101,7 +102,6 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     private function raiseAssertionError( $baseMessage, MethodCall $expectedMethodCal ) {
-        print_r( $baseMessage );
         throw new \PHPUnit_Framework_AssertionFailedError( $baseMessage );
     }
 

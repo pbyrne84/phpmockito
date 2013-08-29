@@ -23,6 +23,7 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         );
 
         $exception = new \Exception();
+
         $returnValueInitialiser->thenThrow( $exception );
         $methodCallAction               = new ExceptionMethodCallAction( $exception );
         $expectedFullActionedMethodCall = new FullyActionedMethodCall( $methodCall, $methodCallAction );
@@ -66,7 +67,6 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         $value->loadXML("<xml/>");
 
         $returnValueInitialiser->thenReturn( $value );
-
         $methodCallAction               = new ReturningMethodCallAction( $value );
         $expectedFullActionedMethodCall = new FullyActionedMethodCall( $methodCall, $methodCallAction );
 

@@ -3,14 +3,11 @@
 namespace PHPMockito\Expectancy;
 
 
-use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
-use PHPMockito\Caster\ValueCaster;
-use PHPMockito\Caster\ValueCasterFactory;
 use PHPMockito\Verify\MockedMethodCallLogger;
 
 class ExpectancyEngine implements InitialisationCallRegistrar {

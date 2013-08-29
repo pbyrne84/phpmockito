@@ -40,5 +40,13 @@ class DomDocumentValueCaster implements ValueCaster {
         return $oDomDocument->saveXML();
 
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalValue() {
+        throw new \BadMethodCallException( "Method not implemented" );
+    }
 }
  
