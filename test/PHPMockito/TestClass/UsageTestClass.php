@@ -28,7 +28,7 @@ class UsageTestClass {
     }
 
     public function testManualDefault() {
-        return $this->domDocument->cloneNode( null);
+        return $this->domDocument->cloneNode( null );
     }
 
 }

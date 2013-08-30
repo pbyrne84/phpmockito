@@ -55,7 +55,7 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
 
         foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
-            if ( $this->callMatcher->matchCall( $expectedMethodCall, $actualProductionMethodCall ) ) {
+            if ( $this->callMatcher->matchCallAndSignature( $expectedMethodCall, $actualProductionMethodCall ) ) {
                 $methodCallAction = $expectedMethodCall->getMethodCallAction();
                 if ( $methodCallAction instanceof ExceptionMethodCallAction ) {
                     throw $methodCallAction->getExceptionToBeThrown();

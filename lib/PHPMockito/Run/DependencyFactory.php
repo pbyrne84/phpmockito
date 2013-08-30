@@ -6,7 +6,6 @@ namespace PHPMockito\Run;
 use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\CallMatching\CallMatcher;
-use PHPMockito\Caster\ValueCasterFactory;
 use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallListener;
 use PHPMockito\Expectancy\InitialisationCallListenerFactory;

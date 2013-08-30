@@ -12,7 +12,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $methodCall1 = when( $DOMDocument->cloneNode( true ) )
                 ->thenReturn( 'MOO' );
 
-        $methodCall2 = when( $DOMDocument->cloneNode() )
+        $methodCall2 = when( $DOMDocument->cloneNode( null ) )
                 ->thenReturn( 'Baaa' );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );

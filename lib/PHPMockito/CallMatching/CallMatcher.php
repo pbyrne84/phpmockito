@@ -1,8 +1,8 @@
 <?php
 
 namespace PHPMockito\CallMatching;
+
 use PHPMockito\Action\MethodCall;
-use PHPMockito\Caster\ValueCasterFactory;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class CallMatcher {
@@ -17,6 +17,13 @@ class CallMatcher {
      */
     function __construct( ToStringAdaptorFactory $toStringAdaptorFactory ) {
         $this->toStringAdaptorFactory = $toStringAdaptorFactory;
+    }
+
+
+    public function matchCallAndSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
+        return $this->matchCall( $expectedMethodCall, $actualProductionMethodCall )
+        && $this->matchSignature( $expectedMethodCall, $actualProductionMethodCall );
+
     }
 
 
@@ -39,11 +46,24 @@ class CallMatcher {
     }
 
 
-    public function matchSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ){
+    /**
+     * @param mixed $current
+     * @param mixed $mocked
+     *
+     * @return bool
+     */
+    private function runMatch( $current, $mocked ) {
+        $currentToStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $current );
+        $mockedToStringAdaptor  = $this->toStringAdaptorFactory->createToStringAdaptor( $mocked );
+
+        return $currentToStringAdaptor->toString() == $mockedToStringAdaptor->toString();
+    }
+
+
+    public function matchSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
         if ( $expectedMethodCall->getArgumentCount() != $actualProductionMethodCall->getArgumentCount() ) {
             return false;
         }
-
 
         foreach ( $expectedMethodCall->getArguments() as $argumentIndex => $expectedArgument ) {
             $currentExpectedArgument = $actualProductionMethodCall->getArgument( $argumentIndex );
@@ -61,20 +81,6 @@ class CallMatcher {
         return $this->toStringAdaptorFactory
                 ->createToStringAdaptor( $value )
                 ->toString();
-    }
-
-
-    /**
-     * @param mixed $current
-     * @param mixed $mocked
-     *
-     * @return bool
-     */
-    private function runMatch( $current, $mocked ) {
-        $currentToStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $current );
-        $mockedToStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $mocked );
-
-        return $currentToStringAdaptor->toString() == $mockedToStringAdaptor->toString();
     }
 }
  
