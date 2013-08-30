@@ -20,6 +20,7 @@ class ArrayToStringAdaptor extends  ToStringAdaptor{
     function __construct( ToStringAdaptorFactory $toStringAdaptorFactory, array $array ) {
         $this->toStringAdaptorFactory = $toStringAdaptorFactory;
         $this->array           = $array;
+        $this->setPrefix( 'array' );
     }
 
 

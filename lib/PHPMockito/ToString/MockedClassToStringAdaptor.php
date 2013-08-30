@@ -5,7 +5,7 @@ namespace PHPMockito\ToString;
 
 use PHPMockito\Mock\MockedClass;
 
-class MockedClassToStringAdaptor extends ToStringAdaptor{
+class MockedClassToStringAdaptor extends ToStringAdaptor {
     const CLASS_NAME = __CLASS__;
 
     /** @var MockedClass */
@@ -18,7 +18,7 @@ class MockedClassToStringAdaptor extends ToStringAdaptor{
 
 
     function toString( $indentation = 0 ) {
-        return $this->mockedClass->getInstanceReference();
+        return get_class( $this->mockedClass ) . ' (' . $this->mockedClass->getInstanceReference() . ')';
     }
 }
  

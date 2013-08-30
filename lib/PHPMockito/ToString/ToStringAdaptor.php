@@ -32,7 +32,7 @@ abstract class  ToStringAdaptor {
             $paddedOutputLines[ ] = str_repeat( ' ', $indentation ) . $line;
         }
 
-        return trim($this->prefix ."\n". implode( $paddedOutputLines, "\n" ));
+        return trim($this->prefix ." ". implode( $paddedOutputLines, "\n" ));
     }
 
 

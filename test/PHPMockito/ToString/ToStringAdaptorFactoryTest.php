@@ -12,7 +12,6 @@ class ToStringAdaptorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 
     protected function setUp() {
-
         $this->toStringAdaptorFactory = new ToStringAdaptorFactory();
     }
 
@@ -49,10 +48,13 @@ class ToStringAdaptorFactoryTest extends \PHPUnit_Framework_TestCase {
         $DOMDocument->loadXML( '<test_xml/>' );
 
         $stdClass    = new \stdClass();
-        $stdClass->a = 'a';
-        $stdClass->b = 1;
-        $stdClass->c = array( 1, 2, 3 );
-        $stdClass->d = $DOMDocument;
+        $stdClass->property_a = 'a';
+        $stdClass->property_b = 1;
+        $stdClass->property_c = array( 1, 2345, 3456556 );
+        $stdClass->property_d = $DOMDocument;
+        $stdClass->property_e = new \SplFileInfo("c:/monkey.txt");
+        $stdClass->property_f = new \RuntimeException("I am a runtime exception");
+        $stdClass->property_g = mock( '\RuntimeException' );
 
         $adaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $stdClass );
         $this->assertEquals( '1', $adaptor->toString() );

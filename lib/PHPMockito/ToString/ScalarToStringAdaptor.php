@@ -3,7 +3,7 @@
 namespace PHPMockito\ToString;
 
 
-class ScalarToStringAdaptor extends  ToStringAdaptor {
+class ScalarToStringAdaptor extends ToStringAdaptor {
     const CLASS_NAME = __CLASS__;
 
     private $value;
@@ -18,7 +18,10 @@ class ScalarToStringAdaptor extends  ToStringAdaptor {
 
 
     function toString( $indentation = 0 ) {
-        return var_export( $this->value, true );
+        return $this->padOutput(
+            gettype( $this->value ) . '(' . strlen( $this->value ) . ') ' . var_export( $this->value, true ),
+            $indentation
+        );
     }
 }
  

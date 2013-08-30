@@ -3,7 +3,7 @@
 namespace PHPMockito\ToString;
 
 
-class DomDocumentToStringAdaptor extends  ToStringAdaptor{
+class DomDocumentToStringAdaptor extends ToStringAdaptor {
     const CLASS_NAME = __CLASS__;
 
     /** @var \DOMDocument */
@@ -25,7 +25,9 @@ class DomDocumentToStringAdaptor extends  ToStringAdaptor{
         $oDomDocument->formatOutput       = true;
         $oDomDocument->loadXML( $xml );
 
-        return $oDomDocument->saveXML();
+        $xml = $oDomDocument->saveXML();
+
+        return get_class( $this->domDocument ) . "(" . strlen( $xml ) . ") '" . $xml . "'";
     }
 }
  

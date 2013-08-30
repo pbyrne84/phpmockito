@@ -3,10 +3,10 @@
 namespace PHPMockito\ToString;
 
 
-class ExceptionToStringAdaptor extends ToStringAdaptor{
+class ExceptionToStringAdaptor extends ToStringAdaptor {
     const CLASS_NAME = __CLASS__;
 
-    /** @var  \Exception  */
+    /** @var  \Exception */
     private $exception;
 
 
@@ -24,7 +24,8 @@ class ExceptionToStringAdaptor extends ToStringAdaptor{
      * @return string
      */
     function toString( $indentation = 0 ) {
-        return get_class( $this->exception ) . ':message="' . $this->exception->getMessage() . '"';
+        return get_class( $this->exception ) .
+        "(" . strlen( $this->exception->getMessage() ) . ") '" . $this->exception->getMessage() . '"';
     }
 }
  
