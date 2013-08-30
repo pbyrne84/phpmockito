@@ -62,9 +62,12 @@ class MockFactory {
      * @return object
      */
     private function createMock( \ReflectionClass $reflectionClass, array $mockedMethodList ) {
-        $mockShortClassName     = $reflectionClass->getShortName() . '_Mock_' . $this->mockCounter++;
+        $mockShortClassName     =  $reflectionClass->getShortName() . '_PhpMockitoMock';
         $namespace              = $reflectionClass->getNamespaceName();
         $mockFullyQualifiedName = $namespace . '\\' . $mockShortClassName;
+        if ( class_exists( $mockFullyQualifiedName, false ) ) {
+            return new $mockFullyQualifiedName( $this->createMockedClassConstructorParams() );
+        }
 
         $mockCode = $this->mockClassCodeGenerator->createMockCode(
             $mockShortClassName,
@@ -72,7 +75,7 @@ class MockFactory {
             $mockedMethodList
         );
 
-        $this->mockedClassCodeLogger->logMockCode( $mockCode );
+        $this->mockedClassCodeLogger->logMockCode( $mockFullyQualifiedName, $mockCode );
         eval( $mockCode );
 
         return new $mockFullyQualifiedName( $this->createMockedClassConstructorParams() );
@@ -87,6 +90,16 @@ class MockFactory {
         return new MockedClassConstructorParams(
             'mock_instance_' . $this->mockCounter,
             $this->methodCallListenerFactory->createMethodCallListener()
+        );
+    }
+
+
+    public function spy( $className ) {
+        $reflectionClass = new \ReflectionClass( $className );
+
+        return $this->createMock(
+            $reflectionClass,
+            $this->mockedMethodListFactory->createProtectedAndPublicListFromReflectionClass( $reflectionClass )
         );
     }
 

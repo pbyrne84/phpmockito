@@ -23,5 +23,25 @@ class MockedMethodListFactory {
 
         return $mockedMethodList;
     }
+
+
+    /**
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return MockedMethod[]
+     */
+    public function createProtectedAndPublicListFromReflectionClass( \ReflectionClass $reflectionClass ) {
+        $mockedMethodList = array();
+        foreach ( $reflectionClass->getMethods( ReflectionMethod::IS_PROTECTED ) as $reflectionMethod ) {
+            if ( !$reflectionMethod->isConstructor() && !$reflectionMethod->isFinal() ) {
+                $mockedMethodList[ ] = new MockedMethod( $reflectionMethod );
+            }
+        }
+
+        return array_merge( $mockedMethodList, $this->createPublicListFromReflectionClass( $reflectionClass ) );
+    }
+
+
+
 }
  

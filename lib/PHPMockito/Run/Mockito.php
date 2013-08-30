@@ -59,4 +59,14 @@ class Mockito {
                 ->getMockedMethodCallVerifier()
                 ->assertCallCount( $methodCall, $expectedCallCount );
     }
+
+
+    public static function spy( $className ) {
+        $dependencyFactory = RuntimeState::getInstance()
+                ->getDependencyFactory();
+
+        $mockFactory = $dependencyFactory->getMockFactory();
+
+        return $mockFactory->spy( $className );
+    }
 }

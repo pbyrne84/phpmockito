@@ -31,5 +31,9 @@ class UsageTestClass {
         return $this->domDocument->cloneNode( null );
     }
 
+
+    protected function testMoo() {
+        return '';
+    }
 }
  

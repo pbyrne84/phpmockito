@@ -38,3 +38,9 @@ function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
 function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
     Mockito::verifyCall( $methodCall, $expectedCallCount );
 }
+
+
+
+function spy( $className ) {
+    return Mockito::spy( $className );
+}

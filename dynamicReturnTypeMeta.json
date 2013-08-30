@@ -20,6 +20,11 @@
         {
             "function": "\\mock",
             "position": 0
+        },
+        {
+            "function": "\\spy",
+            "position": 0,
+            "mask" : "%s_PhpMockitoMock"
         }
     ]
 }

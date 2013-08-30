@@ -59,7 +59,6 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
             return;
         }
 
-
         $expectedMessage =
                 'Expected a call of count ' . $expectedCallCount . ' got ' . $actualCallCount. PHP_EOL.
                 $this->generateHeaderMessage() . "\n\n" .
@@ -80,7 +79,8 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
         $methodSignature = get_class( $methodCall->getClass() ) . '->' . $methodCall->getMethod() . "()" . PHP_EOL;
         foreach ( $methodCall->getArguments() as $index => $argument ) {
-            $methodSignature .= '   arg[' . $index . '] = ' .  $this->callMatcher->convertValueToString( $argument ). PHP_EOL;
+            $methodSignature .=
+                    '   arg[' . $index . '] = ' .  $this->callMatcher->convertValueToString( $argument ). PHP_EOL;
         }
 
         return $methodSignature;

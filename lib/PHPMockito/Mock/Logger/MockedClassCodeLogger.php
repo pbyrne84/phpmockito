@@ -3,7 +3,13 @@ namespace PHPMockito\Mock\Logger;
 
 interface  MockedClassCodeLogger {
 
-    public function logMockCode( $code );
+    /**
+     * @param string $mockFullyQualifiedName
+     * @param string $code
+     *
+     * @return mixed
+     */
+    public function logMockCode( $mockFullyQualifiedName, $code );
 
 }
  
