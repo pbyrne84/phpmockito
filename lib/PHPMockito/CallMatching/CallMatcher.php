@@ -20,6 +20,12 @@ class CallMatcher {
     }
 
 
+    /**
+     * @param MethodCall $expectedMethodCall
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return bool
+     */
     public function matchCallAndSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
         return $this->matchCall( $expectedMethodCall, $actualProductionMethodCall )
         && $this->matchSignature( $expectedMethodCall, $actualProductionMethodCall );
@@ -60,6 +66,12 @@ class CallMatcher {
     }
 
 
+    /**
+     * @param MethodCall $expectedMethodCall
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return bool
+     */
     public function matchSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
         if ( $expectedMethodCall->getArgumentCount() != $actualProductionMethodCall->getArgumentCount() ) {
             return false;
@@ -77,6 +89,11 @@ class CallMatcher {
     }
 
 
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
     public function convertValueToString( $value ) {
         return $this->toStringAdaptorFactory
                 ->createToStringAdaptor( $value )
