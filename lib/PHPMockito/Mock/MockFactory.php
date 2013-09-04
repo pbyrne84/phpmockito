@@ -59,21 +59,26 @@ class MockFactory {
      * @param \ReflectionClass     $reflectionClass
      * @param array|MockedMethod[] $mockedMethodList
      *
+     * @param string               $prefix
+     *
      * @return object
      */
-    private function createMock( \ReflectionClass $reflectionClass, array $mockedMethodList ) {
-        $mockShortClassName     =  $reflectionClass->getShortName() . '_PhpMockitoMock';
+    private function createMock( \ReflectionClass $reflectionClass, array $mockedMethodList, $prefix = '' ) {
+        $this->mockCounter++;
+
+        $mockShortClassName     =  $prefix . $reflectionClass->getShortName() . '_PhpMockitoMock';
         $namespace              = $reflectionClass->getNamespaceName();
         $mockFullyQualifiedName = $namespace . '\\' . $mockShortClassName;
-        if ( class_exists( $mockFullyQualifiedName, false ) ) {
-            return new $mockFullyQualifiedName( $this->createMockedClassConstructorParams() );
-        }
 
         $mockCode = $this->mockClassCodeGenerator->createMockCode(
             $mockShortClassName,
             $reflectionClass,
             $mockedMethodList
         );
+
+        if ( class_exists( $mockFullyQualifiedName, false ) ) {
+            return new $mockFullyQualifiedName( $this->createMockedClassConstructorParams() );
+        }
 
         $this->mockedClassCodeLogger->logMockCode( $mockFullyQualifiedName, $mockCode );
         eval( $mockCode );
@@ -99,7 +104,8 @@ class MockFactory {
 
         return $this->createMock(
             $reflectionClass,
-            $this->mockedMethodListFactory->createProtectedAndPublicListFromReflectionClass( $reflectionClass )
+            $this->mockedMethodListFactory->createProtectedAndPublicListFromReflectionClass( $reflectionClass ),
+            'Spy_'
         );
     }
 

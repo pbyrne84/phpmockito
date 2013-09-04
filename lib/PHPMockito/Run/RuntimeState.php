@@ -21,7 +21,7 @@ class RuntimeState implements InitialisationCallRegistrar {
 
     function __construct() {
         $this->dependencyFactory = new DependencyFactory( $this );
-        $this->expectancyEngine = $this->dependencyFactory->createExpectancyEngine();
+        $this->expectancyEngine  = $this->dependencyFactory->createExpectancyEngine();
     }
 
 
@@ -45,15 +45,37 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
+    /**
+     * @param FullyActionedMethodCall $fullyActionedMethodCall
+     */
     public function registerMockMethodExpectancy( FullyActionedMethodCall $fullyActionedMethodCall ) {
         $this->expectancyEngine->registerMockMethodExpectancy( $fullyActionedMethodCall );
     }
 
 
+    /**
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return mixed|null
+     */
     public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
         return $this->expectancyEngine->retrieveMockMethodAction( $actualProductionMethodCall );
     }
 
 
+    /**
+     * @param MethodCall $methodCall
+     */
+    public function registerLatestInitialisationSignature( MethodCall $methodCall = null ) {
+        $this->expectancyEngine->registerLatestInitialisationSignature( $methodCall );
+    }
+
+
+    /**
+     * @return MethodCall
+     */
+    public function getLastInitialisationMethodCall() {
+        return $this->expectancyEngine->getLastInitialisationMethodCall();
+    }
 }
  

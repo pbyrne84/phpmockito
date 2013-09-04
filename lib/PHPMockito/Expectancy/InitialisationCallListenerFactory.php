@@ -8,9 +8,9 @@ interface InitialisationCallListenerFactory {
 
 
     /**
-     * @return InitialisationCallListener
+     * @return TestCaseCallVerifier
      */
-    public function createInitialisationCallListener();
+    public function createTestCaseCallVerifier();
 
 
 }

@@ -13,4 +13,13 @@ interface InitialisationCallRegistrar {
 
 
     public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall );
+
+
+    public function registerLatestInitialisationSignature( MethodCall $methodCall = null );
+
+
+    /**
+     * @return MethodCall
+     */
+    public function getLastInitialisationMethodCall();
 }

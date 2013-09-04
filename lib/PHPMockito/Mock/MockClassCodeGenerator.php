@@ -81,6 +81,8 @@ TEXT;
             \$methodCall = new DebugBackTraceMethodCall(
                 \$this, '{$mockedMethod->getName()}', {$mockedMethod->getParameterArrayEntrapment()}, debug_backtrace()
             );
+
+            \$this->mockedClassConstructorParams->registerCall( \$methodCall );
             return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
         }
 

@@ -3,6 +3,7 @@
 namespace PHPMockito\Expectancy;
 
 
+use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
@@ -16,7 +17,6 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var array|FullyActionedMethodCall[] */
     private $expectedMethodCallList = array();
 
-
     private $callList = array();
 
     /** @var CallMatcher */
@@ -25,14 +25,24 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var \PHPMockito\Verify\MockedMethodCallLogger */
     private $mockedMethodCallLogger;
 
+    /** @var  MethodCall */
+    private $lastMethodCall;
+
+    /** @var TestCaseCallVerifier */
+    private $testCaseCallVerifier;
+
 
     /**
      * @param \PHPMockito\Verify\MockedMethodCallLogger $mockedMethodCallLogger
      * @param \PHPMockito\CallMatching\CallMatcher      $callMatcher
+     * @param TestCaseCallVerifier                      $testCaseCallVerifier
      */
-    function __construct( MockedMethodCallLogger $mockedMethodCallLogger, CallMatcher $callMatcher ) {
-        $this->callMatcher = $callMatcher;
+    function __construct( MockedMethodCallLogger $mockedMethodCallLogger,
+                          CallMatcher $callMatcher,
+                          TestCaseCallVerifier $testCaseCallVerifier ) {
+        $this->callMatcher            = $callMatcher;
         $this->mockedMethodCallLogger = $mockedMethodCallLogger;
+        $this->testCaseCallVerifier   = $testCaseCallVerifier;
     }
 
 
@@ -52,7 +62,10 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      * @return mixed|null - if has been set as response
      */
     public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
-        $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
+        $isProductionMethodCall = $this->isProductionMethodCall( $actualProductionMethodCall );
+        if ( $isProductionMethodCall ) {
+            $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
+        }
 
         foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
             if ( $this->callMatcher->matchCallAndSignature( $expectedMethodCall, $actualProductionMethodCall ) ) {
@@ -67,7 +80,44 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
             }
         }
 
+        if ( $isProductionMethodCall ) {
+            throw new UnexpectedCallException(
+                "Unexpected call " . $actualProductionMethodCall
+                        ->getClass()
+                        ->getInstanceReference() .
+                "->" . $actualProductionMethodCall->getMethod()
+            );
+        }
+
         return null;
+
+    }
+
+
+    /**
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return bool
+     */
+    private function isProductionMethodCall( MethodCall $actualProductionMethodCall ) {
+        return $actualProductionMethodCall instanceof DebugBackTraceMethodCall &&
+        !$this->testCaseCallVerifier->callIsInTestCase( $actualProductionMethodCall );
+    }
+
+
+    /**
+     * @param MethodCall $methodCall
+     */
+    public function registerLatestInitialisationSignature( MethodCall $methodCall = null ) {
+        $this->lastMethodCall = $methodCall;
+    }
+
+
+    /**
+     * @return MethodCall
+     */
+    public function getLastInitialisationMethodCall() {
+        return $this->lastMethodCall;
     }
 
 
@@ -75,4 +125,3 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         $this->callList[ ] = $methodCall;
     }
 }
- 

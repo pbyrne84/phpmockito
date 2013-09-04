@@ -28,11 +28,11 @@ class Mockito {
 
 
     /**
-     * @param ExpectedMethodCall|mixed $methodCall
-     *
      * @return \PHPMockito\Action\MethodCallActionInitialiser
      */
-    static public function when( ExpectedMethodCall $methodCall ) {
+    static public function when(  ) {
+        $methodCall = RuntimeState::getInstance()->getLastInitialisationMethodCall();
+
         return new MethodCallActionInitialiser( RuntimeState::getInstance(), $methodCall );
     }
 

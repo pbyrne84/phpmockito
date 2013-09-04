@@ -28,11 +28,15 @@ class MethodCallListener {
      * @return mixed
      */
     public function actionCall( DebugBackTraceMethodCall $methodCall ) {
-        $initialisationCallListener = $this->initialisationCallListenerFactory->createInitialisationCallListener();
-        if ( $initialisationCallListener->tryInitialisationRegistration( $methodCall ) ) {
-            return $methodCall->castToMethodCall();
-        }
-
         return $this->initialisationCallRegistrar->retrieveMockMethodAction( $methodCall );
+    }
+
+
+
+    public function registerLastCall(  DebugBackTraceMethodCall $methodCall ) {
+        $initialisationCallListener = $this->initialisationCallListenerFactory->createTestCaseCallVerifier();
+        if ( $initialisationCallListener->callIsInTestCase( $methodCall ) ) {
+            $this->initialisationCallRegistrar->registerLatestInitialisationSignature( $methodCall );
+        }
     }
 }

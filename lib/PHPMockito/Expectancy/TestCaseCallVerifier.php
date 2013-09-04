@@ -5,7 +5,7 @@ namespace PHPMockito\Expectancy;
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
 
-class InitialisationCallListener {
+class TestCaseCallVerifier {
     const CLASS_NAME = __CLASS__;
 
     /** @var InitialisationCallMatcher[] */
@@ -25,7 +25,7 @@ class InitialisationCallListener {
      *
      * @return bool
      */
-    public function tryInitialisationRegistration( DebugBackTraceMethodCall $methodCall ) {
+    public function callIsInTestCase( DebugBackTraceMethodCall $methodCall ) {
         foreach ( $this->initialisationCallMatcherList as $initialisationCallMatcher ) {
             if ( $initialisationCallMatcher->checkIsInitialisationCall( $methodCall->getDebugBacktrace() ) ) {
 

@@ -5,12 +5,10 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\Run\Mockito;
 
 /**
- * @param ExpectedMethodCall|mixed $methodCall
- *
  * @return \PHPMockito\Action\MethodCallActionInitialiser
  */
-function when( ExpectedMethodCall $methodCall ) {
-    return Mockito::when( $methodCall );
+function when() {
+    return Mockito::when();
 }
 
 
@@ -38,7 +36,6 @@ function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
 function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
     Mockito::verifyCall( $methodCall, $expectedCallCount );
 }
-
 
 
 function spy( $className ) {

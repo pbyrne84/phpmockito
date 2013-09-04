@@ -41,4 +41,12 @@ class MockedClassConstructorParams {
         return $this->methodCallListener->actionCall( $methodCall );
     }
 
+
+    /**
+     * @param DebugBackTraceMethodCall $methodCall
+     */
+    public function registerCall( DebugBackTraceMethodCall $methodCall ) {
+         $this->methodCallListener->registerLastCall( $methodCall );
+    }
+
 }

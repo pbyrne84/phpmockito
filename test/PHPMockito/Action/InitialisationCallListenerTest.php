@@ -1,7 +1,7 @@
 <?php
 namespace PHPMockito\Action;
 
-use PHPMockito\Expectancy\InitialisationCallListener;
+use PHPMockito\Expectancy\TestCaseCallVerifier;
 
 function when( $backTrace ) {
     var_dump( $backTrace );
@@ -13,13 +13,13 @@ class InitialisationCallListenerTest extends \PHPUnit_Framework_TestCase {
     const CLASS_NAME = __CLASS__;
 
     /**
-     * @var InitialisationCallListener
+     * @var TestCaseCallVerifier
      */
     private $initialisationCallListener;
 
 
     protected function setUp() {
-        $this->initialisationCallListener = new InitialisationCallListener( array() );
+        $this->initialisationCallListener = new TestCaseCallVerifier( array() );
     }
 
 

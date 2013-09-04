@@ -20,6 +20,8 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
+        $this->assertEquals( 'MOO', $DOMDocument->cloneNode( true ), 'Returns the mocked value when called in the test');
+
         verify( $DOMDocument, 1 )->cloneNode( true );
         verify( $DOMDocument, 2 )->cloneNode();
         verify( $DOMDocument, 2 )->cloneNode( null );
@@ -51,7 +53,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $methodCall2 = when( $DOMDocument->cloneNode( null ) )
                 ->thenReturn( 'Baaa' );
 
-        $usageTestClass = new UsageTestClass( $DOMDocument );
+      $usageTestClass = new UsageTestClass( $DOMDocument );
         $this->assertEquals( 'MOO', $usageTestClass->testTrue() );
         $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );

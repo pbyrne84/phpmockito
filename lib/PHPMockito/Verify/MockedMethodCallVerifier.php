@@ -76,7 +76,6 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     private function generateMessage( MethodCall $methodCall ) {
-
         $methodSignature = get_class( $methodCall->getClass() ) . '->' . $methodCall->getMethod() . "()" . PHP_EOL;
         foreach ( $methodCall->getArguments() as $index => $argument ) {
             $methodSignature .=

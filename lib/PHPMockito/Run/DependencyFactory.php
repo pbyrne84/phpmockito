@@ -7,7 +7,7 @@ use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Expectancy\ExpectancyEngine;
-use PHPMockito\Expectancy\InitialisationCallListener;
+use PHPMockito\Expectancy\TestCaseCallVerifier;
 use PHPMockito\Expectancy\InitialisationCallListenerFactory;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\Expectancy\PhpUnitTestCaseInitialisationMatcher;
@@ -81,10 +81,10 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
 
 
     /**
-     * @return InitialisationCallListener
+     * @return TestCaseCallVerifier
      */
-    public function createInitialisationCallListener() {
-        return new InitialisationCallListener(
+    public function createTestCaseCallVerifier() {
+        return new TestCaseCallVerifier(
             array( new PhpUnitTestCaseInitialisationMatcher() )
         );
     }
@@ -102,7 +102,11 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return ExpectancyEngine
      */
     public function createExpectancyEngine() {
-        return new ExpectancyEngine( $this->mockedMethodCallVerifier, $this->createCallMatcher() );
+        return new ExpectancyEngine(
+            $this->mockedMethodCallVerifier,
+            $this->createCallMatcher(),
+            $this->createTestCaseCallVerifier()
+        );
     }
 
 
