@@ -3,6 +3,9 @@
 namespace PHPMockito\Mock;
 
 
+use PHPMockito\Mock\Method\MethodCodeGenerator;
+use PHPMockito\Mock\Method\MockMethodCodeGenerator;
+
 class MockClassCodeGenerator {
     const CLASS_NAME = __CLASS__;
 
@@ -10,15 +13,19 @@ class MockClassCodeGenerator {
     /**
      * @param string                  $mockShortClassName
      * @param \ReflectionClass        $reflectionClass
+     * @param MockMethodCodeGenerator  $mockMethodCodeGenerator
      * @param array|MockedParameter[] $mockedMethodList
      *
      * @return string
      */
-    public function createMockCode( $mockShortClassName, \ReflectionClass $reflectionClass, array $mockedMethodList ) {
+    public function createMockCode( $mockShortClassName,
+                                    \ReflectionClass $reflectionClass,
+                                    MockMethodCodeGenerator $mockMethodCodeGenerator,
+                                    array $mockedMethodList ) {
         $namespace = $reflectionClass->getNamespaceName();
 
         $defaultValueMap = $this->convertMethodListToClassMethodsDefaultParameterMap( $mockedMethodList );
-        $methodCode = $this->convertMethodListToMethodCode( $mockedMethodList );
+        $methodCode = $this->convertMethodListToMethodCode( $mockMethodCodeGenerator, $mockedMethodList );
 
         if ( $reflectionClass->isInterface() ) {
             $substitutionKeyword = 'implements';
@@ -68,25 +75,15 @@ TEXT;
 
 
     /**
-     * @param array|MockedMethod[] $mockedMethodList
+     * @param Method\MethodCodeGenerator $methodCodeGenerator
+     * @param array|MockedMethod[]       $mockedMethodList
      *
      * @return string
      */
-    private function convertMethodListToMethodCode( array $mockedMethodList ) {
+    private function convertMethodListToMethodCode( MethodCodeGenerator $methodCodeGenerator, array $mockedMethodList ) {
         $code = '';
         foreach ( $mockedMethodList as $mockedMethod ) {
-            $code .= <<<TXT
-
-        {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
-            \$methodCall = new DebugBackTraceMethodCall(
-                \$this, '{$mockedMethod->getName()}', {$mockedMethod->getParameterArrayEntrapment()}, debug_backtrace()
-            );
-
-            \$this->mockedClassConstructorParams->registerCall( \$methodCall );
-            return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
-        }
-
-TXT;
+            $code .=  $methodCodeGenerator->generateMethodCode( $mockedMethod );
         }
 
         return rtrim( trim( $code, ' ' ) );

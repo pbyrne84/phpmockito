@@ -84,4 +84,12 @@ class MethodCallActionInitialiser implements MethodCallAction {
 
         return $fullyActionedMethodCall;
     }
+
+
+    /**
+     * @return FullyActionedMethodCall
+     */
+    public function thenReturnVoid() {
+        return $this->thenReturn( null );
+    }
 }

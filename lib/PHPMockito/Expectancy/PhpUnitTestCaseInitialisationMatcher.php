@@ -8,11 +8,13 @@ class PhpUnitTestCaseInitialisationMatcher implements InitialisationCallMatcher 
 
 
     public function checkIsInitialisationCall( array $debugBackTrace ) {
-        if ( count( $debugBackTrace ) < 2 ) {
+        $testCallInitialisationDepth = 1;
+
+        if ( count( $debugBackTrace ) < $testCallInitialisationDepth + 1 ) {
             throw new \InvalidArgumentException( 'Backtrace cannot be empty' );
         }
 
-        $parentCallDepth = 1;
+        $parentCallDepth = $testCallInitialisationDepth;
         if ( !isset( $debugBackTrace[ $parentCallDepth ][ 'class' ] ) ) {
             throw new \InvalidArgumentException(
                 'class has not been set in backtrace, found ' . print_r( $debugBackTrace[ $parentCallDepth ], true )

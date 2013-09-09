@@ -18,8 +18,10 @@ class RuntimeState implements InitialisationCallRegistrar {
     /** @var \PHPMockito\Run\DependencyFactory */
     private $dependencyFactory;
 
+    private $overrideIsTestCaseCheck = false;
 
-    function __construct() {
+
+    private function __construct() {
         $this->dependencyFactory = new DependencyFactory( $this );
         $this->expectancyEngine  = $this->dependencyFactory->createExpectancyEngine();
     }
@@ -34,6 +36,31 @@ class RuntimeState implements InitialisationCallRegistrar {
         }
 
         return self::$instance;
+    }
+
+
+    /**
+     * @return boolean
+     */
+    public function getOverrideIsTestCaseCheck() {
+        return $this->overrideIsTestCaseCheck;
+    }
+
+
+    /**
+     * @param boolean $overrideIsTestCaseCheck
+     *
+     * @return $this
+     */
+    public function setOverrideIsTestCaseCheck( $overrideIsTestCaseCheck ) {
+        $this->overrideIsTestCaseCheck = $overrideIsTestCaseCheck;
+
+        return $this;
+    }
+
+
+    public function isStrictMode() {
+        return false;
     }
 
 
@@ -76,6 +103,14 @@ class RuntimeState implements InitialisationCallRegistrar {
      */
     public function getLastInitialisationMethodCall() {
         return $this->expectancyEngine->getLastInitialisationMethodCall();
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getTestCallInitialisationDepth() {
+        return $this->testCallInitialisationDepth;
     }
 }
  

@@ -4,6 +4,7 @@ namespace PHPMockito\Expectancy;
 
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
+use PHPMockito\Run\RuntimeState;
 
 class TestCaseCallVerifier {
     const CLASS_NAME = __CLASS__;
@@ -33,6 +34,6 @@ class TestCaseCallVerifier {
             }
         }
 
-        return false;
+        return RuntimeState::getInstance()->getOverrideIsTestCaseCheck();
     }
 }

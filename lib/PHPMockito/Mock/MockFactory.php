@@ -4,6 +4,7 @@ namespace PHPMockito\Mock;
 
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\Mock\Logger\MockedClassCodeLogger;
+use PHPMockito\Mock\Method\MockMethodCodeGenerator;
 
 class MockFactory {
     const CLASS_NAME = __CLASS__;
@@ -73,6 +74,7 @@ class MockFactory {
         $mockCode = $this->mockClassCodeGenerator->createMockCode(
             $mockShortClassName,
             $reflectionClass,
+            new MockMethodCodeGenerator(),
             $mockedMethodList
         );
 

@@ -49,4 +49,12 @@ class MockedClassConstructorParams {
          $this->methodCallListener->registerLastCall( $methodCall );
     }
 
+
+    public function hasSpyCall(  DebugBackTraceMethodCall $methodCall ){
+
+    }
+
+
+
+
 }

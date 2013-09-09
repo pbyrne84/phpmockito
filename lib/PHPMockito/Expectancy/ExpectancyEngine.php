@@ -7,8 +7,10 @@ use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\MethodCallAction;
 use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
+use PHPMockito\Run\RuntimeState;
 use PHPMockito\Verify\MockedMethodCallLogger;
 
 class ExpectancyEngine implements InitialisationCallRegistrar {
@@ -67,20 +69,13 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
             $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
         }
 
-        foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
-            if ( $this->callMatcher->matchCallAndSignature( $expectedMethodCall, $actualProductionMethodCall ) ) {
-                $methodCallAction = $expectedMethodCall->getMethodCallAction();
-                if ( $methodCallAction instanceof ExceptionMethodCallAction ) {
-                    throw $methodCallAction->getExceptionToBeThrown();
-                } elseif ( $methodCallAction instanceof ReturningMethodCallAction ) {
-                    return $methodCallAction->getReturnValue();
-                }
-
-                throw new \UnexpectedValueException( "Que???" );
-            }
+        $methodCallAction = $this->findRegisteredCallAction( $actualProductionMethodCall );
+        if ( $methodCallAction instanceof MethodCallAction ) {
+            return $this->executeCallAction( $methodCallAction );
         }
 
-        if ( $isProductionMethodCall ) {
+
+        if ( RuntimeState::getInstance()->isStrictMode() && $isProductionMethodCall ) {
             throw new UnexpectedCallException(
                 "Unexpected call " . $actualProductionMethodCall
                         ->getClass()
@@ -90,8 +85,9 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         }
 
         return null;
-
     }
+
+
 
 
     /**
@@ -102,6 +98,46 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     private function isProductionMethodCall( MethodCall $actualProductionMethodCall ) {
         return $actualProductionMethodCall instanceof DebugBackTraceMethodCall &&
         !$this->testCaseCallVerifier->callIsInTestCase( $actualProductionMethodCall );
+    }
+
+
+    /**
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return null|MethodCallAction
+     */
+    private function findRegisteredCallAction( MethodCall $actualProductionMethodCall ) {
+        foreach ( $this->expectedMethodCallList as $expectedMethodCall ) {
+            if ( $this->callMatcher->matchCallAndSignature( $expectedMethodCall, $actualProductionMethodCall ) ) {
+                return $expectedMethodCall->getMethodCallAction();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @param $methodCallAction
+     *
+     * @return mixed
+     * @throws \Exception
+     * @throws \UnexpectedValueException
+     */
+    private function executeCallAction( $methodCallAction ) {
+        if ( $methodCallAction instanceof ExceptionMethodCallAction ) {
+            throw $methodCallAction->getExceptionToBeThrown();
+        } elseif ( $methodCallAction instanceof ReturningMethodCallAction ) {
+            return $methodCallAction->getReturnValue();
+        }
+
+        throw new \UnexpectedValueException( "Que???" );
+    }
+
+
+    public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
+        return null !== $this->findRegisteredCallAction( $actualProductionMethodCall );
+
     }
 
 
