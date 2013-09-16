@@ -50,11 +50,12 @@ class MockedClassConstructorParams {
     }
 
 
-    public function hasSpyCall(  DebugBackTraceMethodCall $methodCall ){
-
+    /**
+     * @param DebugBackTraceMethodCall $methodCall
+     *
+     * @return bool
+     */
+    public function returnSpyParentMethodCall(  DebugBackTraceMethodCall $methodCall ){
+        return !$this->methodCallListener->hasSpyCall( $methodCall );
     }
-
-
-
-
 }

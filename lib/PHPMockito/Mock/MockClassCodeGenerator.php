@@ -11,21 +11,21 @@ class MockClassCodeGenerator {
 
 
     /**
-     * @param string                  $mockShortClassName
-     * @param \ReflectionClass        $reflectionClass
-     * @param MockMethodCodeGenerator  $mockMethodCodeGenerator
-     * @param array|MockedParameter[] $mockedMethodList
+     * @param string                     $mockShortClassName
+     * @param \ReflectionClass           $reflectionClass
+     * @param Method\MethodCodeGenerator $methodCodeGenerator
+     * @param array|MockedParameter[]    $mockedMethodList
      *
      * @return string
      */
     public function createMockCode( $mockShortClassName,
                                     \ReflectionClass $reflectionClass,
-                                    MockMethodCodeGenerator $mockMethodCodeGenerator,
+                                    MethodCodeGenerator $methodCodeGenerator,
                                     array $mockedMethodList ) {
         $namespace = $reflectionClass->getNamespaceName();
 
         $defaultValueMap = $this->convertMethodListToClassMethodsDefaultParameterMap( $mockedMethodList );
-        $methodCode = $this->convertMethodListToMethodCode( $mockMethodCodeGenerator, $mockedMethodList );
+        $methodCode = $this->convertMethodListToMethodCode( $methodCodeGenerator, $mockedMethodList );
 
         if ( $reflectionClass->isInterface() ) {
             $substitutionKeyword = 'implements';

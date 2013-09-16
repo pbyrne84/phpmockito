@@ -32,11 +32,23 @@ class MethodCallListener {
     }
 
 
-
+    /**
+     * @param DebugBackTraceMethodCall $methodCall
+     */
     public function registerLastCall(  DebugBackTraceMethodCall $methodCall ) {
         $initialisationCallListener = $this->initialisationCallListenerFactory->createTestCaseCallVerifier();
         if ( $initialisationCallListener->callIsInTestCase( $methodCall ) ) {
             $this->initialisationCallRegistrar->registerLatestInitialisationSignature( $methodCall );
         }
+    }
+
+
+    /**
+     * @param MethodCall $methodCall
+     *
+     * @return bool
+     */
+    public function hasSpyCall( MethodCall $methodCall ) {
+        return $this->initialisationCallRegistrar->hasMockMethodAction( $methodCall );
     }
 }

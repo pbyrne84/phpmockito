@@ -112,5 +112,10 @@ class RuntimeState implements InitialisationCallRegistrar {
     public function getTestCallInitialisationDepth() {
         return $this->testCallInitialisationDepth;
     }
+
+
+    public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
+       return $this->expectancyEngine->hasMockMethodAction( $actualProductionMethodCall );
+    }
 }
  

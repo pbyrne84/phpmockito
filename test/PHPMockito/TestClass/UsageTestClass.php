@@ -32,6 +32,12 @@ class UsageTestClass {
     }
 
 
+    public function testSpyParentCall() {
+        $this->domDocument->loadXML('<xml/>');
+        return $this->domDocument->saveXML();
+    }
+
+
     protected function testMoo() {
         return '';
     }

@@ -44,6 +44,15 @@ class MockedMethod {
     }
 
 
+    public function getCommaSeparatedArguments() {
+        $parameterTextList = array();
+        foreach ( $this->mockedParameters as $parameter ) {
+            $parameterTextList[ ] = '$' . $parameter->getName();
+        }
+
+        return trim( implode( ', ', $parameterTextList ) );
+    }
+
     public function getParameterArrayEntrapment() {
         $parameterTextList = array();
         foreach ( $this->mockedParameters as $parameter ) {

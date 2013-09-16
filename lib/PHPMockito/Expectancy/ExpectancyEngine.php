@@ -75,7 +75,9 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         }
 
 
-        if ( RuntimeState::getInstance()->isStrictMode() && $isProductionMethodCall ) {
+        if ( RuntimeState::getInstance()
+                        ->isStrictMode() && $isProductionMethodCall
+        ) {
             throw new UnexpectedCallException(
                 "Unexpected call " . $actualProductionMethodCall
                         ->getClass()
@@ -86,8 +88,6 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
 
         return null;
     }
-
-
 
 
     /**
@@ -135,9 +135,14 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     }
 
 
+    /**
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return bool
+     */
     public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
-        return null !== $this->findRegisteredCallAction( $actualProductionMethodCall );
-
+        return !$this->isProductionMethodCall( $actualProductionMethodCall )
+         ||  null !== $this->findRegisteredCallAction( $actualProductionMethodCall );
     }
 
 

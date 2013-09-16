@@ -22,4 +22,12 @@ interface InitialisationCallRegistrar {
      * @return MethodCall
      */
     public function getLastInitialisationMethodCall();
+
+
+    /**
+     * @param MethodCall $actualProductionMethodCall
+     *
+     * @return bool
+     */
+    public function hasMockMethodAction( MethodCall $actualProductionMethodCall );
 }

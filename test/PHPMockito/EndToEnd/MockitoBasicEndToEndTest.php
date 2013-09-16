@@ -58,6 +58,14 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
+
+        $expectedXml = <<<XML
+<?xml version="1.0"?>
+<xml/>
+XML;
+
+        $this->assertEquals( $expectedXml, trim($usageTestClass->testSpyParentCall() ) );
+
         verify( $DOMDocument, 1 )->cloneNode( true );
         verify( $DOMDocument, 2 )->cloneNode();
         verify( $DOMDocument, 2 )->cloneNode( null );

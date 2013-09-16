@@ -1,5 +1,4 @@
 <?php
-use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Run\Mockito;

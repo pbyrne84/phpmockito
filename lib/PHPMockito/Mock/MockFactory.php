@@ -4,7 +4,9 @@ namespace PHPMockito\Mock;
 
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\Mock\Logger\MockedClassCodeLogger;
+use PHPMockito\Mock\Method\MethodCodeGenerator;
 use PHPMockito\Mock\Method\MockMethodCodeGenerator;
+use PHPMockito\Mock\Method\SpyMethodCodeGenerator;
 
 class MockFactory {
     const CLASS_NAME = __CLASS__;
@@ -50,6 +52,7 @@ class MockFactory {
         $reflectionClass = new \ReflectionClass( $className );
 
         return $this->createMock(
+            new MockMethodCodeGenerator(),
             $reflectionClass,
             $this->mockedMethodListFactory->createPublicListFromReflectionClass( $reflectionClass )
         );
@@ -57,14 +60,18 @@ class MockFactory {
 
 
     /**
-     * @param \ReflectionClass     $reflectionClass
-     * @param array|MockedMethod[] $mockedMethodList
+     * @param Method\MethodCodeGenerator $methodCodeGenerator
+     * @param \ReflectionClass           $reflectionClass
+     * @param array|MockedMethod[]       $mockedMethodList
      *
-     * @param string               $prefix
+     * @param string                     $prefix
      *
      * @return object
      */
-    private function createMock( \ReflectionClass $reflectionClass, array $mockedMethodList, $prefix = '' ) {
+    private function createMock( MethodCodeGenerator $methodCodeGenerator,
+                                 \ReflectionClass $reflectionClass,
+                                 array $mockedMethodList,
+                                 $prefix = '' ) {
         $this->mockCounter++;
 
         $mockShortClassName     =  $prefix . $reflectionClass->getShortName() . '_PhpMockitoMock';
@@ -74,7 +81,7 @@ class MockFactory {
         $mockCode = $this->mockClassCodeGenerator->createMockCode(
             $mockShortClassName,
             $reflectionClass,
-            new MockMethodCodeGenerator(),
+            $methodCodeGenerator,
             $mockedMethodList
         );
 
@@ -105,6 +112,7 @@ class MockFactory {
         $reflectionClass = new \ReflectionClass( $className );
 
         return $this->createMock(
+            new SpyMethodCodeGenerator(),
             $reflectionClass,
             $this->mockedMethodListFactory->createProtectedAndPublicListFromReflectionClass( $reflectionClass ),
             'Spy_'
