@@ -3,6 +3,8 @@
 namespace PHPMockito\Run;
 
 
+use PHPMockito\Action\ExpectedMethodCall;
+use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\CallMatching\CallMatcher;
@@ -38,7 +40,8 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             new MockClassCodeGenerator(),
             $this,
             new MockedMethodListFactory(),
-            new FileBasedMockedClassCodeLogger()
+            new FileBasedMockedClassCodeLogger(),
+            $this->newToStringAdaptorFactory()
         );
 
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
@@ -60,7 +63,15 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return CallMatcher
      */
     private function createCallMatcher() {
-        return new CallMatcher( new ToStringAdaptorFactory() );
+        return new CallMatcher( $this->newToStringAdaptorFactory() );
+    }
+
+
+    /**
+     * @return ToStringAdaptorFactory
+     */
+    private function newToStringAdaptorFactory() {
+        return new ToStringAdaptorFactory();
     }
 
 
@@ -77,16 +88,6 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     public function getMockFactory() {
         return $this->mockFactory;
-    }
-
-
-    /**
-     * @return TestCaseCallVerifier
-     */
-    public function createTestCaseCallVerifier() {
-        return new TestCaseCallVerifier(
-            array( new PhpUnitTestCaseInitialisationMatcher() )
-        );
     }
 
 
@@ -111,13 +112,44 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
 
 
     /**
+     * @return TestCaseCallVerifier
+     */
+    public function createTestCaseCallVerifier() {
+        return new TestCaseCallVerifier(
+            array( new PhpUnitTestCaseInitialisationMatcher() )
+        );
+    }
+
+
+    /**
      * @param MockedClass $mockedClass
      * @param             $expectedCallCount
      *
      * @return Verify
      */
     public function newVerify( MockedClass $mockedClass, $expectedCallCount ) {
-        return new Verify( $this->mockedMethodCallVerifier, $mockedClass, $expectedCallCount );
+        return new Verify(
+            $this->newToStringAdaptorFactory(),
+            $this->mockedMethodCallVerifier,
+            $mockedClass,
+            $expectedCallCount
+        );
+    }
+
+
+    /**
+     * @param InitialisationCallRegistrar $initialisationCallRegistrar
+     * @param ExpectedMethodCall          $methodCall
+     *
+     * @return MethodCallActionInitialiser
+     */
+    public function newMethodCallActionInitialiser( InitialisationCallRegistrar $initialisationCallRegistrar,
+                                                    ExpectedMethodCall $methodCall ) {
+        return new MethodCallActionInitialiser(
+            $this->newToStringAdaptorFactory(),
+            $initialisationCallRegistrar,
+            $methodCall
+        );
     }
 
 

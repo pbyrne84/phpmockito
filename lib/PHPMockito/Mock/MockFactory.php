@@ -7,6 +7,7 @@ use PHPMockito\Mock\Logger\MockedClassCodeLogger;
 use PHPMockito\Mock\Method\MethodCodeGenerator;
 use PHPMockito\Mock\Method\MockMethodCodeGenerator;
 use PHPMockito\Mock\Method\SpyMethodCodeGenerator;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MockFactory {
     const CLASS_NAME = __CLASS__;
@@ -25,21 +26,27 @@ class MockFactory {
     /** @var Logger\MockedClassCodeLogger */
     private $mockedClassCodeLogger;
 
+    /** @var \PHPMockito\ToString\ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
+
 
     /**
      * @param MockClassCodeGenerator       $mockClassCodeGenerator
      * @param MethodCallListenerFactory    $methodCallListenerFactory
      * @param MockedMethodListFactory      $mockedMethodListFactory
      * @param Logger\MockedClassCodeLogger $mockedClassCodeLogger
+     * @param ToStringAdaptorFactory       $toStringAdaptorFactory
      */
     function __construct( MockClassCodeGenerator $mockClassCodeGenerator,
                           MethodCallListenerFactory $methodCallListenerFactory,
                           MockedMethodListFactory $mockedMethodListFactory,
-                          MockedClassCodeLogger $mockedClassCodeLogger ) {
+                          MockedClassCodeLogger $mockedClassCodeLogger,
+                          ToStringAdaptorFactory $toStringAdaptorFactory ) {
         $this->mockClassCodeGenerator    = $mockClassCodeGenerator;
         $this->methodCallListenerFactory = $methodCallListenerFactory;
         $this->mockedMethodListFactory   = $mockedMethodListFactory;
         $this->mockedClassCodeLogger     = $mockedClassCodeLogger;
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -74,7 +81,7 @@ class MockFactory {
                                  $prefix = '' ) {
         $this->mockCounter++;
 
-        $mockShortClassName     =  $prefix . $reflectionClass->getShortName() . '_PhpMockitoMock';
+        $mockShortClassName     = $prefix . $reflectionClass->getShortName() . '_PhpMockitoMock';
         $namespace              = $reflectionClass->getNamespaceName();
         $mockFullyQualifiedName = $namespace . '\\' . $mockShortClassName;
 
@@ -102,6 +109,7 @@ class MockFactory {
      */
     private function createMockedClassConstructorParams() {
         return new MockedClassConstructorParams(
+            $this->toStringAdaptorFactory,
             'mock_instance_' . $this->mockCounter,
             $this->methodCallListenerFactory->createMethodCallListener()
         );

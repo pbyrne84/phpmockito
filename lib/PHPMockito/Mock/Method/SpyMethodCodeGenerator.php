@@ -20,7 +20,11 @@ class SpyMethodCodeGenerator implements MethodCodeGenerator {
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
             \$arguments =  {$mockedMethod->getParameterArrayEntrapment()};
             \$methodCall = new DebugBackTraceMethodCall(
-                \$this, '{$mockedMethod->getName()}', \$arguments, debug_backtrace()
+                \$this->mockedClassConstructorParams->getToStringAdaptorFactory(),
+                \$this,
+                '{$mockedMethod->getName()}',
+                \$arguments,
+                debug_backtrace()
             );
 
             if ( \$this->mockedClassConstructorParams->returnSpyParentMethodCall( \$methodCall ) ) {

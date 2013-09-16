@@ -3,6 +3,7 @@
 namespace PHPMockito\Run;
 
 
+use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
@@ -91,15 +92,15 @@ class RuntimeState implements InitialisationCallRegistrar {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param ExpectedMethodCall $methodCall
      */
-    public function registerLatestInitialisationSignature( MethodCall $methodCall = null ) {
+    public function registerLatestInitialisationSignature( ExpectedMethodCall $methodCall = null ) {
         $this->expectancyEngine->registerLatestInitialisationSignature( $methodCall );
     }
 
 
     /**
-     * @return MethodCall
+     * @return ExpectedMethodCall
      */
     public function getLastInitialisationMethodCall() {
         return $this->expectancyEngine->getLastInitialisationMethodCall();
@@ -116,6 +117,14 @@ class RuntimeState implements InitialisationCallRegistrar {
 
     public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
        return $this->expectancyEngine->hasMockMethodAction( $actualProductionMethodCall );
+    }
+
+
+    public function newMethodCallActionInitialiser() {
+        return $this->dependencyFactory->newMethodCallActionInitialiser(
+            $this,
+            $this->getLastInitialisationMethodCall()
+        );
     }
 }
  

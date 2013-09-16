@@ -2,6 +2,7 @@
 
 namespace PHPMockito\Expectancy;
 
+use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
 
@@ -15,7 +16,7 @@ interface InitialisationCallRegistrar {
     public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall );
 
 
-    public function registerLatestInitialisationSignature( MethodCall $methodCall = null );
+    public function registerLatestInitialisationSignature( ExpectedMethodCall $methodCall = null );
 
 
     /**

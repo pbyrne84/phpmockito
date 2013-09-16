@@ -40,5 +40,11 @@ interface MethodCall {
     public function getMethod();
 
 
+    /**
+     * @return string
+     */
+    public function convertToString();
+
+
 }
  

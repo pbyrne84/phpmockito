@@ -19,7 +19,11 @@ class MockMethodCodeGenerator implements MethodCodeGenerator {
 
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
             \$methodCall = new DebugBackTraceMethodCall(
-                \$this, '{$mockedMethod->getName()}', {$mockedMethod->getParameterArrayEntrapment()}, debug_backtrace()
+                \$this->mockedClassConstructorParams->getToStringAdaptorFactory(),
+                \$this,
+                '{$mockedMethod->getName()}',
+                {$mockedMethod->getParameterArrayEntrapment()},
+                debug_backtrace()
             );
 
             \$this->mockedClassConstructorParams->registerCall( \$methodCall );

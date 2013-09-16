@@ -4,6 +4,7 @@ namespace PHPMockito\Action;
 
 
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MethodCallActionInitialiser implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
@@ -14,15 +15,21 @@ class MethodCallActionInitialiser implements MethodCallAction {
     /** @var InitialisationCallRegistrar */
     private $initialisationCallRegistrar;
 
+    /** @var \PHPMockito\ToString\ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
+
 
     /**
-     * @param InitialisationCallRegistrar $initialisationCallRegistrar
-     * @param ExpectedMethodCall                  $methodCall
+     * @param \PHPMockito\ToString\ToStringAdaptorFactory $toStringAdaptorFactory
+     * @param InitialisationCallRegistrar                 $initialisationCallRegistrar
+     * @param ExpectedMethodCall                          $methodCall
      */
-    function __construct( InitialisationCallRegistrar $initialisationCallRegistrar,
+    function __construct( ToStringAdaptorFactory      $toStringAdaptorFactory,
+                          InitialisationCallRegistrar $initialisationCallRegistrar,
                           ExpectedMethodCall $methodCall ) {
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
         $this->methodCall                  = $methodCall;
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -40,6 +47,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
         }
 
         $fullyActionedMethodCall = new FullyActionedMethodCall(
+            $this->toStringAdaptorFactory,
             $this->methodCall,
             $this->convertExceptionToMethodCallAction( $exception )
         );
@@ -76,6 +84,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
      */
     public function thenReturn( $value ) {
         $fullyActionedMethodCall = new FullyActionedMethodCall(
+            $this->toStringAdaptorFactory,
             $this->methodCall,
             new ReturningMethodCallAction( $value )
         );

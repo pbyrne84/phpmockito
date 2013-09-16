@@ -3,6 +3,7 @@ namespace PHPMockito\Mock;
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\MethodCallListener;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MockedClassConstructorParams {
     const CLASS_NAME = __CLASS__;
@@ -13,14 +14,21 @@ class MockedClassConstructorParams {
     /** @var \PHPMockito\Action\MethodCallListener */
     private $methodCallListener;
 
+    /** @var  ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
+
 
     /**
-     * @param string             $instanceReference
-     * @param MethodCallListener $methodCallListener
+     * @param ToStringAdaptorFactory $toStringAdaptorFactory
+     * @param string                 $instanceReference
+     * @param MethodCallListener     $methodCallListener
      */
-    function __construct( $instanceReference, MethodCallListener $methodCallListener ) {
-        $this->instanceReference  = $instanceReference;
-        $this->methodCallListener = $methodCallListener;
+    function __construct( ToStringAdaptorFactory $toStringAdaptorFactory,
+                          $instanceReference,
+                          MethodCallListener $methodCallListener ) {
+        $this->instanceReference      = $instanceReference;
+        $this->methodCallListener     = $methodCallListener;
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -46,7 +54,7 @@ class MockedClassConstructorParams {
      * @param DebugBackTraceMethodCall $methodCall
      */
     public function registerCall( DebugBackTraceMethodCall $methodCall ) {
-         $this->methodCallListener->registerLastCall( $methodCall );
+        $this->methodCallListener->registerLastCall( $methodCall );
     }
 
 
@@ -55,7 +63,15 @@ class MockedClassConstructorParams {
      *
      * @return bool
      */
-    public function returnSpyParentMethodCall(  DebugBackTraceMethodCall $methodCall ){
+    public function returnSpyParentMethodCall( DebugBackTraceMethodCall $methodCall ) {
         return !$this->methodCallListener->hasSpyCall( $methodCall );
+    }
+
+
+    /**
+     * @return ToStringAdaptorFactory
+     */
+    public function getToStringAdaptorFactory() {
+        return $this->toStringAdaptorFactory;
     }
 }

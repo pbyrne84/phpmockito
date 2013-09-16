@@ -3,6 +3,8 @@
 namespace PHPMockito\Action;
 
 
+use PHPMockito\ToString\ToStringAdaptorFactory;
+
 class FullyActionedMethodCall implements MethodCall {
     const CLASS_NAME = __CLASS__;
 
@@ -12,14 +14,21 @@ class FullyActionedMethodCall implements MethodCall {
     /** @var MethodCallAction */
     private $methodCallAction;
 
+    /** @var ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
+
 
     /**
-     * @param ExpectedMethodCall $methodCall
-     * @param MethodCallAction   $methodCallAction
+     * @param ToStringAdaptorFactory $toStringAdaptorFactory
+     * @param ExpectedMethodCall     $methodCall
+     * @param MethodCallAction       $methodCallAction
      */
-    function __construct( ExpectedMethodCall $methodCall, MethodCallAction $methodCallAction ) {
-        $this->methodCall       = $methodCall;
-        $this->methodCallAction = $methodCallAction;
+    function __construct( ToStringAdaptorFactory $toStringAdaptorFactory,
+                          ExpectedMethodCall $methodCall,
+                          MethodCallAction $methodCallAction ) {
+        $this->methodCall             = $methodCall;
+        $this->methodCallAction       = $methodCallAction;
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -70,7 +79,7 @@ class FullyActionedMethodCall implements MethodCall {
      * @return \PHPMockito\Mock\MockedClass
      */
     public function getClass() {
-       return $this->methodCall->getClass();
+        return $this->methodCall->getClass();
     }
 
 
@@ -83,8 +92,20 @@ class FullyActionedMethodCall implements MethodCall {
 
 
     function __toString() {
-        return print_r(\PHPUnit_Util_Type::toArray( $this ), true );
+        return print_r( \PHPUnit_Util_Type::toArray( $this ), true );
     }
 
 
+    /**
+     * @return string
+     */
+    public function convertToString() {
+        $arguments = '';
+        foreach ( $this->getArguments() as $index => $argument ) {
+            $adaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $argument );
+            $arguments .= '[' . $index . ']' . $adaptor->toString() ."\n";
+        }
+
+        return sprintf( 'arguments(%s)', $arguments );
+    }
 }

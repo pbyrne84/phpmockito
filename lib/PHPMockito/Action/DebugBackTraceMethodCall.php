@@ -4,6 +4,7 @@ namespace PHPMockito\Action;
 
 
 use PHPMockito\Mock\MockedClass;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class DebugBackTraceMethodCall extends ExpectedMethodCall {
     const CLASS_NAME = __CLASS__;
@@ -13,14 +14,18 @@ class DebugBackTraceMethodCall extends ExpectedMethodCall {
 
 
     /**
-     * @param MockedClass $class
-     * @param string      $method
-     * @param array       $arguments
-     * @param array       $debugBacktrace
-     *
+     * @param ToStringAdaptorFactory $toStringAdaptorFactory
+     * @param MockedClass            $class
+     * @param string                 $method
+     * @param array                  $arguments
+     * @param array                  $debugBacktrace
      */
-    function __construct( MockedClass $class, $method, array $arguments, array $debugBacktrace ) {
-        parent::__construct( $class, $method, $arguments );
+    function __construct( ToStringAdaptorFactory $toStringAdaptorFactory,
+                          MockedClass $class,
+                          $method,
+                          array $arguments,
+                          array $debugBacktrace ) {
+        parent::__construct( $toStringAdaptorFactory, $class, $method, $arguments );
         $this->debugBacktrace = $debugBacktrace;
     }
 
@@ -40,8 +45,11 @@ class DebugBackTraceMethodCall extends ExpectedMethodCall {
      * @return ExpectedMethodCall
      */
     public function castToMethodCall() {
-        return new ExpectedMethodCall( $this->getClass(), $this->getMethod(), $this->getArguments() );
+        return new ExpectedMethodCall(
+            $this->getToStringAdaptorFactory(),
+            $this->getClass(),
+            $this->getMethod(),
+            $this->getArguments()
+        );
     }
-
-
 }

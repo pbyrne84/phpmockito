@@ -4,6 +4,7 @@ namespace PHPMockito\Action;
 
 
 use PHPMockito\Mock\MockedClass;
+use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class ExpectedMethodCall implements MethodCall {
     const CLASS_NAME = __CLASS__;
@@ -20,17 +21,25 @@ class ExpectedMethodCall implements MethodCall {
     /** @var int */
     private $argumentCount;
 
+    /** @var ToStringAdaptorFactory */
+    private $toStringAdaptorFactory;
+
 
     /**
-     * @param MockedClass $class
-     * @param string      $method
-     * @param array       $arguments
+     * @param ToStringAdaptorFactory $toStringAdaptorFactory
+     * @param MockedClass            $class
+     * @param string                 $method
+     * @param array                  $arguments
      */
-    function __construct( MockedClass $class, $method, array $arguments ) {
-        $this->class         = $class;
-        $this->method        = $method;
-        $this->arguments     = $arguments;
-        $this->argumentCount = count( $arguments );
+    function __construct( ToStringAdaptorFactory $toStringAdaptorFactory,
+                          MockedClass $class,
+                          $method,
+                          array $arguments ) {
+        $this->class                  = $class;
+        $this->method                 = $method;
+        $this->arguments              = $arguments;
+        $this->argumentCount          = count( $arguments );
+        $this->toStringAdaptorFactory = $toStringAdaptorFactory;
     }
 
 
@@ -39,14 +48,6 @@ class ExpectedMethodCall implements MethodCall {
      */
     public function getArgumentCount() {
         return $this->argumentCount;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getArguments() {
-        return $this->arguments;
     }
 
 
@@ -82,5 +83,34 @@ class ExpectedMethodCall implements MethodCall {
         return $this->method;
     }
 
+
+    /**
+     * @return string
+     */
+    public function convertToString() {
+        $arguments = '';
+        foreach ( $this->getArguments() as $index => $argument ) {
+            $adaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $argument );
+            $arguments .= '[' . $index . ']' . $adaptor->toString() . "\n";
+        }
+
+        return sprintf( 'arguments(%s)', $arguments );
+    }
+
+
+    /**
+     * @return ToStringAdaptorFactory
+     */
+    protected function getToStringAdaptorFactory() {
+        return $this->toStringAdaptorFactory;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getArguments() {
+        return $this->arguments;
+    }
 }
  
