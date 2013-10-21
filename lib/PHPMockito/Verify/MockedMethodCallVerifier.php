@@ -5,31 +5,23 @@ use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\CallMatching\CallMatcher;
+use PHPMockito\Mock\MockedClass;
 use PHPMockito\Output\ValueOutputExporter;
 use PHPMockito\Signature\SignatureGenerator;
 
 class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTester {
     const CLASS_NAME = __CLASS__;
 
-    /** @var ExpectedMethodCall[] */
-    private $actualMethodCallList = array();
 
-    /** @var ExpectedMethodCall[] $actualMethodCallList */
-    private $matchedInvocations = array();
-
-    /** @var CallMatcher */
-    private $callMatcher;
+    /** @var RuntimeMethodCallLogger */
+    private $runtimeMethodCallLogger;
 
     /** @var \PHPMockito\Signature\SignatureGenerator */
     private $signatureGenerator;
 
 
-    /**
-     * @param CallMatcher                              $callMatcher
-     * @param \PHPMockito\Signature\SignatureGenerator $signatureGenerator
-     */
-    function __construct( CallMatcher $callMatcher, SignatureGenerator $signatureGenerator ) {
-        $this->callMatcher = $callMatcher;
+    function __construct( RuntimeMethodCallLogger $runtimeMethodCallLogger, SignatureGenerator $signatureGenerator  ) {
+        $this->runtimeMethodCallLogger = $runtimeMethodCallLogger;
         $this->signatureGenerator = $signatureGenerator;
     }
 
@@ -38,11 +30,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      * @param MethodCall $methodCall
      */
     public function logMethodCall( MethodCall $methodCall ) {
-        if ( $methodCall instanceof DebugBackTraceMethodCall ) {
-            $this->actualMethodCallList[ ] = $methodCall->castToMethodCall();
-        } else {
-            $this->actualMethodCallList[ ] = $methodCall;
-        }
+        $this->runtimeMethodCallLogger->logMethodCall( $methodCall );
     }
 
 
@@ -53,20 +41,9 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      * @throws \PHPUnit_Framework_AssertionFailedError - if actual call count is not not equal to expected
      */
     public function assertCallCount( MethodCall $expectedMethodCall, $expectedCallCount ) {
-        $actualCallCount   = 0;
-        $actualCallMessage = '';
-        foreach ( $this->actualMethodCallList as $actualMethodCall ) {
-            if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall ) ) {
-                if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall ) ) {
-                    $actualCallCount++;
-                }
+        $actualCallLoggingStatus = $this->runtimeMethodCallLogger->getMethodCallLoggingStatus( $expectedMethodCall );
 
-                $methodSignature   = $this->signatureGenerator->generateMessage( $actualMethodCall );
-
-                $actualCallMessage .= $methodSignature . PHP_EOL;
-            }
-        }
-
+        $actualCallCount = $actualCallLoggingStatus->getCount();
         if ( $actualCallCount == $expectedCallCount ) {
             return;
         }
@@ -78,7 +55,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
                 $this->signatureGenerator->generateMessage( $expectedMethodCall );
 
         $message = $expectedMessage . "\n" .
-                "*** Actual calls :- ***\n" . $actualCallMessage . PHP_EOL . PHP_EOL;
+                "*** Actual calls :- ***\n" . $actualCallLoggingStatus->getAllCallsMessage() . PHP_EOL . PHP_EOL;
 
         $this->raiseAssertionError(
             $message,
@@ -105,6 +82,13 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
     private function raiseAssertionError( $baseMessage, MethodCall $expectedMethodCal ) {
         throw new \PHPUnit_Framework_AssertionFailedError( $baseMessage );
+    }
+
+
+    /**
+     * @param $mockedClass
+     */
+    public function verifyNoMoreInteractions( MockedClass $mockedClass ) {
     }
 
 

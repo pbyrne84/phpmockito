@@ -70,6 +70,16 @@ class Mockito {
     }
 
 
+    /**
+     * @param MockedClass $mockedClass
+     */
     public static function verifyNoMoreInteractions( $mockedClass ) {
+        $dependencyFactory = RuntimeState::getInstance()
+                ->getDependencyFactory();
+
+        $mockedMethodCallVerifier = $dependencyFactory->getMockedMethodCallVerifier();
+        $mockedMethodCallVerifier->verifyNoMoreInteractions( $mockedClass );
+
     }
+
 }

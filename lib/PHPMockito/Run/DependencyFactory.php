@@ -21,10 +21,13 @@ use PHPMockito\Mock\MockFactory;
 use PHPMockito\Signature\SignatureGenerator;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 use PHPMockito\Verify\MockedMethodCallVerifier;
+use PHPMockito\Verify\RuntimeMethodCallLogger;
 use PHPMockito\Verify\Verify;
 
 class DependencyFactory implements InitialisationCallListenerFactory, MethodCallListenerFactory {
     const CLASS_NAME = __CLASS__;
+    /** @var \PHPMockito\Verify\RuntimeMethodCallLogger  */
+    private $runtimeMethodLogger;
 
     /** @var \PHPMockito\Mock\MockFactory */
     private $mockFactory;
@@ -45,21 +48,27 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             $this->newToStringAdaptorFactory()
         );
 
+        $this->runtimeMethodLogger         = $this->createRuntimeMethodLogger();
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
-
-        $this->mockedMethodCallVerifier = $this->createMockedMethodCallVerifier();
+        $this->mockedMethodCallVerifier    = $this->createMockedMethodCallVerifier( $this->runtimeMethodLogger );
     }
 
 
     /**
-     * @return MockedMethodCallVerifier
+     * @return ToStringAdaptorFactory
      */
-    private function createMockedMethodCallVerifier() {
-        return new MockedMethodCallVerifier(
-            $this->createCallMatcher(),
-            new SignatureGenerator( $this->newToStringAdaptorFactory()  )
-        );
+    private function newToStringAdaptorFactory() {
+        return new ToStringAdaptorFactory();
+    }
 
+
+    /**
+     * @return RuntimeMethodCallLogger
+     */
+    private function createRuntimeMethodLogger() {
+        $runtimeMethodCallLogger = new RuntimeMethodCallLogger( $this->createCallMatcher(), $this->createSignatureGenerator() );
+
+        return $runtimeMethodCallLogger;
     }
 
 
@@ -72,10 +81,25 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
 
 
     /**
-     * @return ToStringAdaptorFactory
+     * @return SignatureGenerator
      */
-    private function newToStringAdaptorFactory() {
-        return new ToStringAdaptorFactory();
+    private function createSignatureGenerator() {
+        $signatureGenerator = new SignatureGenerator( $this->newToStringAdaptorFactory() );
+
+        return $signatureGenerator;
+    }
+
+
+    /**
+     * @return MockedMethodCallVerifier
+     */
+    private function createMockedMethodCallVerifier( RuntimeMethodCallLogger $runtimeMethodCallLogger ) {
+
+
+        return new MockedMethodCallVerifier(
+            $runtimeMethodCallLogger,
+            $this->createSignatureGenerator()
+        );
     }
 
 
