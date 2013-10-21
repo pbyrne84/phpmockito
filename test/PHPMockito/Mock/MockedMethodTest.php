@@ -25,7 +25,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         $reflectionMethod = new \ReflectionMethod( '\DomDocument', 'appendChild' );
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
-        $this->assertEquals( '\DOMNode $newChild = NULL', $mockedMethod->getSignature() );
+        $this->assertEquals( '\DOMNode $newChild = null', $mockedMethod->getSignature() );
     }
 
 
@@ -34,7 +34,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
-            '$namespaceURI = NULL,  $qualifiedName = NULL, \DOMDocumentType $docType = NULL',
+            '$namespaceURI = null,  $qualifiedName = null, \DOMDocumentType $docType = null',
             $mockedMethod->getSignature(),
             'signature matches'
         );
