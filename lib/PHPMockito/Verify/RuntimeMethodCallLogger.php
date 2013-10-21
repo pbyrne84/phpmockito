@@ -7,6 +7,7 @@ use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\CallMatching\CallMatcher;
+use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
 
 class RuntimeMethodCallLogger implements MockedMethodCallLogger {
@@ -20,6 +21,9 @@ class RuntimeMethodCallLogger implements MockedMethodCallLogger {
 
     /** @var SignatureGenerator */
     private $signatureGenerator;
+
+    /** @var array MethodCall */
+    private $verifiedMethodCalls = array();
 
 
     /**
@@ -54,16 +58,34 @@ class RuntimeMethodCallLogger implements MockedMethodCallLogger {
         $actualCallMessage = '';
         foreach ( $this->actualMethodCallList as $actualMethodCall ) {
             if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall ) ) {
+                $methodSignature = $this->signatureGenerator->generateMessage( $actualMethodCall );
+
                 if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall ) ) {
+                    $this->verifiedMethodCalls[ ] = $expectedMethodCall;
                     $actualCallCount++;
                 }
 
-                $methodSignature = $this->signatureGenerator->generateMessage( $actualMethodCall );
                 $actualCallMessage .= $methodSignature . PHP_EOL;
             }
         }
 
         return new MethodCallLoggingStatus( $expectedMethodCall, $actualCallCount, $actualCallMessage );
+    }
+
+
+    /**
+     * @param MockedClass $mockedClass
+     *
+     * @return string
+     */
+    public function getUnverifiedMethodCalls( MockedClass $mockedClass ) {
+        $noMoreInteractionsCalculator = new NoMoreInteractionsCalculator( $this->signatureGenerator );
+
+        return $noMoreInteractionsCalculator->calculateNonVerifiedInteractions(
+            $this->actualMethodCallList,
+            $this->verifiedMethodCalls,
+            $mockedClass
+        );
     }
 }
  

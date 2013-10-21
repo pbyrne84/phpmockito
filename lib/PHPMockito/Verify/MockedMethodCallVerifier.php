@@ -86,11 +86,17 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     /**
-     * @param $mockedClass
+     * @param \PHPMockito\Mock\MockedClass $mockedClass
+     *
+     * @throws \PHPUnit_Framework_AssertionFailedError
      */
     public function verifyNoMoreInteractions( MockedClass $mockedClass ) {
+        $unverifiedMethodCalls = $this->runtimeMethodCallLogger->getUnverifiedMethodCalls( $mockedClass );
+        if ( $unverifiedMethodCalls == '') {
+            return;
+        }
+
+        throw new \PHPUnit_Framework_AssertionFailedError( $unverifiedMethodCalls );
     }
-
-
 }
  
