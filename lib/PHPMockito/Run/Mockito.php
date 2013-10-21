@@ -68,4 +68,8 @@ class Mockito {
 
         return $mockFactory->spy( $className );
     }
+
+
+    public static function verifyNoMoreInteractions( $mockedClass ) {
+    }
 }

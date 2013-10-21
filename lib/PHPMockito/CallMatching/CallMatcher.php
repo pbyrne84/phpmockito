@@ -87,17 +87,4 @@ class CallMatcher {
 
         return true;
     }
-
-
-    /**
-     * @param mixed $value
-     *
-     * @return string
-     */
-    public function convertValueToString( $value ) {
-        return $this->toStringAdaptorFactory
-                ->createToStringAdaptor( $value )
-                ->toString();
-    }
 }
- 

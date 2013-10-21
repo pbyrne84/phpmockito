@@ -1,6 +1,8 @@
 <?php
 namespace PHPMockito\ToString;
 
+use PHPMockito\Mock\MockedClass;
+
 class ToStringAdaptorFactoryTest extends \PHPUnit_Framework_TestCase {
 
     const CLASS_NAME = __CLASS__;
@@ -58,6 +60,9 @@ TXT;
 
 
     public function test_genericClass() {
+        /** @var $runtimeException \RuntimeException|MockedClass */
+        $runtimeException = mock( '\RuntimeException' );
+
         $expected = <<<TXT
 stdClass      (
         [property_a] : string(1) 'a'
@@ -72,10 +77,9 @@ stdClass      (
     '
         [property_e] : SplFileInfo(13) 'c:/monkey.txt'
         [property_f] : RuntimeException(24) 'I am a runtime exception"
-        [property_g] : RuntimeException_PhpMockitoMock (mock_instance_1)
+        [property_g] : RuntimeException_PhpMockitoMock ({$runtimeException->getInstanceReference()})
     )
 TXT;
-
 
         $DOMDocument = new \DOMDocument();
         $DOMDocument->loadXML( '<test_xml/>' );
@@ -87,7 +91,7 @@ TXT;
         $stdClass->property_d = $DOMDocument;
         $stdClass->property_e = new \SplFileInfo("c:/monkey.txt");
         $stdClass->property_f = new \RuntimeException("I am a runtime exception");
-        $stdClass->property_g = mock( '\RuntimeException' );
+        $stdClass->property_g = $runtimeException;
 
         $adaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $stdClass );
         $this->assertEquals( $expected, $adaptor->toString() );

@@ -6,6 +6,7 @@ use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
 use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Output\ValueOutputExporter;
+use PHPMockito\Signature\SignatureGenerator;
 
 class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTester {
     const CLASS_NAME = __CLASS__;
@@ -13,15 +14,23 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     /** @var ExpectedMethodCall[] */
     private $actualMethodCallList = array();
 
+    /** @var ExpectedMethodCall[] $actualMethodCallList */
+    private $matchedInvocations = array();
+
     /** @var CallMatcher */
     private $callMatcher;
 
+    /** @var \PHPMockito\Signature\SignatureGenerator */
+    private $signatureGenerator;
+
 
     /**
-     * @param CallMatcher $callMatcher
+     * @param CallMatcher                              $callMatcher
+     * @param \PHPMockito\Signature\SignatureGenerator $signatureGenerator
      */
-    function __construct( CallMatcher $callMatcher ) {
+    function __construct( CallMatcher $callMatcher, SignatureGenerator $signatureGenerator ) {
         $this->callMatcher = $callMatcher;
+        $this->signatureGenerator = $signatureGenerator;
     }
 
 
@@ -48,10 +57,13 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
         $actualCallMessage = '';
         foreach ( $this->actualMethodCallList as $actualMethodCall ) {
             if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall ) ) {
-                if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall )) {
+                if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall ) ) {
                     $actualCallCount++;
                 }
-                $actualCallMessage .= $this->generateMessage( $actualMethodCall ) . PHP_EOL;
+
+                $methodSignature   = $this->signatureGenerator->generateMessage( $actualMethodCall );
+
+                $actualCallMessage .= $methodSignature . PHP_EOL;
             }
         }
 
@@ -60,13 +72,13 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
         }
 
         $expectedMessage =
-                'Expected a call of count ' . $expectedCallCount . ' got ' . $actualCallCount. PHP_EOL.
+                'Expected a call of count ' . $expectedCallCount . ' got ' . $actualCallCount . PHP_EOL .
                 $this->generateHeaderMessage() . "\n\n" .
                 "*** Call expected $expectedCallCount time/s: ***" . PHP_EOL .
-                $this->generateMessage( $expectedMethodCall );
+                $this->signatureGenerator->generateMessage( $expectedMethodCall );
 
         $message = $expectedMessage . "\n" .
-                "*** Actual calls :- ***\n" . $actualCallMessage . PHP_EOL. PHP_EOL;
+                "*** Actual calls :- ***\n" . $actualCallMessage . PHP_EOL . PHP_EOL;
 
         $this->raiseAssertionError(
             $message,
@@ -75,15 +87,6 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     }
 
 
-    private function generateMessage( MethodCall $methodCall ) {
-        $methodSignature = get_class( $methodCall->getClass() ) . '->' . $methodCall->getMethod() . "()" . PHP_EOL;
-        foreach ( $methodCall->getArguments() as $index => $argument ) {
-            $methodSignature .=
-                    '   arg[' . $index . '] = ' .  $this->callMatcher->convertValueToString( $argument ). PHP_EOL;
-        }
-
-        return $methodSignature;
-    }
 
 
     private function generateHeaderMessage() {
