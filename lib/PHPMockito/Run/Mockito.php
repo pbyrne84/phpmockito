@@ -61,7 +61,7 @@ class Mockito {
 
         $dependencyFactory
                 ->getMockedMethodCallVerifier()
-                ->assertCallCount( $methodCall, $expectedCallCount );
+                ->assertCallCount( $methodCall, $expectedCallCount, false );
     }
 
 

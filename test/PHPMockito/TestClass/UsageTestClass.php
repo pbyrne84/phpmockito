@@ -27,14 +27,26 @@ class UsageTestClass {
         return $this->domDocument->cloneNode();
     }
 
+
     public function testManualDefault() {
         return $this->domDocument->cloneNode( null );
     }
 
 
     public function testSpyParentCall() {
-        $this->domDocument->loadXML('<xml/>');
+        $this->domDocument->loadXML( '<xml/>' );
+
         return $this->domDocument->saveXML();
+    }
+
+
+    /**
+     * @param MagicMethodTestClass $magicMethodTestClass
+     *
+     * @return string
+     */
+    public function testMagicMethods( MagicMethodTestClass $magicMethodTestClass ) {
+        return $magicMethodTestClass->__call( 'magicMethodCall', array( 'testValue' ) );
     }
 
 

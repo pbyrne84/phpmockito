@@ -39,13 +39,26 @@ class Verify {
 
 
     function __call( $methodName, $arguments ) {
-        $defaultValues = $this->mockedClass->getMethodsDefaultParameterMap( $methodName );
-        $arguments     = $arguments + $defaultValues;
+        $isMagicCallMethodAttempt = false;
+        if ( $this->mockedClass->hasMockedMethod( $methodName ) ) {
+            $defaultValues = $this->mockedClass->getMethodsDefaultParameterMap( $methodName );
+            $arguments     = $arguments + $defaultValues;
+        } elseif ( $this->mockedClass->hasMockedMethod( '__call' ) ) {
+            $isMagicCallMethodAttempt = true;
+            $defaultValues            = $this->mockedClass->getMethodsDefaultParameterMap( '__call' );
+            $arguments                = array( $methodName, $arguments ) + $defaultValues;
+            $methodName               = '__call';
+        } else {
+            throw new \InvalidArgumentException( 'Method ' . $methodName . ' does not exist on ' . get_class( $this->mockedClass ) );
+        }
+
         ksort( $arguments );
-
         $methodCall = new ExpectedMethodCall( $this->toStringAdaptorFactory, $this->mockedClass, $methodName, $arguments );
-        $this->verificationTester->assertCallCount( $methodCall, $this->expectedCallCount );
-
+        $this->verificationTester->assertCallCount(
+            $methodCall,
+            $this->expectedCallCount,
+            $isMagicCallMethodAttempt
+        );
     }
 
 

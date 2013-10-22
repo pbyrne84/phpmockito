@@ -1,12 +1,8 @@
 <?php
 namespace PHPMockito\Verify;
 
-use PHPMockito\Action\DebugBackTraceMethodCall;
-use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\MethodCall;
-use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Mock\MockedClass;
-use PHPMockito\Output\ValueOutputExporter;
 use PHPMockito\Signature\SignatureGenerator;
 
 class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTester {
@@ -40,10 +36,11 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     /**
      * @param MethodCall $expectedMethodCall
      * @param int        $expectedCallCount
+     * @param bool       $isMagicCallMethodAttempt
      *
      * @throws \PHPUnit_Framework_AssertionFailedError - if actual call count is not not equal to expected
      */
-    public function assertCallCount( MethodCall $expectedMethodCall, $expectedCallCount ) {
+    public function assertCallCount( MethodCall $expectedMethodCall, $expectedCallCount, $isMagicCallMethodAttempt ) {
         $actualCallLoggingStatus = $this->runtimeMethodCallLogger->getMethodCallLoggingStatus( $expectedMethodCall );
 
         $actualCallCount = $actualCallLoggingStatus->getCount();
@@ -53,7 +50,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
         $expectedMessage =
                 'Expected a call of count ' . $expectedCallCount . ' got ' . $actualCallCount . PHP_EOL .
-                $this->generateHeaderMessage() . "\n\n" .
+                $this->generateHeaderMessage( $isMagicCallMethodAttempt ) . "\n\n" .
                 "*** Call expected $expectedCallCount time/s: ***" . PHP_EOL .
                 $this->signatureGenerator->generateMessage( $expectedMethodCall );
 
@@ -68,19 +65,24 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     /**
+     * @param boolean $isMagicCallMethodAttempt
+     *
      * @return string
      */
-    private function generateHeaderMessage() {
+    private function generateHeaderMessage( $isMagicCallMethodAttempt ) {
+        $startOffset = 4;
+        if ( $isMagicCallMethodAttempt ) {
+            $startOffset = 3;
+        }
+
         $debug_backtrace = debug_backtrace();
 
-        $testMethodName = $debug_backtrace[ 4 ][ 'function' ];
-        $file           = $debug_backtrace[ 3 ][ 'file' ];
-        $line           = $debug_backtrace[ 3 ][ 'line' ];
+        $testMethodName = $debug_backtrace[ $startOffset ][ 'function' ];
+        $file           = $debug_backtrace[ $startOffset - 1 ][ 'file' ];
+        $line           = $debug_backtrace[ $startOffset - 1 ][ 'line' ];
 
         return '*** Test:' . $testMethodName . " ***\n" .
         $file . '(' . $line . ')';
-
-
     }
 
 

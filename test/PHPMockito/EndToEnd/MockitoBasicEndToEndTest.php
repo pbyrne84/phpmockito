@@ -1,6 +1,7 @@
 <?php
 namespace PHPMockito\EndToEnd;
 
+use PHPMockito\TestClass\MagicMethodTestClass;
 use PHPMockito\TestClass\UsageTestClass;
 
 class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
@@ -28,6 +29,23 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
         verifyMethodCall( $methodCall1 );
         verifyMethodCall( $methodCall2, 2 );
+    }
+
+
+    public function test_mock_magic_call_returnValue() {
+        $usageTestClass       = new UsageTestClass( mock( '\DomDocument' ) );
+        $magicMethodTestClass = mock( MagicMethodTestClass::CLASS_NAME );
+
+        $magicMethodCallResult   = 'magicMethodCall result';
+        $fullyActionedMethodCall =
+                when( $magicMethodTestClass->__call( 'magicMethodCall', array( 'testValue' ) ) )
+                        ->thenReturn( $magicMethodCallResult );
+
+        $this->assertEquals( $magicMethodCallResult, $usageTestClass->testMagicMethods( $magicMethodTestClass ) );
+
+        verifyMethodCall( $fullyActionedMethodCall );
+        verify( $magicMethodTestClass )->__call( 'magicMethodCall', array( 'testValue' ) );
+        verifyNoMoreInteractions( $magicMethodTestClass );
     }
 
 

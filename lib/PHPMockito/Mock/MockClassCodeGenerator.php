@@ -58,11 +58,16 @@ $defaultValueMap
 
 
         public function getMethodsDefaultParameterMap( \$methodName ){
-            if( !array_key_exists( \$methodName, \$this->defaultValueMap ) ){
+            if( !\$this->hasMockedMethod( \$methodName ) ){
                 throw new \InvalidArgumentException( 'Default values not set for method ' . \$methodName );
             }
 
             return \$this->defaultValueMap[ \$methodName ];
+        }
+
+
+        public function hasMockedMethod( \$methodName ){
+            return array_key_exists( \$methodName, \$this->defaultValueMap );
         }
 
 {$methodCode}

@@ -14,6 +14,13 @@ interface MockedClass {
 
 
     /**
+     * @param string $methodName
+     *
+     * @return boolean
+     */
+    public function hasMockedMethod( $methodName );
+
+    /**
      * @param $methodName
      *
      * @return array
