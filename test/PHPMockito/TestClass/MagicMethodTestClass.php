@@ -26,5 +26,10 @@ class MagicMethodTestClass {
     }
 
 
+    function refererence( &$moo ) {
+
+    }
+
+
 }
  

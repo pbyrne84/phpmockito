@@ -24,7 +24,7 @@ class InitialisationCallListenerTest extends \PHPUnit_Framework_TestCase {
 
 
     public function test_fail() {
-        when( debug_backtrace() );
+        //when( debug_backtrace() );
     }
 
 }

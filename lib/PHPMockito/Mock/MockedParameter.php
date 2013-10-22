@@ -20,7 +20,7 @@ class MockedParameter {
 
         $parameterText .= $defaultValue;
 
-        $this->parameterText = $parameterText;
+        $this->parameterText = trim( $parameterText );
     }
 
 
@@ -99,7 +99,12 @@ class MockedParameter {
      * @return string
      */
     public function renderSignature() {
-        return $this->parameterText;
+        $reference = '';
+        if ( $this->isPassedByReference() ) {
+            $reference = '&';
+        }
+
+        return $reference . $this->parameterText;
     }
 
 
@@ -110,4 +115,11 @@ class MockedParameter {
         return $this->reflectionParameter->getName();
     }
 
+
+    /**
+     * @return bool
+     */
+    public function isPassedByReference() {
+        return $this->reflectionParameter->isPassedByReference();
+    }
 }
