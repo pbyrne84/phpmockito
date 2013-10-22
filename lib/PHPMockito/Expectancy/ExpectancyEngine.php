@@ -20,8 +20,6 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var FullyActionedMethodCall[] */
     private $expectedMethodCallMap = array();
 
-    private $callList = array();
-
     /** @var CallMatcher */
     private $callMatcher;
 
@@ -166,6 +164,8 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
 
     /**
      * @param ExpectedMethodCall $methodCall
+     *
+     * @return mixed|void
      */
     public function registerLatestInitialisationSignature( ExpectedMethodCall $methodCall = null ) {
         $this->lastMethodCall = $methodCall;
@@ -177,10 +177,5 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      */
     public function getLastInitialisationMethodCall() {
         return $this->lastMethodCall;
-    }
-
-
-    private function logCall( MethodCall $methodCall ) {
-        $this->callList[ ] = $methodCall;
     }
 }

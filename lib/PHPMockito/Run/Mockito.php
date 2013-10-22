@@ -32,7 +32,7 @@ class Mockito {
      */
     static public function when(  ) {
         $runtimeState = RuntimeState::getInstance();
-        return $runtimeState->newMethodCallActionInitialiser();
+        return $runtimeState->createMethodCallActionInitialiser();
     }
 
 
@@ -46,10 +46,14 @@ class Mockito {
         $dependencyFactory = RuntimeState::getInstance()
                 ->getDependencyFactory();
 
-        return $dependencyFactory->newVerify( $mockedClass, $expectedCallCount );
+        return $dependencyFactory->createVerify( $mockedClass, $expectedCallCount );
     }
 
 
+    /**
+     * @param MethodCall $methodCall
+     * @param int        $expectedCallCount
+     */
     public static function verifyCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
         $dependencyFactory = RuntimeState::getInstance()
                 ->getDependencyFactory();
@@ -60,6 +64,11 @@ class Mockito {
     }
 
 
+    /**
+     * @param string $className
+     *
+     * @return mixed
+     */
     public static function spy( $className ) {
         $dependencyFactory = RuntimeState::getInstance()
                 ->getDependencyFactory();

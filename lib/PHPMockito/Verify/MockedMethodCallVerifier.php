@@ -12,7 +12,6 @@ use PHPMockito\Signature\SignatureGenerator;
 class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTester {
     const CLASS_NAME = __CLASS__;
 
-
     /** @var RuntimeMethodCallLogger */
     private $runtimeMethodCallLogger;
 
@@ -20,9 +19,13 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     private $signatureGenerator;
 
 
-    function __construct( RuntimeMethodCallLogger $runtimeMethodCallLogger, SignatureGenerator $signatureGenerator  ) {
+    /**
+     * @param RuntimeMethodCallLogger $runtimeMethodCallLogger
+     * @param SignatureGenerator      $signatureGenerator
+     */
+    function __construct( RuntimeMethodCallLogger $runtimeMethodCallLogger, SignatureGenerator $signatureGenerator ) {
         $this->runtimeMethodCallLogger = $runtimeMethodCallLogger;
-        $this->signatureGenerator = $signatureGenerator;
+        $this->signatureGenerator      = $signatureGenerator;
     }
 
 
@@ -64,8 +67,9 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     }
 
 
-
-
+    /**
+     * @return string
+     */
     private function generateHeaderMessage() {
         $debug_backtrace = debug_backtrace();
 
@@ -80,6 +84,12 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
     }
 
 
+    /**
+     * @param string     $baseMessage
+     * @param MethodCall $expectedMethodCal
+     *
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     */
     private function raiseAssertionError( $baseMessage, MethodCall $expectedMethodCal ) {
         throw new \PHPUnit_Framework_AssertionFailedError( $baseMessage );
     }
@@ -92,7 +102,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      */
     public function verifyNoMoreInteractions( MockedClass $mockedClass ) {
         $unverifiedMethodCalls = $this->runtimeMethodCallLogger->getUnverifiedMethodCalls( $mockedClass );
-        if ( $unverifiedMethodCalls == '') {
+        if ( $unverifiedMethodCalls == '' ) {
             return;
         }
 

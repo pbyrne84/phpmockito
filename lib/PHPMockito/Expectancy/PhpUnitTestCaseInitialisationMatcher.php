@@ -7,6 +7,12 @@ class PhpUnitTestCaseInitialisationMatcher implements InitialisationCallMatcher 
     const CLASS_NAME = __CLASS__;
 
 
+    /**
+     * @param array $debugBackTrace
+     *
+     * @return bool
+     * @throws \InvalidArgumentException
+     */
     public function checkIsInitialisationCall( array $debugBackTrace ) {
         $testCallInitialisationDepth = 1;
 

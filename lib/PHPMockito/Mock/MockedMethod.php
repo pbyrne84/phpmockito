@@ -44,6 +44,9 @@ class MockedMethod {
     }
 
 
+    /**
+     * @return string
+     */
     public function getCommaSeparatedArguments() {
         $parameterTextList = array();
         foreach ( $this->mockedParameters as $parameter ) {
@@ -53,6 +56,10 @@ class MockedMethod {
         return trim( implode( ', ', $parameterTextList ) );
     }
 
+
+    /**
+     * @return string
+     */
     public function getParameterArrayEntrapment() {
         $parameterTextList = array();
         foreach ( $this->mockedParameters as $parameter ) {
@@ -63,6 +70,9 @@ class MockedMethod {
     }
 
 
+    /**
+     * @return array
+     */
     public function getOptionalArgumentMap() {
         $optionArgumentMap = array();
         foreach( $this->mockedParameters as $parameterIndex => $mockedParameter ){

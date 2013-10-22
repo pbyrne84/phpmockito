@@ -26,7 +26,8 @@ use PHPMockito\Verify\Verify;
 
 class DependencyFactory implements InitialisationCallListenerFactory, MethodCallListenerFactory {
     const CLASS_NAME = __CLASS__;
-    /** @var \PHPMockito\Verify\RuntimeMethodCallLogger  */
+
+    /** @var \PHPMockito\Verify\RuntimeMethodCallLogger */
     private $runtimeMethodLogger;
 
     /** @var \PHPMockito\Mock\MockFactory */
@@ -45,7 +46,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             $this,
             new MockedMethodListFactory(),
             new FileBasedMockedClassCodeLogger(),
-            $this->newToStringAdaptorFactory()
+            $this->createToStringAdaptorFactory()
         );
 
         $this->runtimeMethodLogger         = $this->createRuntimeMethodLogger();
@@ -57,7 +58,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
     /**
      * @return ToStringAdaptorFactory
      */
-    private function newToStringAdaptorFactory() {
+    private function createToStringAdaptorFactory() {
         return new ToStringAdaptorFactory();
     }
 
@@ -76,7 +77,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return CallMatcher
      */
     private function createCallMatcher() {
-        return new CallMatcher( $this->newToStringAdaptorFactory() );
+        return new CallMatcher( $this->createToStringAdaptorFactory() );
     }
 
 
@@ -84,18 +85,18 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return SignatureGenerator
      */
     private function createSignatureGenerator() {
-        $signatureGenerator = new SignatureGenerator( $this->newToStringAdaptorFactory() );
+        $signatureGenerator = new SignatureGenerator( $this->createToStringAdaptorFactory() );
 
         return $signatureGenerator;
     }
 
 
     /**
+     * @param \PHPMockito\Verify\RuntimeMethodCallLogger $runtimeMethodCallLogger
+     *
      * @return MockedMethodCallVerifier
      */
     private function createMockedMethodCallVerifier( RuntimeMethodCallLogger $runtimeMethodCallLogger ) {
-
-
         return new MockedMethodCallVerifier(
             $runtimeMethodCallLogger,
             $this->createSignatureGenerator()
@@ -155,9 +156,9 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      *
      * @return Verify
      */
-    public function newVerify( MockedClass $mockedClass, $expectedCallCount ) {
+    public function createVerify( MockedClass $mockedClass, $expectedCallCount ) {
         return new Verify(
-            $this->newToStringAdaptorFactory(),
+            $this->createToStringAdaptorFactory(),
             $this->mockedMethodCallVerifier,
             $mockedClass,
             $expectedCallCount
@@ -171,10 +172,10 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      *
      * @return MethodCallActionInitialiser
      */
-    public function newMethodCallActionInitialiser( InitialisationCallRegistrar $initialisationCallRegistrar,
-                                                    ExpectedMethodCall $methodCall ) {
+    public function createMethodCallActionInitialiser( InitialisationCallRegistrar $initialisationCallRegistrar,
+                                                       ExpectedMethodCall $methodCall ) {
         return new MethodCallActionInitialiser(
-            $this->newToStringAdaptorFactory(),
+            $this->createToStringAdaptorFactory(),
             $initialisationCallRegistrar,
             $methodCall
         );

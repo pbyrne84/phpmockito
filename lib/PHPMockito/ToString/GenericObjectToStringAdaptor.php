@@ -24,6 +24,11 @@ class GenericObjectToStringAdaptor extends ToStringAdaptor {
     }
 
 
+    /**
+     * @param int $indentation
+     *
+     * @return string
+     */
     function toString( $indentation = 0 ) {
         $toStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( (array)$this->value );
         $toStringAdaptor->setPrefix( get_class( $this->value ) );

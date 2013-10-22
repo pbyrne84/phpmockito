@@ -116,6 +116,11 @@ class MockFactory {
     }
 
 
+    /**
+     * @param $className
+     *
+     * @return object
+     */
     public function spy( $className ) {
         $reflectionClass = new \ReflectionClass( $className );
 

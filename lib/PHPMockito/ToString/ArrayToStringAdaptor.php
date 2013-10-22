@@ -24,6 +24,11 @@ class ArrayToStringAdaptor extends  ToStringAdaptor{
     }
 
 
+    /**
+     * @param int $indentation
+     *
+     * @return string
+     */
     function toString( $indentation = 0 ) {
         $string =  ' ('. "\n";
         foreach ( $this->array as $key => $value ) {

@@ -112,8 +112,11 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
-    public function newMethodCallActionInitialiser() {
-        return $this->dependencyFactory->newMethodCallActionInitialiser(
+    /**
+     * @return \PHPMockito\Action\MethodCallActionInitialiser
+     */
+    public function createMethodCallActionInitialiser() {
+        return $this->dependencyFactory->createMethodCallActionInitialiser(
             $this,
             $this->getLastInitialisationMethodCall()
         );

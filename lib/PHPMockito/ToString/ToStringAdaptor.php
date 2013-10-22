@@ -25,6 +25,12 @@ abstract class  ToStringAdaptor {
     }
 
 
+    /**
+     * @param string $lines
+     * @param int $indentation
+     *
+     * @return string
+     */
     protected function padOutput( $lines, $indentation ) {
         $paddedOutputLines = array();
         $lines             = explode( "\n", $lines );

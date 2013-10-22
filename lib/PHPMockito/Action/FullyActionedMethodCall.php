@@ -91,6 +91,9 @@ class FullyActionedMethodCall implements MethodCall {
     }
 
 
+    /**
+     * @return string
+     */
     function __toString() {
         return print_r( \PHPUnit_Util_Type::toArray( $this ), true );
     }

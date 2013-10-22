@@ -31,8 +31,6 @@ class DebugBackTraceMethodCall extends ExpectedMethodCall {
 
 
     /**
-     *
-     * /**
      * @return array
      */
     public function getDebugBacktrace() {

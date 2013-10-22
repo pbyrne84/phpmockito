@@ -25,13 +25,13 @@ class MockClassCodeGenerator {
         $namespace = $reflectionClass->getNamespaceName();
 
         $defaultValueMap = $this->convertMethodListToClassMethodsDefaultParameterMap( $mockedMethodList );
-        $methodCode = $this->convertMethodListToMethodCode( $methodCodeGenerator, $mockedMethodList );
+        $methodCode      = $this->convertMethodListToMethodCode( $methodCodeGenerator, $mockedMethodList );
 
         if ( $reflectionClass->isInterface() ) {
-            $substitutionKeyword = 'implements';
+            $substitutionKeyword    = 'implements';
             $mockInterfaceSeparator = ', ';
-        }else{
-            $substitutionKeyword = 'extends';
+        } else {
+            $substitutionKeyword    = 'extends';
             $mockInterfaceSeparator = ' implements ';
         }
 
@@ -75,36 +75,21 @@ TEXT;
 
 
     /**
-     * @param Method\MethodCodeGenerator $methodCodeGenerator
-     * @param array|MockedMethod[]       $mockedMethodList
-     *
-     * @return string
-     */
-    private function convertMethodListToMethodCode( MethodCodeGenerator $methodCodeGenerator, array $mockedMethodList ) {
-        $code = '';
-        foreach ( $mockedMethodList as $mockedMethod ) {
-            $code .=  $methodCodeGenerator->generateMethodCode( $mockedMethod );
-        }
-
-        return rtrim( trim( $code, ' ' ) );
-    }
-
-    /**
      * @param array|MockedMethod[] $mockedMethodList
      *
      * @return string
      */
-    private function convertMethodListToClassMethodsDefaultParameterMap(  array $mockedMethodList ){
+    private function convertMethodListToClassMethodsDefaultParameterMap( array $mockedMethodList ) {
         $defaultValueCode = '';
         foreach ( $mockedMethodList as $mockedMethod ) {
             $mapCode = 'array(';
-            foreach ( $mockedMethod->getOptionalArgumentMap() as $index => $mockedArgument) {
-                $mapCode .=  $index . '=> ' . print_r( $mockedArgument, true ) . ',';
+            foreach ( $mockedMethod->getOptionalArgumentMap() as $index => $mockedArgument ) {
+                $mapCode .= $index . '=> ' . print_r( $mockedArgument, true ) . ',';
             }
 
             $mapCode = rtrim( $mapCode, "," );
-            $mapCode.= '),';
-           // $mapCode = $mockedMethod->getOptionalArgumentMap();
+            $mapCode .= '),';
+            // $mapCode = $mockedMethod->getOptionalArgumentMap();
 
             $defaultValueCode .= <<<TXT
             '{$mockedMethod->getName()}' => {$mapCode}
@@ -112,8 +97,24 @@ TEXT;
 TXT;
         }
 
-
         return $defaultValueCode;
 
+    }
+
+
+    /**
+     * @param Method\MethodCodeGenerator $methodCodeGenerator
+     * @param array|MockedMethod[]       $mockedMethodList
+     *
+     * @return string
+     */
+    private function convertMethodListToMethodCode( MethodCodeGenerator $methodCodeGenerator,
+                                                    array $mockedMethodList ) {
+        $code = '';
+        foreach ( $mockedMethodList as $mockedMethod ) {
+            $code .= $methodCodeGenerator->generateMethodCode( $mockedMethod );
+        }
+
+        return rtrim( trim( $code, ' ' ) );
     }
 }

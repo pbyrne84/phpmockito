@@ -32,6 +32,10 @@ function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
 }
 
 
+/**
+ * @param MethodCall $methodCall
+ * @param int        $expectedCallCount
+ */
 function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
     Mockito::verifyCall( $methodCall, $expectedCallCount );
 }
@@ -44,6 +48,11 @@ function verifyNoMoreInteractions( $mockedClass ) {
 }
 
 
+/**
+ * @param string $className
+ *
+ * @return mixed
+ */
 function spy( $className ) {
     return Mockito::spy( $className );
 }
