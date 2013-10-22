@@ -30,15 +30,16 @@ class Mockito {
     /**
      * @return \PHPMockito\Action\MethodCallActionInitialiser
      */
-    static public function when(  ) {
+    static public function when() {
         $runtimeState = RuntimeState::getInstance();
+
         return $runtimeState->createMethodCallActionInitialiser();
     }
 
 
     /**
-     * @param MockedClass $mockedClass
-     * @param int         $expectedCallCount
+     * @param MockedClass|mixed $mockedClass
+     * @param int               $expectedCallCount
      *
      * @return \PHPMockito\Verify\Verify
      */

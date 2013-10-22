@@ -22,8 +22,8 @@ function mock( $className ) {
 
 
 /**
- * @param MockedClass $mockedClass
- * @param int         $expectedCallCount
+ * @param MockedClass|mixed $mockedClass
+ * @param int               $expectedCallCount
  *
  * @return \PHPMockito\Verify\Verify
  */
