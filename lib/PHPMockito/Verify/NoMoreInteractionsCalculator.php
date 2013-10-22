@@ -32,7 +32,7 @@ class NoMoreInteractionsCalculator {
     public function calculateNonVerifiedInteractions( array $actualInteractions,
                                                       array $verifiedInteractions,
                                                       MockedClass $mockedClass ) {
-        $classInstanceReference = $mockedClass->getInstanceReference();
+        $classInstanceReference     = $mockedClass->getInstanceReference();
         $filteredActualInteractions = $this->filterInteractionOnInstanceName(
             $actualInteractions,
             $classInstanceReference
@@ -43,16 +43,18 @@ class NoMoreInteractionsCalculator {
             $classInstanceReference
         );
 
+        $callCounter             = 0;
         $nonVerifiedInteractions = '';
         foreach ( $filteredActualInteractions as $message => $interaction ) {
             if ( !array_key_exists( $message, $filteredVerifiedInteractions ) ) {
-                $nonVerifiedInteractions .= $message . "\n\n";
+                $nonVerifiedInteractions .= 'Call ' . ++$callCounter . ":\n" .
+                        $message . "\n\n";
             }
         }
 
 
         if ( $nonVerifiedInteractions !== '' ) {
-            $nonVerifiedInteractions = 'Method calls not verified for ' .
+            $nonVerifiedInteractions = $callCounter . ' Method calls NOT verified for ' .
                     get_class( $mockedClass ) . ' (' . $classInstanceReference . ') :' . "\n\n"
                     . $nonVerifiedInteractions;
         }

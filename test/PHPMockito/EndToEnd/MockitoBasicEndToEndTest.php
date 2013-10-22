@@ -20,14 +20,14 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
-        $this->assertEquals( 'MOO', $DOMDocument->cloneNode( true ), 'Returns the mocked value when called in the test');
+        $this->assertEquals( 'MOO', $DOMDocument->cloneNode( true ), 'Returns the mocked value when called in the test' );
 
         verify( $DOMDocument, 1 )->cloneNode( true );
         verify( $DOMDocument, 2 )->cloneNode();
         verify( $DOMDocument, 2 )->cloneNode( null );
 
         verifyMethodCall( $methodCall1 );
-        verifyMethodCall( $methodCall2, 2  );
+        verifyMethodCall( $methodCall2, 2 );
     }
 
 
@@ -42,7 +42,6 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $usageTestClass = new UsageTestClass( $DOMDocument );
         $DOMNode        = $usageTestClass->testTrue();
     }
-
 
 
     public function test_spy_returnValue() {
@@ -64,14 +63,15 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 <xml/>
 XML;
 
-        $this->assertEquals( $expectedXml, trim($usageTestClass->testSpyParentCall() ) );
+        $this->assertEquals( $expectedXml, trim( $usageTestClass->testSpyParentCall() ) );
 
         verify( $DOMDocument, 1 )->cloneNode( true );
         verify( $DOMDocument, 2 )->cloneNode();
         verify( $DOMDocument, 2 )->cloneNode( null );
 
         verifyMethodCall( $methodCall1 );
-        verifyMethodCall( $methodCall2, 2  );
+        verifyMethodCall( $methodCall2, 2 );
+        verifyNoMoreInteractions( $DOMDocument );
     }
 }
  

@@ -58,10 +58,12 @@ class MockFactory {
     public function mock( $className ) {
         $reflectionClass = new \ReflectionClass( $className );
 
+        $mockedMethods = $this->mockedMethodListFactory->createPublicListFromReflectionClass( $reflectionClass );
+
         return $this->createMock(
             new MockMethodCodeGenerator(),
             $reflectionClass,
-            $this->mockedMethodListFactory->createPublicListFromReflectionClass( $reflectionClass )
+            $mockedMethods
         );
     }
 
