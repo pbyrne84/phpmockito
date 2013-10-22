@@ -41,7 +41,7 @@ function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
 }
 
 /**
- * @param MockedClass $mockedClass
+ * @param MockedClass|mixed $mockedClass
  */
 function verifyNoMoreInteractions( $mockedClass ) {
     Mockito::verifyNoMoreInteractions( $mockedClass );

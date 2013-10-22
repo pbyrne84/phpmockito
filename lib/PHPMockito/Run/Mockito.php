@@ -81,7 +81,7 @@ class Mockito {
 
 
     /**
-     * @param MockedClass $mockedClass
+     * @param MockedClass|mixed $mockedClass
      */
     public static function verifyNoMoreInteractions( $mockedClass ) {
         $dependencyFactory = RuntimeState::getInstance()
