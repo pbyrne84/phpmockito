@@ -14,6 +14,7 @@ use PHPMockito\Expectancy\InitialisationCallListenerFactory;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\Expectancy\PhpUnitTestCaseInitialisationMatcher;
 use PHPMockito\Mock\Logger\FileBasedMockedClassCodeLogger;
+use PHPMockito\Mock\Logger\NullMockedClassCodeLogger;
 use PHPMockito\Mock\MockClassCodeGenerator;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Mock\MockedMethodListFactory;
@@ -45,7 +46,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             new MockClassCodeGenerator(),
             $this,
             new MockedMethodListFactory(),
-            new FileBasedMockedClassCodeLogger(),
+            new NullMockedClassCodeLogger(),
             $this->createToStringAdaptorFactory()
         );
 
