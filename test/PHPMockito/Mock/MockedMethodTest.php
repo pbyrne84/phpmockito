@@ -34,7 +34,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
-            '$namespaceURI = null,  $qualifiedName = null, \DOMDocumentType $docType = null',
+            '$namespaceURI = null, $qualifiedName = null, \DOMDocumentType $docType = null',
             $mockedMethod->getSignature(),
             'signature matches'
         );
@@ -46,7 +46,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
-            '\DOMDocument $domDocument1, array $requiredArray,  $nonTypeHint, \Closure $closure1',
+            '\DOMDocument $domDocument1, array $requiredArray, $nonTypeHint, \Closure $closure1',
             $mockedMethod->getSignature(),
             'signature matches'
         );
@@ -58,7 +58,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
-            '\DOMDocument $domDocument1 = NULL, array $requiredArray = array(),  $nonTypeHint = \'\', \Closure $closure1 = NULL',
+            '\DOMDocument $domDocument1 = NULL, array $requiredArray = array(), $nonTypeHint = \'\', \Closure $closure1 = NULL',
             $mockedMethod->getSignature(),
             'signature matches'
         );
