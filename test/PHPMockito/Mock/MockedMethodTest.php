@@ -63,5 +63,126 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
             'signature matches'
         );
     }
+
+
+    public function test_getCommaSeparatedArguments_hasParameters() {
+        $reflectionMethod     = mock( '\ReflectionMethod' );
+        $reflectionParameter1 = $this->createReflectionParameter( true, 'parameterA' );
+        $reflectionParameter2 = $this->createReflectionParameter( false, 'parameterB' );
+        $reflectionParameter3 = $this->createReflectionParameter( true, 'parameterC' );
+
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array( $reflectionParameter1, $reflectionParameter2, $reflectionParameter3 ) );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            '$parameterA, $parameterB, $parameterC',
+            $mockedMethod->getCommaSeparatedArguments()
+        );
+    }
+
+
+    /**
+     * @param boolean $owningParameterClassIsInternal
+     *
+     * @param string  $name
+     *
+     * @internal param string $typHint
+     * @return \ReflectionParameter
+     */
+    private function createReflectionParameter( $owningParameterClassIsInternal, $name ) {
+        $parentClass = mock( '\ReflectionClass' );
+
+        $reflectionParameter = mock( '\ReflectionParameter' );
+        when( $reflectionParameter->getDeclaringClass() )
+                ->thenReturn( $parentClass );
+
+        when( $reflectionParameter->getName() )
+                ->thenReturn( $name );
+
+        when( $parentClass->isInternal() )
+                ->thenReturn( $owningParameterClassIsInternal );
+
+        return $reflectionParameter;
+    }
+
+
+    public function test_getCommaSeparatedArguments_noParameters() {
+        $reflectionMethod = mock( '\ReflectionMethod' );
+
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array() );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            '',
+            $mockedMethod->getCommaSeparatedArguments()
+        );
+    }
+
+
+    public function test_getVisibilityAsString_public() {
+        $reflectionMethod     = mock( '\ReflectionMethod' );
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array( ) );
+
+        when( $reflectionMethod->isPublic() )
+                ->thenReturn( true );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            'public',
+            $mockedMethod->getVisibilityAsString()
+        );
+    }
+
+
+    public function test_getVisibilityAsString_protected() {
+        $reflectionMethod     = mock( '\ReflectionMethod' );
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array( ) );
+
+        when( $reflectionMethod->isProtected() )
+                ->thenReturn( true );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            'protected',
+            $mockedMethod->getVisibilityAsString()
+        );
+    }
+
+
+
+    public function test_getVisibilityAsString_defaultEmpty() {
+        $reflectionMethod     = mock( '\ReflectionMethod' );
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array( ) );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            '',
+            $mockedMethod->getVisibilityAsString()
+        );
+    }
+
+
+    /**
+     * @expectedException \UnexpectedValueException
+     */
+    public function test_getVisibilityAsString_privateThrowsException() {
+        $reflectionMethod = mock( '\ReflectionMethod' );
+        when( $reflectionMethod->getParameters() )
+                ->thenReturn( array() );
+
+        when( $reflectionMethod->isPrivate() )
+                ->thenReturn( true );
+
+        $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->assertEquals(
+            '',
+            $mockedMethod->getVisibilityAsString()
+        );
+    }
 }
 

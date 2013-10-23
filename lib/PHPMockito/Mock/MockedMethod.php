@@ -75,7 +75,7 @@ class MockedMethod {
      */
     public function getOptionalArgumentMap() {
         $optionArgumentMap = array();
-        foreach( $this->mockedParameters as $parameterIndex => $mockedParameter ){
+        foreach ( $this->mockedParameters as $parameterIndex => $mockedParameter ) {
             if ( $mockedParameter->isOptionalValue() ) {
                 $optionArgumentMap[ $parameterIndex ] = $mockedParameter->getDefaultValue();
             }
@@ -83,7 +83,6 @@ class MockedMethod {
 
         return $optionArgumentMap;
     }
-
 
 
     /**
@@ -101,16 +100,5 @@ class MockedMethod {
 
         return '';
     }
-
-
-    /**
-     * @return bool
-     */
-    public function isInternal() {
-        return $this->reflectionMethod
-                ->getDeclaringClass()
-                ->isInternal();
-    }
-
 
 }
