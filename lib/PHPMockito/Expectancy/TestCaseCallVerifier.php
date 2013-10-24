@@ -27,9 +27,12 @@ class TestCaseCallVerifier {
      * @return bool
      */
     public function callIsInTestCase( DebugBackTraceMethodCall $methodCall ) {
+        if( $methodCall->getMethod() == '__destruct' ){
+            return false;
+        }
+
         foreach ( $this->initialisationCallMatcherList as $initialisationCallMatcher ) {
             if ( $initialisationCallMatcher->checkIsInitialisationCall( $methodCall->getDebugBacktrace() ) ) {
-
                 return true;
             }
         }
