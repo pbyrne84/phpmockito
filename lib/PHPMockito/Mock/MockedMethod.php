@@ -37,7 +37,7 @@ class MockedMethod {
     public function getSignature() {
         $parameterTextList = array();
         foreach ( $this->mockedParameters as $parameter ) {
-            $parameterTextList[ ] = $parameter->renderSignature();
+            $parameterTextList[ ] = $parameter->getTextSignature();
         }
 
         return trim( implode( ', ', $parameterTextList ) );

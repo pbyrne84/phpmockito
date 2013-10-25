@@ -15,12 +15,14 @@ class MockedParameter {
     function __construct( \ReflectionParameter $reflectionParameter ) {
         $this->reflectionParameter = $reflectionParameter;
 
-        $parameterText = $this->getTypeHint( $this->reflectionParameter ) . ' $' . $this->reflectionParameter->getName();
-        $defaultValue  = $this->calculateDefaultValue();
+        $parameterText = $this->getTypeHint( $this->reflectionParameter ) .
+                ' ' . $this->generateByReferenceIfNeeded() .
+                '$' . $this->reflectionParameter->getName();
 
+        $defaultValue = $this->calculateDefaultValue();
         $parameterText .= $defaultValue;
 
-        $this->parameterText = trim( $parameterText );
+        $this->textSignature = trim( $parameterText );
     }
 
 
@@ -41,6 +43,24 @@ class MockedParameter {
         }
 
         return '';
+    }
+
+
+    /**
+     * @return string
+     */
+    private function generateByReferenceIfNeeded() {
+        return $this->isPassedByReference()
+                ? '&'
+                : '';
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isPassedByReference() {
+        return $this->reflectionParameter->isPassedByReference();
     }
 
 
@@ -98,13 +118,8 @@ class MockedParameter {
     /**
      * @return string
      */
-    public function renderSignature() {
-        $reference = '';
-        if ( $this->isPassedByReference() ) {
-            $reference = '&';
-        }
-
-        return $reference . $this->parameterText;
+    public function getTextSignature() {
+        return $this->textSignature;
     }
 
 
@@ -113,13 +128,5 @@ class MockedParameter {
      */
     public function getName() {
         return $this->reflectionParameter->getName();
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isPassedByReference() {
-        return $this->reflectionParameter->isPassedByReference();
     }
 }

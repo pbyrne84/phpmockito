@@ -6,6 +6,7 @@ namespace PHPMockito\Run;
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\MethodCall;
+use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 
 class RuntimeState implements InitialisationCallRegistrar {
@@ -14,11 +15,13 @@ class RuntimeState implements InitialisationCallRegistrar {
     /** @var RuntimeState */
     private static $instance;
 
+    /** @var ExpectancyEngine */
     private $expectancyEngine;
 
     /** @var \PHPMockito\Run\DependencyFactory */
     private $dependencyFactory;
 
+    /** @var bool */
     private $overrideIsTestCaseCheck = false;
 
 
@@ -99,16 +102,16 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
-    /**
-     * @return ExpectedMethodCall
-     */
-    public function getLastInitialisationMethodCall() {
-        return $this->expectancyEngine->getLastInitialisationMethodCall();
+    public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
+        return $this->expectancyEngine->hasMockMethodAction( $actualProductionMethodCall );
     }
 
 
-    public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
-       return $this->expectancyEngine->hasMockMethodAction( $actualProductionMethodCall );
+    /**
+     * @param string $fullyQualifiedClassName
+     */
+    public function addIgnorableNonProductionTestClass( $fullyQualifiedClassName ) {
+        $this->dependencyFactory->addIgnorableNonProductionTestClass( $fullyQualifiedClassName );
     }
 
 
@@ -120,6 +123,14 @@ class RuntimeState implements InitialisationCallRegistrar {
             $this,
             $this->getLastInitialisationMethodCall()
         );
+    }
+
+
+    /**
+     * @return ExpectedMethodCall
+     */
+    public function getLastInitialisationMethodCall() {
+        return $this->expectancyEngine->getLastInitialisationMethodCall();
     }
 }
  

@@ -8,6 +8,7 @@ use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\CallMatching\CallMatcher;
+use PHPMockito\Expectancy\CustomInitialisationCallMatcher;
 use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\TestCaseCallVerifier;
 use PHPMockito\Expectancy\InitialisationCallListenerFactory;
@@ -40,13 +41,15 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
     /** @var MockedMethodCallVerifier */
     private $mockedMethodCallVerifier;
 
+    /** @var array  */
+    private $ignorableNonProductionTestClassSet = array();
 
     function __construct( InitialisationCallRegistrar $initialisationCallRegistrar ) {
         $this->mockFactory = new MockFactory(
             new MockClassCodeGenerator(),
             $this,
             new MockedMethodListFactory(),
-            new NullMockedClassCodeLogger(),
+            new FileBasedMockedClassCodeLogger(),
             $this->createToStringAdaptorFactory()
         );
 
@@ -146,7 +149,10 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     public function createTestCaseCallVerifier() {
         return new TestCaseCallVerifier(
-            array( new PhpUnitTestCaseInitialisationMatcher() )
+            array(
+                new PhpUnitTestCaseInitialisationMatcher(),
+                new CustomInitialisationCallMatcher( array_values( $this->ignorableNonProductionTestClassSet ) )
+            )
         );
     }
 
@@ -180,6 +186,13 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             $initialisationCallRegistrar,
             $methodCall
         );
+    }
+
+    /**
+     * @param string $fullyQualifiedClassName
+     */
+    public function addIgnorableNonProductionTestClass( $fullyQualifiedClassName ) {
+        $this->ignorableNonProductionTestClassSet[ $fullyQualifiedClassName ] = $fullyQualifiedClassName;
     }
 
 
