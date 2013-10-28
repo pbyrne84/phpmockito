@@ -18,6 +18,10 @@ class MockMethodCodeGenerator implements MethodCodeGenerator {
         return  <<<TXT
 
         {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
+            if( '{$mockedMethod->getName()}' == '__sleep' ){
+                return array('mockedClassConstructorParams','defaultValueMap');
+            }
+
             \$methodCall = new DebugBackTraceMethodCall(
                 \$this->mockedClassConstructorParams->getToStringAdaptorFactory(),
                 \$this,

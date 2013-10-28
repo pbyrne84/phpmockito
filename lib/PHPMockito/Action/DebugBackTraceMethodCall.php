@@ -26,7 +26,16 @@ class DebugBackTraceMethodCall extends ExpectedMethodCall {
                           array $arguments,
                           array $debugBacktrace ) {
         parent::__construct( $toStringAdaptorFactory, $class, $method, $arguments );
-        $this->debugBacktrace = $debugBacktrace;
+        $this->debugBacktrace = $this->cleanDebugBackTrace( $debugBacktrace );
+    }
+
+
+    private function cleanDebugBackTrace( $debugBacktrace ) {
+        foreach ( $debugBacktrace as $row => $valueMap ) {
+            unset( $debugBacktrace[ $row ][ 'args' ]);
+        }
+
+        return $debugBacktrace;
     }
 
 
