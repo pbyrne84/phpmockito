@@ -15,14 +15,13 @@ class MockMethodCodeGenerator implements MethodCodeGenerator {
      * @return string
      */
     public function generateMethodCode( MockedMethod $mockedMethod) {
-        return  <<<TXT
-
-        {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
-            if( '{$mockedMethod->getName()}' == '__sleep' ){
-                return array('mockedClassConstructorParams','defaultValueMap');
-            }
-
-            \$methodCall = new DebugBackTraceMethodCall(
+        if ( $mockedMethod->getName() == '__sleep' ) {
+            $body = <<<TXT
+return array( 'mockedClassConstructorParams', 'defaultValueMap' );
+TXT;
+        }else{
+            $body = <<<TXT
+\$methodCall = new DebugBackTraceMethodCall(
                 \$this->mockedClassConstructorParams->getToStringAdaptorFactory(),
                 \$this,
                 '{$mockedMethod->getName()}',
@@ -32,6 +31,13 @@ class MockMethodCodeGenerator implements MethodCodeGenerator {
 
             \$this->mockedClassConstructorParams->registerCall( \$methodCall );
             return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
+TXT;
+        }
+
+        return <<<TXT
+
+        {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
+            $body
         }
 
 TXT;
