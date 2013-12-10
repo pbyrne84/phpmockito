@@ -8,6 +8,7 @@ spl_autoload_register( function ( $className ) {
         return;
     }
 
+    $className = str_replace( '\\', '/', $className );
     $classPath = __DIR__ . '/' . $className . '.php';
     if( !include_once $classPath ){
         throw new RuntimeException("Could not include " . $classPath );
