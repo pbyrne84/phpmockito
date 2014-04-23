@@ -4,7 +4,7 @@ namespace PHPMockito\Expectancy;
 
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 
 interface InitialisationCallRegistrar {
     const INTERFACE_InitalisationCallRegistrar = __CLASS__;
@@ -17,11 +17,11 @@ interface InitialisationCallRegistrar {
 
 
     /**
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return mixed|null
      */
-    public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall );
+    public function retrieveMockMethodAction( CallableMethod $actualProductionMethodCall );
 
 
     /**
@@ -31,15 +31,15 @@ interface InitialisationCallRegistrar {
 
 
     /**
-     * @return MethodCall
+     * @return CallableMethod
      */
     public function getLastInitialisationMethodCall();
 
 
     /**
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    public function hasMockMethodAction( MethodCall $actualProductionMethodCall );
+    public function hasMockMethodAction( CallableMethod $actualProductionMethodCall );
 }

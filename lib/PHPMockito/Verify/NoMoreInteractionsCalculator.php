@@ -3,7 +3,7 @@
 namespace PHPMockito\Verify;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
 
@@ -23,8 +23,8 @@ class NoMoreInteractionsCalculator {
 
 
     /**
-     * @param MethodCall[]                 $actualInteractions
-     * @param MethodCall[]                 $verifiedInteractions
+     * @param CallableMethod[]                 $actualInteractions
+     * @param CallableMethod[]                 $verifiedInteractions
      * @param \PHPMockito\Mock\MockedClass $mockedClass
      *
      * @return string
@@ -64,10 +64,10 @@ class NoMoreInteractionsCalculator {
 
 
     /**
-     * @param MethodCall[] $interactions
+     * @param CallableMethod[] $interactions
      * @param string       $classInstanceReference
      *
-     * @return MethodCall[]
+     * @return CallableMethod[]
      */
     private function filterInteractionOnInstanceName( array $interactions, $classInstanceReference ) {
         $filteredInteractions = array();

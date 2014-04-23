@@ -1,5 +1,5 @@
 <?php
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Run\Mockito;
 
@@ -33,10 +33,10 @@ function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
 
 
 /**
- * @param MethodCall $methodCall
+ * @param CallableMethod $methodCall
  * @param int        $expectedCallCount
  */
-function verifyMethodCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
+function verifyMethodCall( CallableMethod $methodCall, $expectedCallCount = 1 ) {
     Mockito::verifyCall( $methodCall, $expectedCallCount );
 }
 

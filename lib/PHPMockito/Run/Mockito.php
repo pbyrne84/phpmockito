@@ -4,7 +4,7 @@ namespace PHPMockito\Run;
 
 
 use PHPMockito\Action\ExpectedMethodCall;
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Mock\MockedClass;
 
@@ -52,10 +52,10 @@ class Mockito {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param CallableMethod $methodCall
      * @param int        $expectedCallCount
      */
-    public static function verifyCall( MethodCall $methodCall, $expectedCallCount = 1 ) {
+    public static function verifyCall( CallableMethod $methodCall, $expectedCallCount = 1 ) {
         $dependencyFactory = RuntimeState::getInstance()
                 ->getDependencyFactory();
 

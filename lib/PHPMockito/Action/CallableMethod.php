@@ -3,7 +3,7 @@
 namespace PHPMockito\Action;
 
 
-interface MethodCall {
+interface CallableMethod {
     const INTERFACE_MethodCall = __CLASS__;
 
 
@@ -44,6 +44,12 @@ interface MethodCall {
      * @return string
      */
     public function convertToString();
+
+
+    /**
+     * @return string
+     */
+    public function hashArguments();
 
 
 }

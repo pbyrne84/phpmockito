@@ -44,11 +44,11 @@ class MethodCallListener {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param CallableMethod $methodCall
      *
      * @return bool
      */
-    public function hasSpyCall( MethodCall $methodCall ) {
+    public function hasSpyCall( CallableMethod $methodCall ) {
         return $this->initialisationCallRegistrar->hasMockMethodAction( $methodCall );
     }
 }

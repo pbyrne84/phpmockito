@@ -7,7 +7,7 @@ use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Action\MethodCallAction;
 use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
@@ -26,7 +26,7 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var \PHPMockito\Verify\MockedMethodCallLogger */
     private $mockedMethodCallLogger;
 
-    /** @var  MethodCall */
+    /** @var  CallableMethod */
     private $lastMethodCall;
 
     /** @var TestCaseCallVerifier */
@@ -56,23 +56,24 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
             $this->expectedMethodCallMap[ $convertMethodCallToMapKey ] = array();
         }
 
-        $this->expectedMethodCallMap[ $convertMethodCallToMapKey ][] = $fullyActionedMethodCall;
+        $this->expectedMethodCallMap[ $convertMethodCallToMapKey ][ ] = $fullyActionedMethodCall;
     }
 
 
-    private function convertMethodCallToMapKey( MethodCall $methodCall  ){
-        return $methodCall->getClass()->getInstanceReference() . '->' . $methodCall->getMethod();
+    private function convertMethodCallToMapKey( CallableMethod $methodCall ) {
+        return $methodCall->getClass()
+                ->getInstanceReference() . '->' . $methodCall->getMethod() . '(' . $methodCall->hashArguments() . ')';
     }
 
 
     /**
-     * @param \PHPMockito\Action\MethodCall $actualProductionMethodCall
+     * @param \PHPMockito\Action\CallableMethod $actualProductionMethodCall
      *
      * @throws \Exception - if exception has been set as response
      * @throws \UnexpectedValueException
      * @return mixed|null - if has been set as response
      */
-    public function retrieveMockMethodAction( MethodCall $actualProductionMethodCall ) {
+    public function retrieveMockMethodAction( CallableMethod $actualProductionMethodCall ) {
         $isProductionMethodCall = $this->isProductionMethodCall( $actualProductionMethodCall );
         if ( $isProductionMethodCall ) {
             $this->mockedMethodCallLogger->logMethodCall( $actualProductionMethodCall );
@@ -88,10 +89,10 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
                         ->isStrictMode() && $isProductionMethodCall
         ) {
             throw new UnexpectedCallException(
-                "Unexpected call " . $actualProductionMethodCall
-                        ->getClass()
-                        ->getInstanceReference() .
-                "->" . $actualProductionMethodCall->getMethod()
+                    "Unexpected call " . $actualProductionMethodCall
+                            ->getClass()
+                            ->getInstanceReference() .
+                    "->" . $actualProductionMethodCall->getMethod()
             );
         }
 
@@ -100,27 +101,26 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
 
 
     /**
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    private function isProductionMethodCall( MethodCall $actualProductionMethodCall ) {
+    private function isProductionMethodCall( CallableMethod $actualProductionMethodCall ) {
         return $actualProductionMethodCall instanceof DebugBackTraceMethodCall &&
         !$this->testCaseCallVerifier->callIsInTestCase( $actualProductionMethodCall );
     }
 
 
     /**
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return null|MethodCallAction
      */
-    private function findRegisteredCallAction( MethodCall $actualProductionMethodCall ) {
+    private function findRegisteredCallAction( CallableMethod $actualProductionMethodCall ) {
         $methodCallToMapKey = $this->convertMethodCallToMapKey( $actualProductionMethodCall );
-        if( !isset( $this->expectedMethodCallMap[ $methodCallToMapKey ]) ){
+        if ( !isset( $this->expectedMethodCallMap[ $methodCallToMapKey ] ) ) {
             return null;
         }
-
 
         /** @var $expectedMethodCall FullyActionedMethodCall */
         foreach ( $this->expectedMethodCallMap[ $methodCallToMapKey ] as $expectedMethodCall ) {
@@ -152,13 +152,13 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
 
 
     /**
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    public function hasMockMethodAction( MethodCall $actualProductionMethodCall ) {
+    public function hasMockMethodAction( CallableMethod $actualProductionMethodCall ) {
         return !$this->isProductionMethodCall( $actualProductionMethodCall )
-         ||  null !== $this->findRegisteredCallAction( $actualProductionMethodCall );
+        || null !== $this->findRegisteredCallAction( $actualProductionMethodCall );
     }
 
 

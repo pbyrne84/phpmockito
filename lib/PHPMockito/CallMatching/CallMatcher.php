@@ -2,7 +2,7 @@
 
 namespace PHPMockito\CallMatching;
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class CallMatcher {
@@ -21,12 +21,12 @@ class CallMatcher {
 
 
     /**
-     * @param MethodCall $expectedMethodCall
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $expectedMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    public function matchCallAndSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
+    public function matchCallAndSignature( CallableMethod $expectedMethodCall, CallableMethod $actualProductionMethodCall ) {
         return $this->matchCall( $expectedMethodCall, $actualProductionMethodCall )
         && $this->matchSignature( $expectedMethodCall, $actualProductionMethodCall );
 
@@ -34,12 +34,12 @@ class CallMatcher {
 
 
     /**
-     * @param MethodCall $expectedMethodCall
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $expectedMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    public function matchCall( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
+    public function matchCall( CallableMethod $expectedMethodCall, CallableMethod $actualProductionMethodCall ) {
         if ( !$this->runMatch( $expectedMethodCall->getClass(), $actualProductionMethodCall->getClass() ) ) {
             return false;
         }
@@ -67,12 +67,12 @@ class CallMatcher {
 
 
     /**
-     * @param MethodCall $expectedMethodCall
-     * @param MethodCall $actualProductionMethodCall
+     * @param CallableMethod $expectedMethodCall
+     * @param CallableMethod $actualProductionMethodCall
      *
      * @return bool
      */
-    public function matchSignature( MethodCall $expectedMethodCall, MethodCall $actualProductionMethodCall ) {
+    public function matchSignature( CallableMethod $expectedMethodCall, CallableMethod $actualProductionMethodCall ) {
         if ( $expectedMethodCall->getArgumentCount() != $actualProductionMethodCall->getArgumentCount() ) {
             return false;
         }

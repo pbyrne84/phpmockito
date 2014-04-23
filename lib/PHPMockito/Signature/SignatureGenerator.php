@@ -3,7 +3,7 @@
 namespace PHPMockito\Signature;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class SignatureGenerator {
@@ -21,7 +21,7 @@ class SignatureGenerator {
     }
 
 
-    public function generateMessage( MethodCall $methodCall ) {
+    public function generateMessage( CallableMethod $methodCall ) {
         $reflectionClass = new \ReflectionClass( get_class( $methodCall->getClass() ) );
         $methodSignature = get_class( $methodCall->getClass() ) . '->' . $methodCall->getMethod() . "(" . PHP_EOL;
         foreach ( $methodCall->getArguments() as $index => $argument ) {
@@ -37,12 +37,12 @@ class SignatureGenerator {
 
     /**
      * @param \ReflectionClass $reflectionClass
-     * @param MethodCall       $methodCall
+     * @param CallableMethod       $methodCall
      * @param int              $index
      *
      * @return string
      */
-    private function getArgumentName( \ReflectionClass $reflectionClass, MethodCall $methodCall, $index ) {
+    private function getArgumentName( \ReflectionClass $reflectionClass, CallableMethod $methodCall, $index ) {
         $reflectionMethod = $reflectionClass->getMethod( $methodCall->getMethod() );
         $reflectionParameters = $reflectionMethod->getParameters();
         return $reflectionParameters[ $index ]->getName();

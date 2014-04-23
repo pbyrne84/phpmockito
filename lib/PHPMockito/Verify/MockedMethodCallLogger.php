@@ -3,15 +3,15 @@
 namespace PHPMockito\Verify;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 
 interface MockedMethodCallLogger {
     const INTERFACE_MockedMethodCallLogger = __CLASS__;
 
 
     /**
-     * @param \PHPMockito\Action\MethodCall $methodCall
+     * @param \PHPMockito\Action\CallableMethod $methodCall
      */
-    public function logMethodCall( MethodCall $methodCall );
+    public function logMethodCall( CallableMethod $methodCall );
 }
  

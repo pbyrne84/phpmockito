@@ -3,12 +3,12 @@
 namespace PHPMockito\Verify;
 
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 
 class MethodCallLoggingStatus {
     const CLASS_NAME = __CLASS__;
 
-    /** @var \PHPMockito\Action\MethodCall */
+    /** @var \PHPMockito\Action\CallableMethod */
     private $methodCall;
 
     /** @var int */
@@ -19,11 +19,11 @@ class MethodCallLoggingStatus {
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param CallableMethod $methodCall
      * @param int        $count
      * @param string     $message
      */
-    function __construct( MethodCall $methodCall, $count, $message ) {
+    function __construct( CallableMethod $methodCall, $count, $message ) {
         $this->methodCall = $methodCall;
         $this->count = $count;
         $this->message = $message;
@@ -47,7 +47,7 @@ class MethodCallLoggingStatus {
 
 
     /**
-     * @return \PHPMockito\Action\MethodCall
+     * @return \PHPMockito\Action\CallableMethod
      */
     public function getMethodCall() {
         return $this->methodCall;

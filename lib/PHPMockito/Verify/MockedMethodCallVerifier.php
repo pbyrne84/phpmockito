@@ -1,7 +1,7 @@
 <?php
 namespace PHPMockito\Verify;
 
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
 
@@ -26,21 +26,21 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
 
     /**
-     * @param MethodCall $methodCall
+     * @param CallableMethod $methodCall
      */
-    public function logMethodCall( MethodCall $methodCall ) {
+    public function logMethodCall( CallableMethod $methodCall ) {
         $this->runtimeMethodCallLogger->logMethodCall( $methodCall );
     }
 
 
     /**
-     * @param MethodCall $expectedMethodCall
+     * @param CallableMethod $expectedMethodCall
      * @param int        $expectedCallCount
      * @param bool       $isMagicCallMethodAttempt
      *
      * @throws \PHPUnit_Framework_AssertionFailedError - if actual call count is not not equal to expected
      */
-    public function assertCallCount( MethodCall $expectedMethodCall, $expectedCallCount, $isMagicCallMethodAttempt ) {
+    public function assertCallCount( CallableMethod $expectedMethodCall, $expectedCallCount, $isMagicCallMethodAttempt ) {
         $actualCallLoggingStatus = $this->runtimeMethodCallLogger->getMethodCallLoggingStatus( $expectedMethodCall );
 
         $actualCallCount = $actualCallLoggingStatus->getCount();
@@ -88,11 +88,11 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
 
     /**
      * @param string     $baseMessage
-     * @param MethodCall $expectedMethodCal
+     * @param CallableMethod $expectedMethodCal
      *
      * @throws \PHPUnit_Framework_AssertionFailedError
      */
-    private function raiseAssertionError( $baseMessage, MethodCall $expectedMethodCal ) {
+    private function raiseAssertionError( $baseMessage, CallableMethod $expectedMethodCal ) {
         throw new \PHPUnit_Framework_AssertionFailedError( $baseMessage );
     }
 

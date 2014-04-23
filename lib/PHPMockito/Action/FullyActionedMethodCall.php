@@ -5,7 +5,7 @@ namespace PHPMockito\Action;
 
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
-class FullyActionedMethodCall implements MethodCall {
+class FullyActionedMethodCall implements CallableMethod {
     const CLASS_NAME = __CLASS__;
 
     /** @var ExpectedMethodCall */
@@ -110,5 +110,13 @@ class FullyActionedMethodCall implements MethodCall {
         }
 
         return sprintf( 'arguments(%s)', $arguments );
+    }
+
+
+    /**
+     * @return string
+     */
+    public function hashArguments() {
+        return sha1( $this->convertToString() );
     }
 }

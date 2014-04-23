@@ -6,7 +6,7 @@ namespace PHPMockito\Action;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
-class ExpectedMethodCall implements MethodCall {
+class ExpectedMethodCall implements CallableMethod {
     const CLASS_NAME = __CLASS__;
 
     /** @var MockedClass */
@@ -95,6 +95,14 @@ class ExpectedMethodCall implements MethodCall {
         }
 
         return sprintf( 'arguments(%s)', $arguments );
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function hashArguments() {
+        return sha1( $this->convertToString() );
     }
 
 

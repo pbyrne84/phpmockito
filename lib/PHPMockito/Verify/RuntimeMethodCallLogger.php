@@ -5,7 +5,7 @@ namespace PHPMockito\Verify;
 
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExpectedMethodCall;
-use PHPMockito\Action\MethodCall;
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\CallMatching\CallMatcher;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
@@ -37,9 +37,9 @@ class RuntimeMethodCallLogger implements MockedMethodCallLogger {
 
 
     /**
-     * @param \PHPMockito\Action\MethodCall $methodCall
+     * @param \PHPMockito\Action\CallableMethod $methodCall
      */
-    public function logMethodCall( MethodCall $methodCall ) {
+    public function logMethodCall( CallableMethod $methodCall ) {
         if ( $methodCall instanceof DebugBackTraceMethodCall ) {
             $this->actualMethodCallList[ ] = $methodCall->castToMethodCall();
         } else {
@@ -49,11 +49,11 @@ class RuntimeMethodCallLogger implements MockedMethodCallLogger {
 
 
     /**
-     * @param MethodCall $expectedMethodCall
+     * @param CallableMethod $expectedMethodCall
      *
      * @return \PHPMockito\Verify\MethodCallLoggingStatus
      */
-    public function getMethodCallLoggingStatus( MethodCall $expectedMethodCall ) {
+    public function getMethodCallLoggingStatus( CallableMethod $expectedMethodCall ) {
         $actualCallCount   = 0;
         $actualCallMessage = '';
         foreach ( $this->actualMethodCallList as $actualMethodCall ) {
