@@ -5,7 +5,7 @@ namespace PHPMockito\Action;
 
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
-class FullyActionedMethodCall extends MethodCall {
+class FullyActionedMethodCall extends MethodCall implements MethodCallAction {
     const CLASS_NAME = __CLASS__;
 
     /** @var ExpectedMethodCall */
@@ -17,21 +17,27 @@ class FullyActionedMethodCall extends MethodCall {
     /** @var ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 
+    /** @var MethodCallActionInitialiser */
+    private $methodCallInitialiser;
+
 
     /**
-     * @param ToStringAdaptorFactory $toStringAdaptorFactory
-     * @param ExpectedMethodCall     $methodCall
-     * @param MethodCallAction       $methodCallAction
+     * @param ToStringAdaptorFactory      $toStringAdaptorFactory
+     * @param ExpectedMethodCall          $methodCall
+     * @param MethodCallAction            $methodCallAction
+     * @param MethodCallActionInitialiser $methodCallInitialiser
      */
     function __construct( ToStringAdaptorFactory $toStringAdaptorFactory,
                           ExpectedMethodCall $methodCall,
-                          MethodCallAction $methodCallAction ) {
+                          MethodCallAction $methodCallAction,
+                          MethodCallActionInitialiser $methodCallInitialiser ) {
 
         parent::__construct( $toStringAdaptorFactory );
 
         $this->methodCall             = $methodCall;
         $this->methodCallAction       = $methodCallAction;
         $this->toStringAdaptorFactory = $toStringAdaptorFactory;
+        $this->methodCallInitialiser = $methodCallInitialiser;
     }
 
 
@@ -102,4 +108,23 @@ class FullyActionedMethodCall extends MethodCall {
     }
 
 
+    /**
+     * @param \Exception|string $exception
+     *
+     * @throws \InvalidArgumentException
+     * @return \PHPMockito\Action\FullyActionedMethodCall
+     */
+    public function thenThrow( $exception ) {
+        return $this->methodCallInitialiser->thenThrow( $exception );
+    }
+
+
+    /**
+     * @param mixed $value
+     *
+     * @return FullyActionedMethodCall
+     */
+    public function thenReturn( $value ) {
+        return $this->methodCallInitialiser->thenReturn( $value );
+    }
 }

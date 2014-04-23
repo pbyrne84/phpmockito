@@ -27,6 +27,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
     function __construct( ToStringAdaptorFactory      $toStringAdaptorFactory,
                           InitialisationCallRegistrar $initialisationCallRegistrar,
                           ExpectedMethodCall $methodCall ) {
+
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
         $this->methodCall                  = $methodCall;
         $this->toStringAdaptorFactory = $toStringAdaptorFactory;
@@ -49,7 +50,8 @@ class MethodCallActionInitialiser implements MethodCallAction {
         $fullyActionedMethodCall = new FullyActionedMethodCall(
             $this->toStringAdaptorFactory,
             $this->methodCall,
-            $this->convertExceptionToMethodCallAction( $exception )
+            $this->convertExceptionToMethodCallAction( $exception ),
+            $this
         );
 
         $this->initialisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
@@ -86,7 +88,8 @@ class MethodCallActionInitialiser implements MethodCallAction {
         $fullyActionedMethodCall = new FullyActionedMethodCall(
             $this->toStringAdaptorFactory,
             $this->methodCall,
-            new ReturningMethodCallAction( $value )
+            new ReturningMethodCallAction( $value ),
+            $this
         );
 
         $this->initialisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );

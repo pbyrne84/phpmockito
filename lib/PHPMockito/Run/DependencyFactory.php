@@ -49,7 +49,7 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
             new MockClassCodeGenerator(),
             $this,
             new MockedMethodListFactory(),
-            new FileBasedMockedClassCodeLogger(),
+            new NullMockedClassCodeLogger(),
             $this->createToStringAdaptorFactory()
         );
 

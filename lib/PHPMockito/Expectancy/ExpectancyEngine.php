@@ -129,7 +129,6 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
         $response                 = $setupResponseForCallList[ $currentCallIndex ];
 
         if ( isset( $setupResponseForCallList[ ++$currentCallIndex ] ) ) {
-            echo "monkey";
             $this->productionCalledSignatureCountMap[ $methodCallToMapKey ]++;
         }
 

@@ -12,15 +12,13 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $DOMDocument = mock( '\DomDocument' );
         $methodCall1 =
                 when( $DOMDocument->cloneNode( true ) )
-                        ->thenReturn( 'MOO' );
+                        ->thenReturn( 'MOO' )
+                        ->thenReturn( 'FOO' )
+                        ->thenReturn( 'GOO' );
 
         $methodCall2 =
                 when( $DOMDocument->cloneNode( null ) )
                         ->thenReturn( 'Baaa' );
-
-        $methodCall3ThatIsSynonymousToCall1 =
-                when( $DOMDocument->cloneNode( true ) )
-                        ->thenReturn( 'FOO' );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
         $this->assertEquals( 'MOO', $usageTestClass->testTrue(), 'a' );
@@ -29,7 +27,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
         $this->assertEquals(
-                'FOO',
+                'GOO',
                 $DOMDocument->cloneNode( true ),
                 'Returns the mocked value when called in the test'
         );
@@ -40,7 +38,6 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
         verifyMethodCall( $methodCall1, 2 );
         verifyMethodCall( $methodCall2, 2 );
-        verifyMethodCall( $methodCall3ThatIsSynonymousToCall1, 2 );
     }
 
 
