@@ -60,7 +60,7 @@ class RuntimeMethodCallLogger implements MockedMethodCallLogger {
             if ( $this->callMatcher->matchCall( $actualMethodCall, $expectedMethodCall ) ) {
                 $methodSignature = $this->signatureGenerator->generateMessage( $actualMethodCall );
 
-                if ( $this->callMatcher->matchSignature( $actualMethodCall, $expectedMethodCall ) ) {
+                if ( $actualMethodCall->getHashedSignature() == $expectedMethodCall->getHashedSignature()  ) {
                     $this->verifiedMethodCalls[ ] = $expectedMethodCall;
                     $actualCallCount++;
                 }

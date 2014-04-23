@@ -3,11 +3,11 @@
 namespace PHPMockito\Expectancy;
 
 
+use PHPMockito\Action\CallableMethod;
 use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Action\ExceptionMethodCallAction;
 use PHPMockito\Action\ExpectedMethodCall;
 use PHPMockito\Action\FullyActionedMethodCall;
-use PHPMockito\Action\CallableMethod;
 use PHPMockito\Action\MethodCallAction;
 use PHPMockito\Action\ReturningMethodCallAction;
 use PHPMockito\CallMatching\CallMatcher;
@@ -32,6 +32,8 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
     /** @var TestCaseCallVerifier */
     private $testCaseCallVerifier;
 
+    private $productionCalledSignatureCountMap = array();
+
 
     /**
      * @param \PHPMockito\Verify\MockedMethodCallLogger $mockedMethodCallLogger
@@ -51,18 +53,12 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      * @param FullyActionedMethodCall $fullyActionedMethodCall
      */
     public function registerMockMethodExpectancy( FullyActionedMethodCall $fullyActionedMethodCall ) {
-        $convertMethodCallToMapKey = $this->convertMethodCallToMapKey( $fullyActionedMethodCall );
+        $convertMethodCallToMapKey = $fullyActionedMethodCall->getHashedSignature();
         if ( !isset( $this->expectedMethodCallMap [ $convertMethodCallToMapKey ] ) ) {
             $this->expectedMethodCallMap[ $convertMethodCallToMapKey ] = array();
         }
 
         $this->expectedMethodCallMap[ $convertMethodCallToMapKey ][ ] = $fullyActionedMethodCall;
-    }
-
-
-    private function convertMethodCallToMapKey( CallableMethod $methodCall ) {
-        return $methodCall->getClass()
-                ->getInstanceReference() . '->' . $methodCall->getMethod() . '(' . $methodCall->hashArguments() . ')';
     }
 
 
@@ -117,19 +113,27 @@ class ExpectancyEngine implements InitialisationCallRegistrar {
      * @return null|MethodCallAction
      */
     private function findRegisteredCallAction( CallableMethod $actualProductionMethodCall ) {
-        $methodCallToMapKey = $this->convertMethodCallToMapKey( $actualProductionMethodCall );
+        $methodCallToMapKey = $actualProductionMethodCall->getHashedSignature();
         if ( !isset( $this->expectedMethodCallMap[ $methodCallToMapKey ] ) ) {
             return null;
         }
 
-        /** @var $expectedMethodCall FullyActionedMethodCall */
-        foreach ( $this->expectedMethodCallMap[ $methodCallToMapKey ] as $expectedMethodCall ) {
-            if ( $this->callMatcher->matchCallAndSignature( $expectedMethodCall, $actualProductionMethodCall ) ) {
-                return $expectedMethodCall->getMethodCallAction();
-            }
+        if ( !isset( $this->productionCalledSignatureCountMap[ $methodCallToMapKey ] ) ) {
+            $this->productionCalledSignatureCountMap[ $methodCallToMapKey ] = 0;
         }
 
-        return null;
+        $currentCallIndex = $this->productionCalledSignatureCountMap[ $methodCallToMapKey ];
+
+        /** @var $response FullyActionedMethodCall */
+        $setupResponseForCallList = $this->expectedMethodCallMap[ $methodCallToMapKey ];
+        $response                 = $setupResponseForCallList[ $currentCallIndex ];
+
+        if ( isset( $setupResponseForCallList[ ++$currentCallIndex ] ) ) {
+            echo "monkey";
+            $this->productionCalledSignatureCountMap[ $methodCallToMapKey ]++;
+        }
+
+        return $response->getMethodCallAction();
     }
 
 

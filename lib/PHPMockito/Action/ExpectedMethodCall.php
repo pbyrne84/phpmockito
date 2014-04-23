@@ -6,7 +6,7 @@ namespace PHPMockito\Action;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
-class ExpectedMethodCall implements CallableMethod {
+class ExpectedMethodCall extends MethodCall {
     const CLASS_NAME = __CLASS__;
 
     /** @var MockedClass */
@@ -35,6 +35,9 @@ class ExpectedMethodCall implements CallableMethod {
                           MockedClass $class,
                           $method,
                           array $arguments ) {
+
+        parent::__construct( $toStringAdaptorFactory );
+
         $this->class                  = $class;
         $this->method                 = $method;
         $this->arguments              = $arguments;
@@ -60,7 +63,7 @@ class ExpectedMethodCall implements CallableMethod {
     public function getArgument( $index ) {
         if ( !array_key_exists( $index, $this->arguments ) ) {
             throw new \OutOfRangeException(
-                $index . ' is not set, the only argument available are ' . array_keys( $this->arguments )
+                    $index . ' is not set, the only argument available are ' . array_keys( $this->arguments )
             );
         }
 
@@ -81,28 +84,6 @@ class ExpectedMethodCall implements CallableMethod {
      */
     public function getMethod() {
         return $this->method;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function convertToString() {
-        $arguments = '';
-        foreach ( $this->getArguments() as $index => $argument ) {
-            $adaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $argument );
-            $arguments .= '[' . $index . ']' . $adaptor->toString() . "\n";
-        }
-
-        return sprintf( 'arguments(%s)', $arguments );
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function hashArguments() {
-        return sha1( $this->convertToString() );
     }
 
 

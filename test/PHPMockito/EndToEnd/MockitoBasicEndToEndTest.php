@@ -10,25 +10,37 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
     public function test_mock_returnValue() {
         $DOMDocument = mock( '\DomDocument' );
-        $methodCall1 = when( $DOMDocument->cloneNode( true ) )
-                ->thenReturn( 'MOO' );
+        $methodCall1 =
+                when( $DOMDocument->cloneNode( true ) )
+                        ->thenReturn( 'MOO' );
 
-        $methodCall2 = when( $DOMDocument->cloneNode( null ) )
-                ->thenReturn( 'Baaa' );
+        $methodCall2 =
+                when( $DOMDocument->cloneNode( null ) )
+                        ->thenReturn( 'Baaa' );
+
+        $methodCall3ThatIsSynonymousToCall1 =
+                when( $DOMDocument->cloneNode( true ) )
+                        ->thenReturn( 'FOO' );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
-        $this->assertEquals( 'MOO', $usageTestClass->testTrue() );
+        $this->assertEquals( 'MOO', $usageTestClass->testTrue(), 'a' );
+        $this->assertEquals( 'FOO', $usageTestClass->testTrue(), 'b' );
         $this->assertEquals( 'Baaa', $usageTestClass->testDefault() );
         $this->assertEquals( 'Baaa', $usageTestClass->testManualDefault() );
 
-        $this->assertEquals( 'MOO', $DOMDocument->cloneNode( true ), 'Returns the mocked value when called in the test' );
+        $this->assertEquals(
+                'FOO',
+                $DOMDocument->cloneNode( true ),
+                'Returns the mocked value when called in the test'
+        );
 
-        verify( $DOMDocument, 1 )->cloneNode( true );
+        verify( $DOMDocument, 2 )->cloneNode( true );
         verify( $DOMDocument, 2 )->cloneNode();
         verify( $DOMDocument, 2 )->cloneNode( null );
 
-        verifyMethodCall( $methodCall1 );
+        verifyMethodCall( $methodCall1, 2 );
         verifyMethodCall( $methodCall2, 2 );
+        verifyMethodCall( $methodCall3ThatIsSynonymousToCall1, 2 );
     }
 
 

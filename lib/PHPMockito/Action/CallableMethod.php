@@ -43,14 +43,25 @@ interface CallableMethod {
     /**
      * @return string
      */
-    public function convertToString();
+    public function convertArgumentsToString();
 
 
     /**
      * @return string
      */
-    public function hashArguments();
+    public function getParameterHashCode();
 
+
+    /**
+     * @return string
+     */
+    public function getHashedSignature();
+
+
+    /**
+     * @return string
+     */
+    public function getMethodReference();
 
 }
  
