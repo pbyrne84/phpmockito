@@ -31,7 +31,7 @@ interface InitialisationCallRegistrar {
 
 
     /**
-     * @return CallableMethod
+     * @return ExpectedMethodCall
      */
     public function getLastInitialisationMethodCall();
 

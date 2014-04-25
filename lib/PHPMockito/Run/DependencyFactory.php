@@ -8,13 +8,9 @@ use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Action\MethodCallListener;
 use PHPMockito\Action\MethodCallListenerFactory;
 use PHPMockito\CallMatching\CallMatcher;
-use PHPMockito\Expectancy\CustomInitialisationCallMatcher;
 use PHPMockito\Expectancy\ExpectancyEngine;
-use PHPMockito\Expectancy\TestCaseCallVerifier;
-use PHPMockito\Expectancy\InitialisationCallListenerFactory;
+use PHPMockito\Expectancy\InitialisationCallListenerFactoryImpl;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
-use PHPMockito\Expectancy\PhpUnitTestCaseInitialisationMatcher;
-use PHPMockito\Mock\Logger\FileBasedMockedClassCodeLogger;
 use PHPMockito\Mock\Logger\NullMockedClassCodeLogger;
 use PHPMockito\Mock\MockClassCodeGenerator;
 use PHPMockito\Mock\MockedClass;
@@ -26,14 +22,12 @@ use PHPMockito\Verify\MockedMethodCallVerifier;
 use PHPMockito\Verify\RuntimeMethodCallLogger;
 use PHPMockito\Verify\Verify;
 
-class DependencyFactory implements InitialisationCallListenerFactory, MethodCallListenerFactory {
+class DependencyFactory implements MethodCallListenerFactory {
     const CLASS_NAME = __CLASS__;
+    private $initialisationCallListenerFactoryImpl;
 
     /** @var \PHPMockito\Verify\RuntimeMethodCallLogger */
     private $runtimeMethodLogger;
-
-    /** @var \PHPMockito\Mock\MockFactory */
-    private $mockFactory;
 
     /** @var \PHPMockito\Expectancy\InitialisationCallRegistrar */
     private $initialisationCallRegistrar;
@@ -41,21 +35,16 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
     /** @var MockedMethodCallVerifier */
     private $mockedMethodCallVerifier;
 
-    /** @var array  */
-    private $ignorableNonProductionTestClassSet = array();
 
-    function __construct( InitialisationCallRegistrar $initialisationCallRegistrar ) {
-        $this->mockFactory = new MockFactory(
-            new MockClassCodeGenerator(),
-            $this,
-            new MockedMethodListFactory(),
-            new NullMockedClassCodeLogger(),
-            $this->createToStringAdaptorFactory()
-        );
+    function __construct() {
+        $this->initialisationCallListenerFactoryImpl = new InitialisationCallListenerFactoryImpl();
+        $this->runtimeMethodLogger = $this->createRuntimeMethodLogger();
+        $this->mockedMethodCallVerifier = $this->createMockedMethodCallVerifier( $this->runtimeMethodLogger );
+    }
 
-        $this->runtimeMethodLogger         = $this->createRuntimeMethodLogger();
+
+    public function setInitialisationCallRegistrar( InitialisationCallRegistrar $initialisationCallRegistrar ) {
         $this->initialisationCallRegistrar = $initialisationCallRegistrar;
-        $this->mockedMethodCallVerifier    = $this->createMockedMethodCallVerifier( $this->runtimeMethodLogger );
     }
 
 
@@ -71,7 +60,10 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return RuntimeMethodCallLogger
      */
     private function createRuntimeMethodLogger() {
-        $runtimeMethodCallLogger = new RuntimeMethodCallLogger( $this->createCallMatcher(), $this->createSignatureGenerator() );
+        $runtimeMethodCallLogger = new RuntimeMethodCallLogger(
+                $this->createCallMatcher(),
+                $this->createSignatureGenerator()
+        );
 
         return $runtimeMethodCallLogger;
     }
@@ -102,8 +94,8 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     private function createMockedMethodCallVerifier( RuntimeMethodCallLogger $runtimeMethodCallLogger ) {
         return new MockedMethodCallVerifier(
-            $runtimeMethodCallLogger,
-            $this->createSignatureGenerator()
+                $runtimeMethodCallLogger,
+                $this->createSignatureGenerator()
         );
     }
 
@@ -120,7 +112,20 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return MockFactory
      */
     public function getMockFactory() {
-        return $this->mockFactory;
+        static $mockFactory;
+
+        if ( $mockFactory == null ) {
+            $mockFactory = new MockFactory(
+                    new MockClassCodeGenerator(),
+                    $this,
+                    new MockedMethodListFactory(),
+                    new NullMockedClassCodeLogger(),
+                    $this->createToStringAdaptorFactory()
+            );
+
+        }
+
+        return $mockFactory;
     }
 
 
@@ -128,7 +133,10 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      * @return MethodCallListener
      */
     public function createMethodCallListener() {
-        return new MethodCallListener( $this, $this->initialisationCallRegistrar );
+        return new MethodCallListener(
+                $this->initialisationCallListenerFactoryImpl,
+                $this->initialisationCallRegistrar
+        );
     }
 
 
@@ -137,22 +145,9 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     public function createExpectancyEngine() {
         return new ExpectancyEngine(
-            $this->mockedMethodCallVerifier,
-            $this->createCallMatcher(),
-            $this->createTestCaseCallVerifier()
-        );
-    }
-
-
-    /**
-     * @return TestCaseCallVerifier
-     */
-    public function createTestCaseCallVerifier() {
-        return new TestCaseCallVerifier(
-            array(
-                new PhpUnitTestCaseInitialisationMatcher(),
-                new CustomInitialisationCallMatcher( array_values( $this->ignorableNonProductionTestClassSet ) )
-            )
+                $this->mockedMethodCallVerifier,
+                $this->createCallMatcher(),
+                $this->initialisationCallListenerFactoryImpl->createTestCaseCallVerifier()
         );
     }
 
@@ -165,34 +160,35 @@ class DependencyFactory implements InitialisationCallListenerFactory, MethodCall
      */
     public function createVerify( MockedClass $mockedClass, $expectedCallCount ) {
         return new Verify(
-            $this->createToStringAdaptorFactory(),
-            $this->mockedMethodCallVerifier,
-            $mockedClass,
-            $expectedCallCount
+                $this->createToStringAdaptorFactory(),
+                $this->mockedMethodCallVerifier,
+                $mockedClass,
+                $expectedCallCount
         );
     }
 
 
     /**
      * @param InitialisationCallRegistrar $initialisationCallRegistrar
-     * @param ExpectedMethodCall          $methodCall
+     * @param ExpectedMethodCall $methodCall
      *
      * @return MethodCallActionInitialiser
      */
     public function createMethodCallActionInitialiser( InitialisationCallRegistrar $initialisationCallRegistrar,
                                                        ExpectedMethodCall $methodCall ) {
         return new MethodCallActionInitialiser(
-            $this->createToStringAdaptorFactory(),
-            $initialisationCallRegistrar,
-            $methodCall
+                $this->createToStringAdaptorFactory(),
+                $initialisationCallRegistrar,
+                $methodCall
         );
     }
+
 
     /**
      * @param string $fullyQualifiedClassName
      */
     public function addIgnorableNonProductionTestClass( $fullyQualifiedClassName ) {
-        $this->ignorableNonProductionTestClassSet[ $fullyQualifiedClassName ] = $fullyQualifiedClassName;
+        $this->initialisationCallListenerFactoryImpl->addIgnorableNonProductionTestClass( $fullyQualifiedClassName );
     }
 
 

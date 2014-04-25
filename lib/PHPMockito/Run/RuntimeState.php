@@ -8,8 +8,9 @@ use PHPMockito\Action\FullyActionedMethodCall;
 use PHPMockito\Action\CallableMethod;
 use PHPMockito\Expectancy\ExpectancyEngine;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
+use PHPMockito\Expectancy\InitialisationCallRegistrarImpl;
 
-class RuntimeState implements InitialisationCallRegistrar {
+class RuntimeState {
     const CLASS_NAME = __CLASS__;
 
     /** @var RuntimeState */
@@ -26,8 +27,13 @@ class RuntimeState implements InitialisationCallRegistrar {
 
 
     private function __construct() {
-        $this->dependencyFactory = new DependencyFactory( $this );
-        $this->expectancyEngine  = $this->dependencyFactory->createExpectancyEngine();
+        $dependencyFactory = new DependencyFactory();
+        $this->expectancyEngine = $dependencyFactory->createExpectancyEngine();
+
+        $dependencyFactory->setInitialisationCallRegistrar( $this->getInitialisationCallRegistrarInstance() );
+
+        $this->dependencyFactory = $dependencyFactory;
+
     }
 
 
@@ -76,36 +82,6 @@ class RuntimeState implements InitialisationCallRegistrar {
     }
 
 
-    /**
-     * @param FullyActionedMethodCall $fullyActionedMethodCall
-     */
-    public function registerMockMethodExpectancy( FullyActionedMethodCall $fullyActionedMethodCall ) {
-        $this->expectancyEngine->registerMockMethodExpectancy( $fullyActionedMethodCall );
-    }
-
-
-    /**
-     * @param CallableMethod $actualProductionMethodCall
-     *
-     * @return mixed|null
-     */
-    public function retrieveMockMethodAction( CallableMethod $actualProductionMethodCall ) {
-        return $this->expectancyEngine->retrieveMockMethodAction( $actualProductionMethodCall );
-    }
-
-
-    /**
-     * @param ExpectedMethodCall $methodCall
-     */
-    public function registerLatestInitialisationSignature( ExpectedMethodCall $methodCall = null ) {
-        $this->expectancyEngine->registerLatestInitialisationSignature( $methodCall );
-    }
-
-
-    public function hasMockMethodAction( CallableMethod $actualProductionMethodCall ) {
-        return $this->expectancyEngine->hasMockMethodAction( $actualProductionMethodCall );
-    }
-
 
     /**
      * @param string $fullyQualifiedClassName
@@ -119,18 +95,23 @@ class RuntimeState implements InitialisationCallRegistrar {
      * @return \PHPMockito\Action\MethodCallActionInitialiser
      */
     public function createMethodCallActionInitialiser() {
+        $initialisationCallRegistrar = $this->getInitialisationCallRegistrarInstance();
         return $this->dependencyFactory->createMethodCallActionInitialiser(
-            $this,
-            $this->getLastInitialisationMethodCall()
+                $initialisationCallRegistrar,
+                $initialisationCallRegistrar->getLastInitialisationMethodCall()
         );
     }
 
 
-    /**
-     * @return ExpectedMethodCall
-     */
-    public function getLastInitialisationMethodCall() {
-        return $this->expectancyEngine->getLastInitialisationMethodCall();
+    private function getInitialisationCallRegistrarInstance() {
+        static $initialisationCallRegistrar;
+        if ( $initialisationCallRegistrar == null ) {
+            $initialisationCallRegistrar = new InitialisationCallRegistrarImpl( $this->expectancyEngine );
+        }
+
+        return $initialisationCallRegistrar;
+
     }
+
 }
  

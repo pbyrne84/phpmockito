@@ -10,6 +10,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
     public function test_mock_returnValue() {
         $DOMDocument = mock( '\DomDocument' );
+
         $methodCall1 =
                 when( $DOMDocument->cloneNode( true ) )
                         ->thenReturn( 'MOO' )
