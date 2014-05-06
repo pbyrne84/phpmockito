@@ -1,0 +1,7 @@
+{
+    "packages": {
+        "pbyrne84/phpmockito": {
+            "1.0.0": { @composer.json }
+        }
+    }
+}
