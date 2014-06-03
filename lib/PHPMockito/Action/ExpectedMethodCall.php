@@ -38,11 +38,37 @@ class ExpectedMethodCall extends MethodCall {
 
         parent::__construct( $toStringAdaptorFactory );
 
+        $clonedArguments = array();
+        foreach ( $arguments as $argument ) {
+            $clonedArguments[ ] = $this->tryCloningArgument( $argument );
+        }
+
         $this->class                  = $class;
         $this->method                 = $method;
-        $this->arguments              = $arguments;
+        $this->arguments              = $clonedArguments;
         $this->argumentCount          = count( $arguments );
         $this->toStringAdaptorFactory = $toStringAdaptorFactory;
+    }
+
+
+    /**
+     * @param mixed $argument
+     *
+     * @return mixed
+     */
+    private function tryCloningArgument( $argument ) {
+        $nonCloneableClassList = array( '\\Exception' );
+        if ( !is_object( $argument ) ) {
+            return $argument;
+        }
+
+        foreach ( $nonCloneableClassList as $nonCloneableClass ) {
+            if ( $argument instanceof $nonCloneableClass ) {
+                return $argument;
+            }
+        }
+
+        return clone $argument;
     }
 
 
@@ -88,18 +114,18 @@ class ExpectedMethodCall extends MethodCall {
 
 
     /**
-     * @return ToStringAdaptorFactory
-     */
-    protected function getToStringAdaptorFactory() {
-        return $this->toStringAdaptorFactory;
-    }
-
-
-    /**
      * @return array
      */
     public function getArguments() {
         return $this->arguments;
+    }
+
+
+    /**
+     * @return ToStringAdaptorFactory
+     */
+    protected function getToStringAdaptorFactory() {
+        return $this->toStringAdaptorFactory;
     }
 }
  
