@@ -30,13 +30,16 @@ TXT;
             );
 
             \$this->mockedClassConstructorParams->registerCall( \$methodCall );
-            return \$this->mockedClassConstructorParams->actionCall( \$methodCall );
+            \$actionedCall = \$this->mockedClassConstructorParams->actionCall( \$methodCall );
+
+            return \$actionedCall;
 TXT;
         }
 
+        $returnsReferenceSignature = $mockedMethod->getReturnsReferenceSignature();
         return <<<TXT
 
-        {$mockedMethod->getVisibilityAsString()} function {$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
+        {$mockedMethod->getVisibilityAsString()} function {$returnsReferenceSignature}{$mockedMethod->getName()}( {$mockedMethod->getSignature()} ) {
             $body
         }
 

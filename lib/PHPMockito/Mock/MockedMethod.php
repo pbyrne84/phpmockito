@@ -32,6 +32,24 @@ class MockedMethod {
 
 
     /**
+     * @return bool
+     */
+    public function returnsReference(){
+        return $this->reflectionMethod->returnsReference();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getReturnsReferenceSignature(){
+        return  $this->returnsReference()
+                ? '&'
+                : '';
+    }
+
+
+    /**
      * @return string
      */
     public function getSignature() {
