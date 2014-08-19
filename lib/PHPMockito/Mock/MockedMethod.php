@@ -79,12 +79,7 @@ class MockedMethod {
      * @return string
      */
     public function getParameterArrayEntrapment() {
-        $parameterTextList = array();
-        foreach ( $this->mockedParameters as $parameter ) {
-            $parameterTextList[ ] = '$' . $parameter->getName();
-        }
-
-        return 'array(' . trim( implode( ', ', $parameterTextList ) ) . ')';
+        return 'func_get_args()';
     }
 
 

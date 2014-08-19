@@ -27,8 +27,8 @@ class SignatureGenerator {
         foreach ( $methodCall->getArguments() as $index => $argument ) {
             $toStringAdaptor = $this->toStringAdaptorFactory->createToStringAdaptor( $argument );
             $methodSignature .=
-                   '  $' . $this->getArgumentName( $reflectionClass, $methodCall, $index ) .
-                   '(arg[' . $index . ']) = ' . $toStringAdaptor->toString() . ',' . PHP_EOL ;
+                    '  $' . $this->getArgumentName( $reflectionClass, $methodCall, $index ) .
+                    '(arg[' . $index . ']) = ' . $toStringAdaptor->toString() . ',' . PHP_EOL ;
         }
 
         return rtrim( $methodSignature, "\n\r,") . PHP_EOL . ")";
@@ -45,8 +45,14 @@ class SignatureGenerator {
     private function getArgumentName( \ReflectionClass $reflectionClass, CallableMethod $methodCall, $index ) {
         $reflectionMethod = $reflectionClass->getMethod( $methodCall->getMethod() );
         $reflectionParameters = $reflectionMethod->getParameters();
+        $declaredParameterCount = count( $reflectionParameters );
+        if ( $index >= $declaredParameterCount ) {
+            $baseNameOfVariadic = $reflectionParameters[ count( $reflectionParameters ) - 1 ]->getName();
+
+            return $baseNameOfVariadic . '...' . ( $index - $declaredParameterCount + 1 ) ;
+        }
+
         return $reflectionParameters[ $index ]->getName();
     }
 
 }
- 
