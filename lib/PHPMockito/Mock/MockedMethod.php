@@ -34,7 +34,7 @@ class MockedMethod {
     /**
      * @return bool
      */
-    public function returnsReference(){
+    public function returnsReference() {
         return $this->reflectionMethod->returnsReference();
     }
 
@@ -42,8 +42,8 @@ class MockedMethod {
     /**
      * @return string
      */
-    public function getReturnsReferenceSignature(){
-        return  $this->returnsReference()
+    public function getReturnsReferenceSignature() {
+        return $this->returnsReference()
                 ? '&'
                 : '';
     }
@@ -79,7 +79,15 @@ class MockedMethod {
      * @return string
      */
     public function getParameterArrayEntrapment() {
-        return 'func_get_args()';
+        $parameterTextList = array();
+        foreach ( $this->mockedParameters as $parameter ) {
+            $parameterTextList[ ] = '$' . $parameter->getName();
+        }
+
+        $passedParameterListString = 'array(' . trim( implode( ', ', $parameterTextList ) ) . ')';
+
+        return 'count(' . $passedParameterListString . ') < count( func_get_args() ) ? func_get_args() :  ' .
+               $passedParameterListString;
     }
 
 
