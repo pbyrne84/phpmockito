@@ -27,7 +27,7 @@ abstract class  ToStringAdaptor {
 
     /**
      * @param string $lines
-     * @param int $indentation
+     * @param int    $indentation
      *
      * @return string
      */
@@ -35,10 +35,10 @@ abstract class  ToStringAdaptor {
         $paddedOutputLines = array();
         $lines             = explode( "\n", $lines );
         foreach ( $lines as $line ) {
-            $paddedOutputLines[ ] = str_repeat( ' ', $indentation ) . $line;
+            $paddedOutputLines[] = str_repeat( ' ', $indentation ) . $line;
         }
 
-        return trim($this->prefix ." ". implode( $paddedOutputLines, "\n" ));
+        return trim( $this->prefix . " " . implode( "\n", $paddedOutputLines ) );
     }
 
 

@@ -51,9 +51,11 @@ class MockFactory {
 
 
     /**
-     * @param string $className
+     * @template T
      *
-     * @return object
+     * @param T $className
+     *
+     * @return T
      */
     public function mock( $className ) {
         $reflectionClass = new \ReflectionClass( $className );

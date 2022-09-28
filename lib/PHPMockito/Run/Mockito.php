@@ -13,9 +13,11 @@ class Mockito {
 
 
     /**
-     * @param string $className
+     * @template T
      *
-     * @return mixed
+     * @param T $className
+     *
+     * @return T
      */
     static public function mock( $className ) {
         $dependencyFactory = RuntimeState::getInstance()
