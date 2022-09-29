@@ -1,30 +1,29 @@
 {
-    "methodCalls"  : [
-        {
-            "class"   : "\\PHPMockito\\Mock\\MockFactory",
-            "method"  : "newFullMock",
-            "position": 0
-        },
-        {
-            "class"   : "\\PHPMockito\\Run\\Mockito",
-            "method"  : "mock",
-            "position": 0
-        }
-
-    ],
-    "functionCalls": [
-        {
-            "function": "\\verify",
-            "position": 0
-        },
-        {
-            "function": "\\mock",
-            "position": 0
-        },
-        {
-            "function": "\\spy",
-            "position": 0
-        }
-    ]
+  "methodCalls": [
+    {
+      "class": "\\PHPMockito\\Mock\\MockFactory",
+      "method": "newFullMock",
+      "position": 0
+    },
+    {
+      "class": "\\PHPMockito\\Run\\Mockito",
+      "method": "mock",
+      "position": 0
+    }
+  ],
+  "functionCalls": [
+    {
+      "function": "\\verify",
+      "position": 0
+    },
+    {
+      "function": "\\mock",
+      "position": 0
+    },
+    {
+      "function": "\\spy",
+      "position": 0
+    }
+  ]
 }
 

@@ -126,12 +126,14 @@ namespace {
                 $this->mockedClassConstructorParams->getToStringAdaptorFactory(),
                 $this,
                 'appendChild',
-                array($newChild),
+                count(array($newChild)) < count( func_get_args() ) ? func_get_args() :  array($newChild),
                 debug_backtrace()
             );
 
             $this->mockedClassConstructorParams->registerCall( $methodCall );
-            return $this->mockedClassConstructorParams->actionCall( $methodCall );
+            $actionedCall = $this->mockedClassConstructorParams->actionCall( $methodCall );
+
+            return $actionedCall;
         }
 
         public function importNode( \DOMNode $importedNode = null, $deep = null ) {
@@ -139,12 +141,14 @@ namespace {
                 $this->mockedClassConstructorParams->getToStringAdaptorFactory(),
                 $this,
                 'importNode',
-                array($importedNode, $deep),
+                count(array($importedNode, $deep)) < count( func_get_args() ) ? func_get_args() :  array($importedNode, $deep),
                 debug_backtrace()
             );
 
             $this->mockedClassConstructorParams->registerCall( $methodCall );
-            return $this->mockedClassConstructorParams->actionCall( $methodCall );
+            $actionedCall = $this->mockedClassConstructorParams->actionCall( $methodCall );
+
+            return $actionedCall;
         }
     }
 }

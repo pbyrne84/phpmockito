@@ -1,4 +1,5 @@
 <?php
+
 namespace PHPMockito\Action;
 
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
@@ -20,16 +21,21 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
-            $toStringAdaptorFactory,
-            $initialisationCallRegistrar,
-            $methodCall
+                $toStringAdaptorFactory,
+                $initialisationCallRegistrar,
+                $methodCall
         );
 
         $exception = new \Exception();
 
         $returnValueInitialiser->thenThrow( $exception );
         $methodCallAction               = new ExceptionMethodCallAction( $exception );
-        $expectedFullActionedMethodCall = new FullyActionedMethodCall( $toStringAdaptorFactory, $methodCall, $methodCallAction );
+        $expectedFullActionedMethodCall = new FullyActionedMethodCall(
+                $toStringAdaptorFactory,
+                $methodCall,
+                $methodCallAction,
+                $returnValueInitialiser
+        );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
     }
@@ -42,16 +48,21 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
-            $toStringAdaptorFactory,
-            $initialisationCallRegistrar,
-            $methodCall
+                $toStringAdaptorFactory,
+                $initialisationCallRegistrar,
+                $methodCall
         );
 
         $returnValueInitialiser->thenThrow( '\InvalidArgumentException' );
 
         $exception                      = new \InvalidArgumentException();
         $methodCallAction               = new ExceptionMethodCallAction( $exception );
-        $expectedFullActionedMethodCall = new FullyActionedMethodCall( $toStringAdaptorFactory, $methodCall, $methodCallAction );
+        $expectedFullActionedMethodCall = new FullyActionedMethodCall(
+                $toStringAdaptorFactory,
+                $methodCall,
+                $methodCallAction,
+                $returnValueInitialiser
+        );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
     }
@@ -64,9 +75,9 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
-            $toStringAdaptorFactory,
-            $initialisationCallRegistrar,
-            $methodCall
+                $toStringAdaptorFactory,
+                $initialisationCallRegistrar,
+                $methodCall
         );
 
         $value = new \DOMDocument();
@@ -75,7 +86,12 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         $returnValueInitialiser->thenReturn( $value );
 
         $methodCallAction               = new ReturningMethodCallAction( $value );
-        $expectedFullActionedMethodCall = new FullyActionedMethodCall( $toStringAdaptorFactory, $methodCall, $methodCallAction );
+        $expectedFullActionedMethodCall = new FullyActionedMethodCall(
+                $toStringAdaptorFactory,
+                $methodCall,
+                $methodCallAction,
+                $returnValueInitialiser
+        );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
     }

@@ -1,8 +1,10 @@
 <?php
 spl_autoload_register( function ( $className ) {
-    if ( is_file( __DIR__ . '/' . $className . '.php' ) ) {
-        require_once __DIR__ . '/' . $className . '.php';
+    $potentialPath = __DIR__ . '/' . str_replace(  '\\' , '/', $className ) . '.php';
+    if ( is_file( $potentialPath ) ) {
+        require_once $potentialPath;
     }
 } );
+
 
 require_once __DIR__ . '/../lib/autoload.php';

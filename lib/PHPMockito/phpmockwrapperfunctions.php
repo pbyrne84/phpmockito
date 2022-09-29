@@ -1,4 +1,5 @@
 <?php
+
 use PHPMockito\Action\CallableMethod;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Run\Mockito;
@@ -22,10 +23,12 @@ function mock( $className ) {
 
 
 /**
- * @param MockedClass|mixed $mockedClass
- * @param int               $expectedCallCount
+ * @template T
  *
- * @return \PHPMockito\Verify\Verify
+ * @param T   $mockedClass
+ * @param int $expectedCallCount
+ *
+ * @return T
  */
 function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
     return Mockito::verify( $mockedClass, $expectedCallCount );
@@ -34,14 +37,19 @@ function verify( MockedClass $mockedClass, $expectedCallCount = 1 ) {
 
 /**
  * @param CallableMethod $methodCall
- * @param int        $expectedCallCount
+ * @param int            $expectedCallCount
  */
 function verifyMethodCall( CallableMethod $methodCall, $expectedCallCount = 1 ) {
     Mockito::verifyCall( $methodCall, $expectedCallCount );
 }
 
+
 /**
- * @param MockedClass|mixed $mockedClass
+ * @template T
+ *
+ * @param T $mockedClass
+ *
+ * @return T
  */
 function verifyNoMoreInteractions( $mockedClass ) {
     Mockito::verifyNoMoreInteractions( $mockedClass );
