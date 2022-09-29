@@ -5,8 +5,7 @@ namespace PHPMockito\Mock;
 use ReflectionMethod;
 
 class MockedMethodListFactory {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @param \ReflectionClass $reflectionClass

@@ -4,10 +4,10 @@ namespace PHPMockito\Verify;
 use PHPMockito\Action\CallableMethod;
 use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
+use PHPUnit\Framework\AssertionFailedError;
 
 class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTester {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var RuntimeMethodCallLogger */
     private $runtimeMethodCallLogger;
 
@@ -38,7 +38,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      * @param int        $expectedCallCount
      * @param bool       $isMagicCallMethodAttempt
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError - if actual call count is not not equal to expected
+     * @throws AssertionFailedError - if actual call count is not not equal to expected
      */
     public function assertCallCount( CallableMethod $expectedMethodCall, $expectedCallCount, $isMagicCallMethodAttempt ) {
         $actualCallLoggingStatus = $this->runtimeMethodCallLogger->getMethodCallLoggingStatus( $expectedMethodCall );
@@ -90,17 +90,17 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
      * @param string     $baseMessage
      * @param CallableMethod $expectedMethodCal
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws  AssertionFailedError
      */
     private function raiseAssertionError( $baseMessage, CallableMethod $expectedMethodCal ) {
-        throw new \PHPUnit_Framework_AssertionFailedError( $baseMessage );
+        throw new AssertionFailedError( $baseMessage );
     }
 
 
     /**
      * @param \PHPMockito\Mock\MockedClass $mockedClass
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws AssertionFailedError
      */
     public function verifyNoMoreInteractions( MockedClass $mockedClass ) {
         $unverifiedMethodCalls = $this->runtimeMethodCallLogger->getUnverifiedMethodCalls( $mockedClass );
@@ -108,7 +108,7 @@ class MockedMethodCallVerifier implements MockedMethodCallLogger, VerificationTe
             return;
         }
 
-        throw new \PHPUnit_Framework_AssertionFailedError( $unverifiedMethodCalls );
+        throw new AssertionFailedError( $unverifiedMethodCalls );
     }
 }
  

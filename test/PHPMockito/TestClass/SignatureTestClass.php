@@ -4,8 +4,7 @@ namespace PHPMockito\TestClass;
 
 
 class SignatureTestClass {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     public function testMethodAllRequired( \DOMDocument $domDocument1,
                                            array $requiredArray,

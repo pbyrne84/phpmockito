@@ -9,8 +9,7 @@ use PHPMockito\Action\MethodCallActionInitialiser;
 use PHPMockito\Mock\MockedClass;
 
 class Mockito {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @template T

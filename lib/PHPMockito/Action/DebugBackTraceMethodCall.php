@@ -7,8 +7,7 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class DebugBackTraceMethodCall extends ExpectedMethodCall {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var array */
     private $debugBacktrace;
 

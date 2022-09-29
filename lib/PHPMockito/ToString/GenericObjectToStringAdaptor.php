@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class GenericObjectToStringAdaptor extends ToStringAdaptor {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 

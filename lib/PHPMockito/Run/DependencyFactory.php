@@ -23,8 +23,7 @@ use PHPMockito\Verify\RuntimeMethodCallLogger;
 use PHPMockito\Verify\Verify;
 
 class DependencyFactory implements MethodCallListenerFactory {
-    const CLASS_NAME = __CLASS__;
-    private $initialisationCallListenerFactoryImpl;
+        private $initialisationCallListenerFactoryImpl;
 
     /** @var \PHPMockito\Verify\RuntimeMethodCallLogger */
     private $runtimeMethodLogger;

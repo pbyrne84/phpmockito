@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class ExceptionToStringAdaptor extends ToStringAdaptor {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var  \Exception */
     private $exception;
 

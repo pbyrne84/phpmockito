@@ -9,8 +9,7 @@ use PHPMockito\Action\FullyActionedMethodCall;
 
 class InitialisationCallRegistrarImpl implements InitialisationCallRegistrar {
 
-    const CLASS_NAME = __CLASS__;
-    /** @var ExpectancyEngine */
+        /** @var ExpectancyEngine */
     private $expectancyEngine;
 
 

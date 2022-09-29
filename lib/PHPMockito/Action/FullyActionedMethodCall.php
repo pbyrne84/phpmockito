@@ -6,8 +6,7 @@ namespace PHPMockito\Action;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class FullyActionedMethodCall extends MethodCall implements MethodCallAction {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ExpectedMethodCall */
     private $methodCall;
 

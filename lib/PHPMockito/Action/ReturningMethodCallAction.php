@@ -4,8 +4,7 @@ namespace PHPMockito\Action;
 
 
 class ReturningMethodCallAction implements MethodCallAction {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var mixed */
     private $returnValue;
 

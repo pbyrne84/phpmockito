@@ -3,9 +3,13 @@ namespace PHPMockito\EndToEnd;
 
 use PHPMockito\TestClass\MagicMethodTestClass;
 use PHPMockito\TestClass\UsageTestClass;
+use PHPUnit\Framework\TestCase;
 
-class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
-    const CLASS_NAME = __CLASS__;
+class MockitoBasicEndToEndTest extends TestCase {
+    
+
+    protected function setUp() {
+    }
 
 
     public function test_mock_returnValue() {
@@ -44,7 +48,7 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
 
     public function test_mock_magic_call_returnValue() {
         $usageTestClass       = new UsageTestClass( mock( '\DomDocument' ) );
-        $magicMethodTestClass = mock( MagicMethodTestClass::CLASS_NAME );
+        $magicMethodTestClass = mock( MagicMethodTestClass::class );
 
         $magicMethodCallResult   = 'magicMethodCall result';
         $fullyActionedMethodCall =
@@ -59,19 +63,19 @@ class MockitoBasicEndToEndTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function test_mock_exception() {
-        $DOMDocument = mock( '\DomDocument' );
+        $DOMDocument = mock( '\DomDocument');
         when( $DOMDocument->cloneNode( true ) )
-                ->thenThrow( new \InvalidArgumentException() );
+                ->thenThrow( new TestException("xx") );
 
         $usageTestClass = new UsageTestClass( $DOMDocument );
-        $DOMNode        = $usageTestClass->testTrue();
+
+        $this->expectException(TestException::class);
+        $usageTestClass->testTrue();
     }
 
 
+    //Never used spies so not really implemented
     public function test_spy_returnValue() {
         $DOMDocument = spy( '\DomDocument' );
         $methodCall1 = when( $DOMDocument->cloneNode( true ) )

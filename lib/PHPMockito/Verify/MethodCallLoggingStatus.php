@@ -6,8 +6,7 @@ namespace PHPMockito\Verify;
 use PHPMockito\Action\CallableMethod;
 
 class MethodCallLoggingStatus {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \PHPMockito\Action\CallableMethod */
     private $methodCall;
 

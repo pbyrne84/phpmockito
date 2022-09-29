@@ -1,14 +1,15 @@
 <?php
 namespace PHPMockito\Mock;
 
+use http\Exception\UnexpectedValueException;
+use PHPUnit\Framework\TestCase;
 use PHPMockito\TestClass\SignatureTestClass;
 
-class MockedMethodTest extends \PHPUnit_Framework_TestCase {
+class MockedMethodTest extends TestCase {
 
-    const CLASS_NAME = __CLASS__;
+    
 
-
-    protected function setUp() {
+    protected function setUp() : void{
 
     }
 
@@ -42,7 +43,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
 
 
     public function test_getSignature_customMethods_multipleVariations_allRequired() {
-        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::CLASS_NAME, 'testMethodAllRequired' );
+        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::class, 'testMethodAllRequired' );
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
@@ -54,7 +55,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
 
 
     public function test_getSignature_customMethods_multipleVariations_allOptional() {
-        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::CLASS_NAME, 'testMethodAllOptional' );
+        $reflectionMethod = new \ReflectionMethod( SignatureTestClass::class, 'testMethodAllOptional' );
         $mockedMethod     = new MockedMethod( $reflectionMethod );
 
         $this->assertEquals(
@@ -166,10 +167,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-
-    /**
-     * @expectedException \UnexpectedValueException
-     */
+    
     public function test_getVisibilityAsString_privateThrowsException() {
         $reflectionMethod = mock( '\ReflectionMethod' );
         when( $reflectionMethod->getParameters() )
@@ -179,6 +177,7 @@ class MockedMethodTest extends \PHPUnit_Framework_TestCase {
                 ->thenReturn( true );
 
         $mockedMethod = new MockedMethod( $reflectionMethod );
+        $this->expectException(\UnexpectedValueException::class);
         $this->assertEquals(
             '',
             $mockedMethod->getVisibilityAsString()

@@ -3,8 +3,7 @@
 namespace PHPMockito\Mock;
 
 class MockedMethod {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \ReflectionMethod */
     private $reflectionMethod;
 
@@ -111,12 +110,13 @@ class MockedMethod {
      * @throws \UnexpectedValueException
      */
     public function getVisibilityAsString() {
+
         if ( $this->reflectionMethod->isPublic() ) {
             return 'public';
         } elseif ( $this->reflectionMethod->isProtected() ) {
             return 'protected';
         } elseif ( $this->reflectionMethod->isPrivate() ) {
-            throw new \UnexpectedValueException( 'private methods cannot be mocked' );
+            throw new \UnexpectedValueException(  $this->reflectionMethod->getDeclaringClass() . ' is a private method and cannot be mocked' );
         }
 
         return '';

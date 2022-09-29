@@ -4,8 +4,7 @@ namespace PHPMockito\Mock\Logger;
 
 
 class FileBasedMockedClassCodeLogger implements MockedClassCodeLogger {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @inheritdoc

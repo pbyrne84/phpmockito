@@ -6,8 +6,7 @@ use PHPMockito\Action\CallableMethod;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class CallMatcher {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 

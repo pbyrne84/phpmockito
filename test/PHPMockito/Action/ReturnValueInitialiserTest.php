@@ -1,24 +1,53 @@
 <?php
 
 namespace PHPMockito\Action;
-
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestCase;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
-class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
+class ReturnValueInitialiserTest extends TestCase {
 
-    const CLASS_NAME = __CLASS__;
+    
 
+    /**
+     * Control for the others as they are success based
+     * @throws AssertionFailedError
+     * @return void
+     */
+    public function test_fails_when_verify_fails_with_wrong_count() {
+        /** @var $initialisationCallRegistrar InitialisationCallRegistrar */
+        $initialisationCallRegistrar = mock( InitialisationCallRegistrar::INTERFACE_InitalisationCallRegistrar );
+        $methodCall                  = mock( ExpectedMethodCall::class );
+        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::class );
 
-    protected function setUp() {
+        $returnValueInitialiser = new MethodCallActionInitialiser(
+                $toStringAdaptorFactory,
+                $initialisationCallRegistrar,
+                $methodCall
+        );
+
+        $exception = new \Exception();
+
+        $returnValueInitialiser->thenThrow( $exception );
+        $methodCallAction               = new ExceptionMethodCallAction( $exception );
+        $expectedFullActionedMethodCall = new FullyActionedMethodCall(
+                $toStringAdaptorFactory,
+                $methodCall,
+                $methodCallAction,
+                $returnValueInitialiser
+        );
+
+        $this->expectException(AssertionFailedError::class);
+        verify( $initialisationCallRegistrar,2 )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
     }
 
 
     public function test_thenThrow_passedExceptionInstanceIsSet() {
         /** @var $initialisationCallRegistrar InitialisationCallRegistrar */
         $initialisationCallRegistrar = mock( InitialisationCallRegistrar::INTERFACE_InitalisationCallRegistrar );
-        $methodCall                  = mock( ExpectedMethodCall::CLASS_NAME );
-        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
+        $methodCall                  = mock( ExpectedMethodCall::class );
+        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::class );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
                 $toStringAdaptorFactory,
@@ -38,14 +67,16 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
+        //Hack as assertion has to be made
+        $this->assertTrue(true);
     }
 
 
     public function test_thenThrow_passedStringIsConvertedToExceptionAndSet() {
         /** @var $initialisationCallRegistrar InitialisationCallRegistrar */
         $initialisationCallRegistrar = mock( InitialisationCallRegistrar::INTERFACE_InitalisationCallRegistrar );
-        $methodCall                  = mock( ExpectedMethodCall::CLASS_NAME );
-        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
+        $methodCall                  = mock( ExpectedMethodCall::class );
+        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::class );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
                 $toStringAdaptorFactory,
@@ -65,14 +96,16 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
+        //Hack as assertion has to be made
+        $this->assertTrue(true);
     }
 
 
     public function test_thenReturn() {
         /** @var $initialisationCallRegistrar InitialisationCallRegistrar */
         $initialisationCallRegistrar = mock( InitialisationCallRegistrar::INTERFACE_InitalisationCallRegistrar );
-        $methodCall                  = mock( ExpectedMethodCall::CLASS_NAME );
-        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::CLASS_NAME );
+        $methodCall                  = mock( ExpectedMethodCall::class );
+        $toStringAdaptorFactory      = mock( ToStringAdaptorFactory::class );
 
         $returnValueInitialiser = new MethodCallActionInitialiser(
                 $toStringAdaptorFactory,
@@ -94,6 +127,8 @@ class ReturnValueInitialiserTest extends \PHPUnit_Framework_TestCase {
         );
 
         verify( $initialisationCallRegistrar )->registerMockMethodExpectancy( $expectedFullActionedMethodCall );
+        //Hack as assertion has to be made
+        $this->assertTrue(true);
     }
 }
   

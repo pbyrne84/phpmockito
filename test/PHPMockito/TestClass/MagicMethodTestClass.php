@@ -4,8 +4,7 @@ namespace PHPMockito\TestClass;
 
 
 class MagicMethodTestClass {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @param $name

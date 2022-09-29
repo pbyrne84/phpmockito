@@ -10,8 +10,7 @@ use PHPMockito\Mock\Method\SpyMethodCodeGenerator;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MockFactory {
-    const CLASS_NAME = __CLASS__;
-
+    
     private $mockCounter = 0;
 
     /** @var MockClassCodeGenerator */

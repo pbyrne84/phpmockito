@@ -5,8 +5,7 @@ namespace PHPMockito\Output;
 use PHPMockito\Mock\MockedClass;
 
 class ValueOutputExporter {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @param mixed $value

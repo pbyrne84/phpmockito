@@ -6,8 +6,7 @@ namespace PHPMockito\Action;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 abstract class MethodCall implements CallableMethod {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 

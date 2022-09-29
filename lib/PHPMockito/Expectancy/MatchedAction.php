@@ -6,8 +6,7 @@ namespace PHPMockito\Expectancy;
 use PHPMockito\Action\MethodCallAction;
 
 class MatchedAction {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \PHPMockito\Action\MethodCallAction */
     private $action;
 

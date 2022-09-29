@@ -1,33 +1,30 @@
 <?php
 namespace PHPMockito\Expectancy;
+use PHPUnit\Framework\TestCase;
 
-class PhpUnitTestCaseInitialisationMatcherTest extends \PHPUnit_Framework_TestCase {
+class PhpUnitTestCaseInitialisationMatcherTest extends TestCase {
 
-    const CLASS_NAME = __CLASS__;
-
+    
     /**
      * @var PhpUnitTestCaseInitialisationMatcher
      */
     private $phpUnitTestCaseInitialisationMatcher;
 
 
-    protected function setUp() {
+
+    protected function setUp() : void {
         $this->phpUnitTestCaseInitialisationMatcher = new PhpUnitTestCaseInitialisationMatcher();
     }
 
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function test_checkIsInitialisationCall_throwsExceptionOnEmptyBackTrace() {
+        $this->expectException(\InvalidArgumentException::class);
         $this->phpUnitTestCaseInitialisationMatcher->checkIsInitialisationCall( array() );
     }
 
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
+    
     public function test_checkIsInitialisationCall_throwsExceptionIfClassIsNotFound() {
+        $this->expectException(\InvalidArgumentException::class);
         $this->phpUnitTestCaseInitialisationMatcher->checkIsInitialisationCall(
             array( array( 'function' => 'functionName' ) )
         );
@@ -37,8 +34,8 @@ class PhpUnitTestCaseInitialisationMatcherTest extends \PHPUnit_Framework_TestCa
     public function test_checkIsInitialisationCall_matchesAsADescendantOfPhpUnitIsSecond() {
         $backTrace = array(
             $this->createBacktraceItem( '\DomDocument', __METHOD__ ),
-            $this->createBacktraceItem( self::CLASS_NAME, __METHOD__ ),
-            $this->createBacktraceItem( PhpUnitTestCaseInitialisationMatcher::CLASS_NAME, 'isInitialisationCall' ),
+            $this->createBacktraceItem( self::class, __METHOD__ ),
+            $this->createBacktraceItem( PhpUnitTestCaseInitialisationMatcher::class, 'isInitialisationCall' ),
         );
 
         $this->assertTrue(
@@ -58,8 +55,8 @@ class PhpUnitTestCaseInitialisationMatcherTest extends \PHPUnit_Framework_TestCa
     public function test_checkIsInitialisationCall_doesNotMatchAsPhpUnitIsNotSecond() {
         $backTrace = array(
             $this->createBacktraceItem( '\DomDocument', __METHOD__ ),
-            $this->createBacktraceItem( PhpUnitTestCaseInitialisationMatcher::CLASS_NAME, 'isInitialisationCall' ),
-            $this->createBacktraceItem( self::CLASS_NAME, __METHOD__ ),
+            $this->createBacktraceItem( PhpUnitTestCaseInitialisationMatcher::class, 'isInitialisationCall' ),
+            $this->createBacktraceItem( self::class, __METHOD__ ),
         );
 
         $this->assertFalse(
