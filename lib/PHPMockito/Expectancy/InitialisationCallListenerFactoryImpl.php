@@ -4,8 +4,7 @@ namespace PHPMockito\Expectancy;
 
 
 class InitialisationCallListenerFactoryImpl implements InitialisationCallListenerFactory {
-    const CLASS_NAME = __CLASS__;
-
+    
     private $ignorableNonProductionTestClassSet = array();
 
 

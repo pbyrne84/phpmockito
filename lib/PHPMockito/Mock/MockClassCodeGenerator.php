@@ -7,8 +7,7 @@ use PHPMockito\Mock\Method\MethodCodeGenerator;
 use PHPMockito\Mock\Method\MockMethodCodeGenerator;
 
 class MockClassCodeGenerator {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @param string                     $mockShortClassName

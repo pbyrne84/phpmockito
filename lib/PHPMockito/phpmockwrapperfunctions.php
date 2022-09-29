@@ -7,7 +7,7 @@ use PHPMockito\Run\Mockito;
 /**
  * @return \PHPMockito\Action\MethodCallActionInitialiser
  */
-function when() {
+function when($x) {
     return Mockito::when();
 }
 

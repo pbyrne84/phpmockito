@@ -7,8 +7,7 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class ExpectedMethodCall extends MethodCall {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var MockedClass */
     private $class;
 

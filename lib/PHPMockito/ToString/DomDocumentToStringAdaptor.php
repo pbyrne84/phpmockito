@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class DomDocumentToStringAdaptor extends ToStringAdaptor {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \DOMDocument */
     private $domDocument;
 

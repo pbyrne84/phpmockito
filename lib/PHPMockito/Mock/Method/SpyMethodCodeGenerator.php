@@ -6,8 +6,7 @@ namespace PHPMockito\Mock\Method;
 use PHPMockito\Mock\MockedMethod;
 
 class SpyMethodCodeGenerator implements MethodCodeGenerator {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     /**
      * @param MockedMethod $mockedMethod

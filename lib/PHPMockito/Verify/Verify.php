@@ -6,8 +6,7 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class Verify {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var VerificationTester */
     private $verificationTester;
 

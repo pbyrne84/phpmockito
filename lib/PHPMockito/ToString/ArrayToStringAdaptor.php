@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class ArrayToStringAdaptor extends  ToStringAdaptor{
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 

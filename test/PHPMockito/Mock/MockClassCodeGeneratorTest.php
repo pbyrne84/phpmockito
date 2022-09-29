@@ -2,18 +2,19 @@
 namespace PHPMockito\Mock;
 
 use PHPMockito\Mock\Method\MockMethodCodeGenerator;
+use PHPUnit\Framework\TestCase;
 
-class MockClassCodeGeneratorTest extends \PHPUnit_Framework_TestCase {
 
-    const CLASS_NAME = __CLASS__;
+class MockClassCodeGeneratorTest extends TestCase {
 
+    
     /**
      * @var MockClassCodeGenerator
      */
     private $mockClassCodeGenerator;
 
 
-    protected function setUp() {
+    protected function setUp() : void{
         $this->mockClassCodeGenerator = new MockClassCodeGenerator();
     }
 

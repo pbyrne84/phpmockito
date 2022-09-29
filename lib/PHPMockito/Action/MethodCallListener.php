@@ -6,8 +6,7 @@ use PHPMockito\Expectancy\InitialisationCallListenerFactory;
 use PHPMockito\Expectancy\InitialisationCallRegistrar;
 
 class MethodCallListener {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var InitialisationCallListenerFactory */
     private $initialisationCallListenerFactory;
 

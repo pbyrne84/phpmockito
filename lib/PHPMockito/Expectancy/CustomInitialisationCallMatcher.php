@@ -4,8 +4,7 @@ namespace PHPMockito\Expectancy;
 
 
 class CustomInitialisationCallMatcher implements InitialisationCallMatcher {
-    const CLASS_NAME = __CLASS__;
-
+    
     private $testClassCallBacktraceDetector;
 
     /** @var array */

@@ -7,8 +7,7 @@ use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MethodCallActionInitialiser implements MethodCallAction {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ExpectedMethodCall */
     private $methodCall;
 
@@ -41,6 +40,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
      * @return \PHPMockito\Action\FullyActionedMethodCall
      */
     public function thenThrow( $exception ) {
+
         if ( !is_string( $exception ) && !$exception instanceof \Exception ) {
             throw new \InvalidArgumentException(
                 var_export( $exception, true ) . ' is not an instance of string or exception'
@@ -53,9 +53,8 @@ class MethodCallActionInitialiser implements MethodCallAction {
             $this->convertExceptionToMethodCallAction( $exception ),
             $this
         );
-
         $this->initialisationCallRegistrar->registerMockMethodExpectancy( $fullyActionedMethodCall );
-
+        
         return $fullyActionedMethodCall;
     }
 
@@ -75,7 +74,7 @@ class MethodCallActionInitialiser implements MethodCallAction {
             throw new \Invalidargumentexception( 'exception class "' . $exception . '" not found.' );
         }
 
-        return new exceptionmethodcallaction( new $exception );
+        return new ExceptionMethodCallAction( new $exception );
     }
 
 

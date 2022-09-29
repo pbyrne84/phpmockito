@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class ScalarToStringAdaptor extends ToStringAdaptor {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var mixed */
     private $value;
 

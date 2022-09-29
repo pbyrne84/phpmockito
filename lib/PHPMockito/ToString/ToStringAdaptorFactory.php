@@ -6,18 +6,17 @@ namespace PHPMockito\ToString;
 use PHPMockito\Mock\MockedClass;
 
 class ToStringAdaptorFactory {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var array */
     private $typeMappings = array();
 
 
     function __construct() {
         $this->typeMappings = array(
-            MockedClass::INTERFACE_MockedClass => MockedClassToStringAdaptor::CLASS_NAME,
-            '\DomDocument'                     => DomDocumentToStringAdaptor::CLASS_NAME,
-            '\SplFileInfo'                     => SplFileInfoToStringAdaptor::CLASS_NAME,
-            '\Exception'                       => ExceptionToStringAdaptor::CLASS_NAME,
+                MockedClass::class => MockedClassToStringAdaptor::class,
+                '\DomDocument'     => DomDocumentToStringAdaptor::class,
+                '\SplFileInfo'     => SplFileInfoToStringAdaptor::class,
+                '\Exception'       => ExceptionToStringAdaptor::class,
         );
     }
 

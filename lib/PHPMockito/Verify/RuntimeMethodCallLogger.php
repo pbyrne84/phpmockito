@@ -11,8 +11,7 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
 
 class RuntimeMethodCallLogger implements MockedMethodCallLogger {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var ExpectedMethodCall[] */
     private $actualMethodCallList = array();
 

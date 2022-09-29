@@ -4,8 +4,7 @@ namespace PHPMockito\TestClass;
 
 
 class UsageTestClass {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \DOMDocument */
     private $domDocument;
 

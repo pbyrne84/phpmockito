@@ -4,8 +4,7 @@ namespace PHPMockito\Expectancy;
 
 
 class TestClassCallBacktraceDetector {
-    const CLASS_NAME = __CLASS__;
-
+    
 
     public function callWasDoneByTestClass( $testClass, array $debugBackTrace ) {
         $testCallInitialisationDepth = 1;

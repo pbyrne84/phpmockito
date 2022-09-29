@@ -3,9 +3,10 @@
 namespace PHPMockito\Expectancy;
 
 
-class PhpUnitTestCaseInitialisationMatcher implements InitialisationCallMatcher {
-    const CLASS_NAME = __CLASS__;
+use PHPUnit\Framework\TestCase;
 
+class PhpUnitTestCaseInitialisationMatcher implements InitialisationCallMatcher {
+    
     /** @var TestClassCallBacktraceDetector   */
     private $parentClassLocator;
 
@@ -22,6 +23,6 @@ class PhpUnitTestCaseInitialisationMatcher implements InitialisationCallMatcher 
      * @throws \InvalidArgumentException
      */
     public function checkIsInitialisationCall( array $debugBackTrace ) {
-        return $this->parentClassLocator->callWasDoneByTestClass( 'PHPUnit_Framework_TestCase', $debugBackTrace );
+        return $this->parentClassLocator->callWasDoneByTestClass( TestCase::class, $debugBackTrace );
     }
 }

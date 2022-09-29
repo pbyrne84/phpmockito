@@ -2,18 +2,18 @@
 namespace PHPMockito\ToString;
 
 use PHPMockito\Mock\MockedClass;
+use PHPUnit\Framework\TestCase;
 
-class ToStringAdaptorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ToStringAdaptorFactoryTest extends TestCase {
 
-    const CLASS_NAME = __CLASS__;
-
+    
     /**
      * @var ToStringAdaptorFactory
      */
     private $toStringAdaptorFactory;
 
 
-    protected function setUp() {
+    protected function setUp() : void{
         $this->toStringAdaptorFactory = new ToStringAdaptorFactory();
     }
 

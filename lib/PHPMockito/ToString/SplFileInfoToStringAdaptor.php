@@ -4,8 +4,7 @@ namespace PHPMockito\ToString;
 
 
 class SplFileInfoToStringAdaptor extends ToStringAdaptor {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \SplFileInfo */
     private $splFileInfo;
 

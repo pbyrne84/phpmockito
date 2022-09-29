@@ -3,8 +3,7 @@
 namespace PHPMockito\Mock;
 
 class MockedParameter {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \ReflectionParameter */
     private $reflectionParameter;
 

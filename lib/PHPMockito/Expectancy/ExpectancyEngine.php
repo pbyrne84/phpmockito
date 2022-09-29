@@ -15,8 +15,7 @@ use PHPMockito\Run\RuntimeState;
 use PHPMockito\Verify\MockedMethodCallLogger;
 
 class ExpectancyEngine implements InitialisationCallRegistrar {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var FullyActionedMethodCall[] */
     private $expectedMethodCallMap = array();
 

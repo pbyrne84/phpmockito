@@ -6,8 +6,7 @@ use PHPMockito\Action\MethodCallListener;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class MockedClassConstructorParams {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var string */
     private $instanceReference;
 

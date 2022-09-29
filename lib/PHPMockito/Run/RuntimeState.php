@@ -11,8 +11,7 @@ use PHPMockito\Expectancy\InitialisationCallRegistrar;
 use PHPMockito\Expectancy\InitialisationCallRegistrarImpl;
 
 class RuntimeState {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var RuntimeState */
     private static $instance;
 

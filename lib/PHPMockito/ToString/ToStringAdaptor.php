@@ -3,7 +3,6 @@
 namespace PHPMockito\ToString;
 
 abstract class  ToStringAdaptor {
-    const INTERFACE_ToStringAdaptor = __CLASS__;
 
     /** @var  string */
     protected $prefix;

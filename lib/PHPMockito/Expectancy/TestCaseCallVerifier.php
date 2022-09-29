@@ -7,8 +7,7 @@ use PHPMockito\Action\DebugBackTraceMethodCall;
 use PHPMockito\Run\RuntimeState;
 
 class TestCaseCallVerifier {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var InitialisationCallMatcher[] */
     private $initialisationCallMatcherList;
 

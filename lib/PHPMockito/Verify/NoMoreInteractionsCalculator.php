@@ -8,8 +8,7 @@ use PHPMockito\Mock\MockedClass;
 use PHPMockito\Signature\SignatureGenerator;
 
 class NoMoreInteractionsCalculator {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var SignatureGenerator */
     private $signatureGenerator;
 

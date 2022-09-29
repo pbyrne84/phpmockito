@@ -7,8 +7,7 @@ use PHPMockito\Action\CallableMethod;
 use PHPMockito\ToString\ToStringAdaptorFactory;
 
 class SignatureGenerator {
-    const CLASS_NAME = __CLASS__;
-
+    
     /** @var \PHPMockito\ToString\ToStringAdaptorFactory */
     private $toStringAdaptorFactory;
 
