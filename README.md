@@ -3,8 +3,9 @@ PHPMockito
 
 ## Overview
 
-This is a project we used to use internally at a company I worked for. I have upgraded it to run on php 7 and phpunit 7
-which was fairly simple for a project last touched 9 years ago. Instead of using stringly typed calls such as 
+This is a project which I wrote, this was for internal use at a company I worked for. I have upgraded it to run on php 7 and phpunit 7
+which was fairly simple for a project last touched 9 years ago. Instead of using stringly typed([http://wiki.c2.com/?StringlyTyped](http://wiki.c2.com/?StringlyTyped)) 
+calls such as
 
 ```java
 mockLoader.expect(once())
@@ -12,22 +13,31 @@ mockLoader.expect(once())
     .will( returnValue(VALUE) );
 ```
 
-which are not automated refactor safe it used the standard mockito calls e.g.
+which are not automated refactor safe it used the standard mockito call format e.g.
 
 ```php
 $mock = mock(className::class);
-when($mock->call())->thenReturn("")
-when($mock->call())->thenThrow(new Exception())
+when($mock->load(KEY))->thenReturn(VALUE)
+when($mock->load(KEY))->thenThrow(new Exception())
 ```
 
-Also using strings for methods names and var args/arrays for parameters is really hard to debug as all the
-auto complete and inspections are broken. A lot of ideology against mocking is how unfriendly it can be.
+Also using strings for methods names and var args/arrays for parameters is really hard to code and debug as all the
+auto complete and inspections are broken. I believe a lot of ideology against mocking is how unfriendly it can be
+depending on implementation. Ideology is tied to effort and ability which is in turn tied to implementation, implementation
+is tied to the programming environment. All languages are not equal due to this, personal will and enthusiasm masks over the cracks.
 
-The generic call resolution was managed by the DynamicReturnTypePlugin for IDEA/PHPStorm
+I like generics, some implementations are hard to read, but it is just formalising what we tend to do anyway in more
+loosey goosey languages, this gives us decent get tool support and lowers human memorisation requirements.
+
+The irony is when approaches allow more breathing space they can get taken to a new point of psychological destruction, like replacing 
+xml with yaml, we can get to a point of manually edited yaml files are 4000 lines long, that is a point of tetering sanity, after that
+all yaml whatever size can have a bad taste. Like food poisoning can put you off a type of food.
+
+The generic call resolution was originally managed by the DynamicReturnTypePlugin for IDEA/PHPStorm
 
 [https://github.com/pbyrne84/DynamicReturnTypePlugin](https://github.com/pbyrne84/DynamicReturnTypePlugin)
 
-But with modern advanced we can use the template doc
+But with modern advanced versions of PHPStorm we can use the template doc
 
 ```php
 /**
@@ -39,6 +49,10 @@ But with modern advanced we can use the template doc
  * @return T
  */
 ```
+
+This seems to handle ::class and object instances. Strings of classnames does not seem to work and relies on 
+using phpstorm metadata
+[https://github.com/pbyrne84/phpstorm-metadata-example](https://github.com/pbyrne84/phpstorm-metadata-example)
 
 An example can be found here of a full end to end suite can be found here
 
@@ -68,7 +82,7 @@ public function test_mock_magic_call_returnValue() {
 
 ### Mocks
 
-The mocks are done using inheritance and eval, a list of all the public methods signatures are collected and override
+The mocks are done using inheritance and eval, a list of all the public methods signatures are collected and then override
 the original class blocking off all direct access but keeping the signature. This is something that would need to be revisited
 if upgrading to newer versions of php as there is lots of fun new stuff to take into account.
 
@@ -77,7 +91,7 @@ When a call is made it analyses via the stacktrace to see if we are in a test ca
 
 [https://github.com/pbyrne84/phpmockito/blob/master/lib/PHPMockito/Expectancy/PhpUnitTestCaseInitialisationMatcher.php](https://github.com/pbyrne84/phpmockito/blob/master/lib/PHPMockito/Expectancy/PhpUnitTestCaseInitialisationMatcher.php)
 
-If we are in a test case we don't log it as a production call which would interfere with the count.
+If we are in a test case we don't log it as a production call which would interfere with the verify count.
 
 The [PHPMockito\Run\RunTimeState](https://github.com/pbyrne84/phpmockito/blob/master/lib/PHPMockito/Run/RuntimeState.php)
 class handles all the registrations of expectancies as it has a static instance of InitialisationCallRegistrarImpl.
@@ -189,6 +203,9 @@ namespace PHPMockito\Action{
 
 There is no call to the parent constructor which means we do not get failures from parent initialisation.
 
+Singletons are generally bad but in this case we are working around a highly opinionated runtime environment,
+it is there for user-friendliness and reduce user dancing when writing a test. Maybe a trait import but all this 
+stuff was originally written for php 5.3.
 
 ## Expectancy evaluation and errors
 
@@ -318,7 +335,7 @@ DOMDocument_PhpMockitoMock->cloneNode(
 )
 ```
 
-There is the limitation that internal functions cannot return the default values when using reflection so the defaults match to null 
+There is the limitation that internal functions cannot return the default values via reflection so the defaults match to null 
 hence 
 
 ```php
@@ -340,8 +357,6 @@ Which is the documented default. Limits of the reflection engine.
 All the ToStringAdaptors are tested by the factory test here.
 [https://github.com/pbyrne84/phpmockito/blob/master/test/PHPMockito/ToString/ToStringAdaptorFactoryTest.php](https://github.com/pbyrne84/phpmockito/blob/master/test/PHPMockito/ToString/ToStringAdaptorFactoryTest.php)
 
-
-
 ## Issues in upgrading to PHP 7 from 5.3
 There as some issue using the latest xdebug(php_xdebug-2.9.5-7.4-vc15-nts-x86_64.dll) for php 7 as on windows it was throwing 
 -1073741819 errors when  trying to throw an exception from an expectancy set by 
@@ -353,3 +368,4 @@ when( $DOMDocument->cloneNode( true ) )
 ```
 
 This is potentially something to do with throwing exceptions in eval code.
+
