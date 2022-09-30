@@ -1,7 +1,6 @@
 <?php
 namespace PHPMockito\Mock;
 
-use http\Exception\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
 use PHPMockito\TestClass\SignatureTestClass;
 

@@ -13,9 +13,23 @@ function when($x) {
 
 
 /**
- * @param string $className
+ * @template T
  *
- * @return mixed
+ * @param T $className
+ *
+ * @return T
+ */
+function banana($className){
+     return $className;
+}
+
+
+/**
+ * @template T
+ *
+ * @param T $className
+ *
+ * @return T
  */
 function mock( $className ) {
     return Mockito::mock( $className );
@@ -57,10 +71,13 @@ function verifyNoMoreInteractions( $mockedClass ) {
 
 
 /**
- * @param string $className
+ * @template T
  *
- * @return mixed
+ * @param T $className
+ *
+ * @return T
  */
 function spy( $className ) {
     return Mockito::spy( $className );
 }
+
