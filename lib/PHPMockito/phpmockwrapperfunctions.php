@@ -19,18 +19,6 @@ function when($x) {
  *
  * @return T
  */
-function banana($className){
-     return $className;
-}
-
-
-/**
- * @template T
- *
- * @param T $className
- *
- * @return T
- */
 function mock( $className ) {
     return Mockito::mock( $className );
 }
